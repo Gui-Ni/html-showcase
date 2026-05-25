@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨境定价模拟器 v3 - 电陶炉×塔吉锅</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #0f1117; color: #e5e7eb; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+  h1 { font-size: 1.5rem; color: #fff; margin-bottom: 4px; }
+  h1 span { color: #f59e0b; font-size: 0.85rem; font-weight: 400; margin-left: 12px; }
+  .subtitle { color: #7c8db5; font-size: 0.85rem; margin-bottom: 32px; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #2a3148; }
+  .tab { padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-size: 0.85rem; color: #7c8db5; background: transparent; border: 1px solid transparent; border-bottom: none; transition: all 0.2s; }
+  .tab.active { background: #1a2030; color: #fff; border-color: #2a3148; }
+  .tab:hover { color: #fff; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .section { background: #1a2030; border: 1px solid #2a3148; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .section-title { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #2a3148; }
+
+  .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px; }
+  .input-group { display: flex; flex-direction: column; gap: 4px; }
+  .input-group label { font-size: 0.73rem; color: #7c8db5; }
+  .input-group input, .input-group select { background: #0f1117; border: 1px solid #2a3148; border-radius: 6px; padding: 7px 10px; color: #fff; font-size: 0.83rem; width: 100%; font-family: inherit; }
+  .input-group input:focus, .input-group select:focus { outline: none; border-color: #2563eb; }
+  .input-note { font-size: 0.68rem; color: #2563eb; margin-top: 2px; }
+  .input-warn { font-size: 0.68rem; color: #f87171; margin-top: 2px; }
+  .input-dim-row { display: flex; gap: 6px; }
+  .input-dim-row input { width: 64px; text-align: center; }
+
+  .market-btns { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .market-btn { padding: 8px 20px; border-radius: 8px; border: 1px solid #2a3148; background: #0f1117; color: #7c8db5; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; font-family: inherit; }
+  .market-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
+  .market-btn:hover { border-color: #4a5568; }
+
+  .calc-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  .calc-table th { background: #0f1117; color: #7c8db5; padding: 8px 12px; text-align: left; font-weight: 600; border-bottom: 1px solid #2a3148; }
+  .calc-table td { padding: 8px 12px; border-bottom: 1px solid #1e2436; vertical-align: middle; }
+  .calc-table tr:hover td { background: #1e2436; }
+  .calc-table .total-row td { background: #0f2a1a; color: #4ade80; font-weight: 700; }
+  .calc-table .sku1-row td { background: #0f1e35; }
+  .calc-table .sku2-row td { background: #1a0f2a; }
+  .num { text-align: right; color: #fff; font-weight: 600; }
+  .pct { text-align: right; color: #a3e635; font-weight: 600; }
+  .label-text { color: #9ca3af; }
+  .cost-flag { font-size: 0.7rem; color: #f87171; }
+  .cost-ok { font-size: 0.7rem; color: #4ade80; }
+
+  .result-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .result-card { background: #0f1117; border-radius: 8px; padding: 12px; text-align: center; }
+  .result-card.highlight { border: 1px solid #22543d; }
+  .result-card .rval { font-size: 1.3rem; font-weight: 700; color: #fff; }
+  .result-card.highlight .rval { color: #4ade80; }
+  .result-card .rkey { font-size: 0.7rem; color: #7c8db5; margin-top: 3px; }
+
+  .breakeven-badge { display: flex; align-items: center; gap: 16px; border-radius: 8px; padding: 12px 18px; margin-bottom: 14px; }
+  .breakeven-badge .bleft { flex: 1; }
+  .breakeven-badge .bval { font-weight: 700; font-size: 1.1rem; }
+  .breakeven-badge .blabel { font-size: 0.72rem; color: #7c8db5; margin-top: 2px; }
+  .breakeven-badge .bright { text-align: right; }
+  .breakeven-badge .bcurr-label { font-size: 0.68rem; color: #7c8db5; }
+  .breakeven-badge .bcurr-val { font-size: 1rem; font-weight: 700; }
+  .breakeven-badge.good { background: #0f2a1a; border: 1px solid #22543d; color: #4ade80; }
+  .breakeven-badge.good .bcurr-val { color: #4ade80; }
+  .breakeven-badge.bad { background: #2a1a1a; border: 1px solid #5a2020; color: #f87171; }
+  .breakeven-badge.bad .bcurr-val { color: #f87171; }
+
+  .strategy-box { background: #1e2436; border: 1px solid #2a3148; border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+  .strategy-box h4 { color: #fff; font-size: 0.82rem; margin-bottom: 6px; }
+  .strategy-box p { font-size: 0.78rem; color: #9ca3af; line-height: 1.6; }
+  .strategy-box .txt-warn { color: #f87171; font-weight: 600; }
+  .strategy-box .txt-good { color: #4ade80; font-weight: 600; }
+  .strategy-box .txt-note { color: #f59e0b; font-weight: 600; }
+
+  .price-section { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+  .price-input-wrap { display: flex; align-items: center; gap: 8px; }
+  .price-input-wrap label { font-size: 0.78rem; color: #7c8db5; }
+  .price-input-wrap input { background: #1e2436; border: 1px solid #2a3148; border-radius: 6px; padding: 8px 14px; color: #fff; font-size: 1.1rem; font-weight: 700; width: 130px; font-family: inherit; }
+  .price-input-wrap input:focus { outline: none; border-color: #2563eb; }
+  .price-input-wrap input.over { border-color: #4ade80; color: #4ade80; }
+  .price-input-wrap input.under { border-color: #f87171; color: #f87171; }
+  .price-status { font-size: 0.8rem; min-width: 200px; }
+  .price-status.ok { color: #4ade80; }
+  .price-status.warn { color: #f87171; }
+
+  .sens-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 14px; }
+  .sens-table th { background: #0f1117; color: #7c8db5; padding: 7px 10px; text-align: center; font-weight: 600; border: 1px solid #2a3148; }
+  .sens-table td { padding: 7px 10px; border: 1px solid #1e2436; text-align: center; }
+  .sens-table .price-col { font-weight: 700; color: #fff; }
+  .sens-table .best-row { background: #0f2a1a; }
+  .sens-table .best-row td { color: #4ade80; font-weight: 700; }
+  .sens-table .warn-row { background: #2a1a1a; }
+  .sens-table .warn-row td { color: #f87171; }
+  .sens-table .curr-row { background: #1e2436; }
+  .sens-table .curr-row td { color: #fff; font-weight: 600; }
+  .sens-table .threshold-row { background: #1e2a0f; }
+  .sens-table .threshold-row td { color: #f59e0b; font-weight: 600; }
+
+  .sku-tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+  .sku-tag.s1 { background: #1e2436; color: #60a5fa; }
+  .sku-tag.s2 { background: #2a1a3a; color: #c084fc; }
+
+  .mkt-us { color: #60a5fa; }
+  .mkt-eu { color: #a78bfa; }
+  .mkt-uk { color: #c084fc; }
+
+  .formula-note { background: #0f1117; border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size: 0.75rem; color: #7c8db5; border-left: 3px solid #2563eb; line-height: 1.7; }
+  .formula-note code { color: #a5b4fc; background: #1e2436; padding: 1px 6px; border-radius: 4px; }
+
+  .callout { background: #1e2436; border: 1px solid #2a3148; border-radius: 8px; padding: 12px 16px; font-size: 0.8rem; color: #7c8db5; margin-bottom: 16px; border-left: 3px solid #f59e0b; line-height: 1.6; }
+  .callout strong { color: #fff; }
+
+  /* Summary result cards */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .summary-card { background: #1a2030; border: 1px solid #2a3148; border-radius: 12px; padding: 20px; }
+  .summary-card h3 { font-size: 0.85rem; color: #fff; margin-bottom: 12px; border-bottom: 1px solid #2a3148; padding-bottom: 8px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #1e2436; }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .skey { font-size: 0.78rem; color: #7c8db5; }
+  .summary-row .sval { font-size: 0.85rem; font-weight: 600; color: #fff; }
+  .summary-row .sval.good { color: #4ade80; }
+  .summary-row .sval.warn { color: #f87171; }
+  .summary-row .sval.note { color: #f59e0b; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🧮 跨境定价模拟器 <span>v3（已更新SKU结构）</span></h1>
+<p class="subtitle">📦 SKU1 电陶炉+塔吉锅 · 📦 SKU2 电陶炉+烤盘+塔吉锅 · 美国/欧盟/英国 · 目标利润率 ≥8%</p>
+
+<!-- Market selector -->
+<div class="market-btns">
+  <button class="market-btn active" onclick="setMarket('us')">🇺🇸 美国 (底座8516:50% / 塔吉锅6912:19.8%)</button>
+  <button class="market-btn" onclick="setMarket('eu')">🇪🇺 欧盟 (底座8516:2.7% / 塔吉锅6912:5%)</button>
+  <button class="market-btn" onclick="setMarket('uk')">🇬🇧 英国 (底座8516:2% / 塔吉锅6912:4%)</button>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('summary')" id="tab-summary">📋 定价总览</div>
+  <div class="tab" onclick="switchTab('sku1')" id="tab-sku1">📦 SKU1 · 电陶炉+塔吉锅</div>
+  <div class="tab" onclick="switchTab('sku2')" id="tab-sku2">📦 SKU2 · 电陶炉+烤盘+塔吉锅</div>
+  <div class="tab" onclick="switchTab('compare')" id="tab-compare">📊 三市场横向对比</div>
+</div>
+
+<!-- ===== SUMMARY ===== -->
+<div class="panel active" id="panel-summary">
+  <div class="strategy-box">
+    <h4>🎯 产品结构说明</h4>
+    <p>
+      <span class="sku-tag s1">SKU1</span> 电陶炉 + 塔吉锅（出厂成本 ¥256.5 = $37.45）<br>
+      <span class="sku-tag s2">SKU2</span> 电陶炉 + 烤盘 + 塔吉锅（出厂成本 ¥275.9 = $40.28）<br>
+      <span class="txt-note">烤盘成本仅¥19.4，但溢价$20，利润贡献极高，建议主推SKU2</span>
+    </p>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card" id="sum-sku1">
+      <h3><span class="sku-tag s1">SKU1</span> 电陶炉+塔吉锅 · 美国市场</h3>
+      <div class="summary-row"><span class="skey">出厂成本</span><span class="sval" id="sum1-factory">—</span></div>
+      <div class="summary-row"><span class="skey">综合关税</span><span class="sval" id="sum1-tariff">—</span></div>
+      <div class="summary-row"><span class="skey">FBA费用</span><span class="sval" id="sum1-fba">—</span></div>
+      <div class="summary-row"><span class="skey">固定成本合计</span><span class="sval" id="sum1-fixed">—</span></div>
+      <div class="summary-row"><span class="skey">盈亏平衡价(≥8%)</span><span class="sval note" id="sum1-be">—</span></div>
+      <div class="summary-row"><span class="skey">建议售价</span><span class="sval note" id="sum1-suggest">—</span></div>
+      <div class="summary-row"><span class="skey">实际利润率</span><span class="sval" id="sum1-margin">—</span></div>
+      <div class="summary-row"><span class="skey">净利润/件</span><span class="sval" id="sum1-profit">—</span></div>
+    </div>
+
+    <div class="summary-card" id="sum-sku2">
+      <h3><span class="sku-tag s2">SKU2</span> 电陶炉+烤盘+塔吉锅 · 美国市场</h3>
+      <div class="summary-row"><span class="skey">出厂成本</span><span class="sval" id="sum2-factory">—</span></div>
+      <div class="summary-row"><span class="skey">综合关税</span><span class="sval" id="sum2-tariff">—</span></div>
+      <div class="summary-row"><span class="skey">FBA费用</span><span class="sval" id="sum2-fba">—</span></div>
+      <div class="summary-row"><span class="skey">固定成本合计</span><span class="sval" id="sum2-fixed">—</span></div>
+      <div class="summary-row"><span class="skey">盈亏平衡价(≥8%)</span><span class="sval note" id="sum2-be">—</span></div>
+      <div class="summary-row"><span class="skey">建议售价</span><span class="sval note" id="sum2-suggest">—</span></div>
+      <div class="summary-row"><span class="skey">实际利润率</span><span class="sval good" id="sum2-margin">—</span></div>
+      <div class="summary-row"><span class="skey">净利润/件</span><span class="sval good" id="sum2-profit">—</span></div>
+    </div>
+  </div>
+
+  <div class="formula-note">
+    <strong>成本公式：</strong><code>净利润 = 售价 - (出厂+头程+关税+FBA+退货损失+杂费) - 售价×(Referral%+广告%)</code><br>
+    <strong>盈亏价公式：</strong><code>P = 固定成本 / (1 - Referral% - 广告% - 目标利润率)</code> · 目标利润率默认8%
+  </div>
+</div>
+
+<!-- ===== SKU1 ===== -->
+<div class="panel" id="panel-sku1">
+  <div class="callout">
+    <strong>📦 SKU1 电陶炉+塔吉锅</strong> — <span class="mkt-us">美国底座8516.60.4074:50% · 塔吉锅6912.00.4890:19.8%</span> · <span class="mkt-eu">欧盟底座8516.60.5000:2.7% · 塔吉锅6912.00.2119:5%</span> · <span class="mkt-uk">英国底座8516.60.5000:2% · 塔吉锅6912.00.2119:4%</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">① 产品成本（SKU1：电陶炉+塔吉锅）</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label>电陶炉底座 (CNY)</label>
+        <input type="number" id="s1_base_cny" value="134.5" oninput="recalc()">
+      </div>
+      <div class="input-group">
+        <label>塔吉锅 (CNY)</label>
+        <input type="number" id="s1_pot_cny" value="122" oninput="recalc()">
+        <span class="input-note">合计¥256.5</span>
+      </div>
+      <div class="input-group">
+        <label>USD/CNY 汇率</label>
+        <input type="number" id="s1_fx" value="6.85" step="0.01" oninput="recalc()">
+      </div>
+      <div class="input-group">
+        <label>包装后重量 (kg)</label>
+        <input type="number" id="s1_weight" value="5.5" step="0.1" oninput="recalc()">
+        <span class="input-warn">⚠ 待确认（底座2.5+锅3.88+包材）</span>
+      </div>
+      <div class="input-group">
+        <label>包装尺寸 (cm)</label>
+        <div class="input-dim-row">
+          <input type="number" id="s1_dl" value="56" oninput="recalc()" placeholder="长">
+          <input type="number" id="s1_dw" value="30" oninput="recalc()" placeholder="宽">
+          <input type="number" id="s1_dh" value="35" oninput="recalc()" placeholder="高">
+        </div>
+        <span class="input-warn">⚠ 长≥Φ275×2=550mm（待确认）</span>
+      </div>
+      <div class="input-group">
+        <label>头程运费 (CNY/件)</label>
+        <input type="number" id="s1_freight_cny" value="35" step="1" oninput="recalc()">
+        <span class="input-note">含国内+国际</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">② 关税税率（已确认）</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label class="mkt-us">🇺🇸 底座税率(8516)</label>
+        <input type="number" id="s1_tbase_us" value="50" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-us">🇺🇸 塔吉锅税率(6912)</label>
+        <input type="number" id="s1_tpot_us" value="19.8" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-eu">🇪🇺 底座税率(8516)</label>
+        <input type="number" id="s1_tbase_eu" value="2.7" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-eu">🇪🇺 塔吉锅税率(6912)</label>
+        <input type="number" id="s1_tpot_eu" value="5" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-uk">🇬🇧 底座税率(8516)</label>
+        <input type="number" id="s1_tbase_uk" value="2" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-uk">🇬🇧 塔吉锅税率(6912)</label>
+        <input type="number" id="s1_tpot_uk" value="4" step="0.1" oninput="recalc()"> %
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">③ Amazon 费用</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label>Referral Fee (%)</label>
+        <input type="number" id="s1_referral" value="15" step="0.5" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>退货率 (%)</label>
+        <input type="number" id="s1_return" value="8" step="0.5" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>广告/运营比率 (%)</label>
+        <input type="number" id="s1_ads" value="10" step="1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>目标最低利润率 (%)</label>
+        <input type="number" id="s1_target" value="8" step="0.5" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>其他杂费 (USD/件)</label>
+        <input type="number" id="s1_misc" value="2.5" step="0.5" oninput="recalc()">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">④ 盈亏平衡计算</div>
+    <div id="s1_be_box"></div>
+
+    <div class="price-section">
+      <div class="price-input-wrap">
+        <label>测试定价：$</label>
+        <input type="number" id="s1_price" value="129" oninput="recalc()">
+      </div>
+      <span class="price-status" id="s1_price_status"></span>
+      <span style="font-size:0.75rem;color:#7c8db5;margin-left:auto;">建议售价: $129（目标≥8%）</span>
+    </div>
+
+    <div class="result-row">
+      <div class="result-card highlight">
+        <div class="rval" id="s1_margin_disp">—</div>
+        <div class="rkey">利润率</div>
+      </div>
+      <div class="result-card">
+        <div class="rval" id="s1_profit_disp">—</div>
+        <div class="rkey">净利润/件</div>
+      </div>
+      <div class="result-card">
+        <div class="rval" id="s1_roi_disp">—</div>
+        <div class="rkey">ROI</div>
+      </div>
+      <div class="result-card">
+        <div class="rval" id="s1_cost_disp">—</div>
+        <div class="rkey">总成本</div>
+      </div>
+    </div>
+
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th style="width:48%;">成本项</th>
+          <th style="text-align:right;">USD</th>
+          <th style="text-align:right;">占售价%</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody id="s1_cost_rows"></tbody>
+    </table>
+
+    <div class="formula-note">
+      <strong>综合关税：</strong>底座(8516)和锅(6912)分别计税 → 综合税率 = (底座CIF×底座% + 锅CIF×锅%) / 产品CIF<br>
+      <strong>盈亏价公式：</strong><code>P = 固定成本 / (1 - 25% - 目标%)</code> · Referral15% + 广告10% = 固定费率25%
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⑤ 定价敏感性分析</div>
+    <table class="sens-table" id="s1_sens_tbl">
+      <thead>
+        <tr>
+          <th>售价</th>
+          <th>总成本</th>
+          <th>净利润</th>
+          <th>利润率</th>
+          <th>ROI</th>
+          <th>评价</th>
+        </tr>
+      </thead>
+      <tbody id="s1_sens_rows"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SKU2 ===== -->
+<div class="panel" id="panel-sku2">
+  <div class="callout">
+    <strong>📦 SKU2 电陶炉+烤盘+塔吉锅</strong> — 底座HS: <span class="mkt-us">8516.60.4074(美50%)</span> · 烤盘HS: <span class="mkt-us">待确认</span> · 塔吉锅HS: <span class="mkt-us">6912.00.4890(美19.8%)</span>
+  </div>
+
+  <div class="strategy-box">
+    <h4>🎯 SKU2 市场定位建议</h4>
+    <p>SKU2是<strong class="txt-good">核心利润款</strong>！烤盘成本仅¥19.4（$2.83），但建议售价$149，比SKU1贵$20，净利润多$14.6/件，利润率从9%→17%。烤盘关税待确认（建议询问报关行），当前默认与塔吉锅同类。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">① 产品成本（SKU2：电陶炉+烤盘+塔吉锅）</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label>电陶炉底座 (CNY)</label>
+        <input type="number" id="s2_base_cny" value="134.5" oninput="recalc()">
+      </div>
+      <div class="input-group">
+        <label>塔吉锅 (CNY)</label>
+        <input type="number" id="s2_pot_cny" value="122" oninput="recalc()">
+      </div>
+      <div class="input-group">
+        <label>烤盘 (CNY)</label>
+        <input type="number" id="s2_tray_cny" value="19.4" oninput="recalc()">
+        <span class="input-note">合计¥275.9（已确认）</span>
+      </div>
+      <div class="input-group">
+        <label>USD/CNY 汇率</label>
+        <input type="number" id="s2_fx" value="6.85" step="0.01" oninput="recalc()">
+      </div>
+      <div class="input-group">
+        <label>包装后重量 (kg)</label>
+        <input type="number" id="s2_weight" value="5.8" step="0.1" oninput="recalc()">
+        <span class="input-warn">⚠ 待确认</span>
+      </div>
+      <div class="input-group">
+        <label>包装尺寸 (cm)</label>
+        <div class="input-dim-row">
+          <input type="number" id="s2_dl" value="58" oninput="recalc()" placeholder="长">
+          <input type="number" id="s2_dw" value="32" oninput="recalc()" placeholder="宽">
+          <input type="number" id="s2_dh" value="38" oninput="recalc()" placeholder="高">
+        </div>
+        <span class="input-warn">⚠ 待确认（SKU1+烤盘）</span>
+      </div>
+      <div class="input-group">
+        <label>头程运费 (CNY/件)</label>
+        <input type="number" id="s2_freight_cny" value="38" step="1" oninput="recalc()">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">② 关税税率（已确认部分 · ⚠烤盘待确认）</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label class="mkt-us">🇺🇸 底座税率(8516)</label>
+        <input type="number" id="s2_tbase_us" value="50" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-us">🇺🇸 烤盘税率</label>
+        <input type="number" id="s2_ttray_us" value="19.8" step="0.1" oninput="recalc()"> %
+        <span class="input-warn">⚠ 待确认HS编码</span>
+      </div>
+      <div class="input-group">
+        <label class="mkt-us">🇺🇸 塔吉锅税率(6912)</label>
+        <input type="number" id="s2_tpot_us" value="19.8" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-eu">🇪🇺 底座税率(8516)</label>
+        <input type="number" id="s2_tbase_eu" value="2.7" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-eu">🇪🇺 烤盘税率</label>
+        <input type="number" id="s2_ttray_eu" value="5" step="0.1" oninput="recalc()"> %
+        <span class="input-warn">⚠ 待确认</span>
+      </div>
+      <div class="input-group">
+        <label class="mkt-eu">🇪🇺 塔吉锅税率(6912)</label>
+        <input type="number" id="s2_tpot_eu" value="5" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-uk">🇬🇧 底座税率(8516)</label>
+        <input type="number" id="s2_tbase_uk" value="2" step="0.1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label class="mkt-uk">🇬🇧 烤盘税率</label>
+        <input type="number" id="s2_ttray_uk" value="4" step="0.1" oninput="recalc()"> %
+        <span class="input-warn">⚠ 待确认</span>
+      </div>
+      <div class="input-group">
+        <label class="mkt-uk">🇬🇧 塔吉锅税率(6912)</label>
+        <input type="number" id="s2_tpot_uk" value="4" step="0.1" oninput="recalc()"> %
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">③ Amazon 费用</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label>Referral Fee (%)</label>
+        <input type="number" id="s2_referral" value="15" step="0.5" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>退货率 (%)</label>
+        <input type="number" id="s2_return" value="8" step="0.5" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>广告/运营比率 (%)</label>
+        <input type="number" id="s2_ads" value="10" step="1" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>目标最低利润率 (%)</label>
+        <input type="number" id="s2_target" value="8" step="0.5" oninput="recalc()"> %
+      </div>
+      <div class="input-group">
+        <label>其他杂费 (USD/件)</label>
+        <input type="number" id="s2_misc" value="3" step="0.5" oninput="recalc()">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">④ 盈亏平衡计算</div>
+    <div id="s2_be_box"></div>
+
+    <div class="price-section">
+      <div class="price-input-wrap">
+        <label>测试定价：$</label>
+        <input type="number" id="s2_price" value="149" oninput="recalc()">
+      </div>
+      <span class="price-status" id="s2_price_status"></span>
+      <span style="font-size:0.75rem;color:#7c8db5;margin-left:auto;">建议售价: $149（烤盘成本低，溢价空间大）</span>
+    </div>
+
+    <div class="result-row">
+      <div class="result-card highlight">
+        <div class="rval" id="s2_margin_disp">—</div>
+        <div class="rkey">利润率</div>
+      </div>
+      <div class="result-card">
+        <div class="rval" id="s2_profit_disp">—</div>
+        <div class="rkey">净利润/件</div>
+      </div>
+      <div class="result-card">
+        <div class="rval" id="s2_roi_disp">—</div>
+        <div class="rkey">ROI</div>
+      </div>
+      <div class="result-card">
+        <div class="rval" id="s2_cost_disp">—</div>
+        <div class="rkey">总成本</div>
+      </div>
+    </div>
+
+    <table class="calc-table">
+      <thead>
+        <tr>
+          <th style="width:48%;">成本项</th>
+          <th style="text-align:right;">USD</th>
+          <th style="text-align:right;">占售价%</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody id="s2_cost_rows"></tbody>
+    </table>
+
+    <div class="formula-note">
+      <strong>SKU2烤盘策略：</strong>烤盘¥19.4成本极低，额外成本约$5.4（出厂+头程+关税），但溢价$20，净利润贡献+~$14.6/件。建议主推SKU2。
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⑤ 定价敏感性分析</div>
+    <table class="sens-table" id="s2_sens_tbl">
+      <thead>
+        <tr>
+          <th>售价</th>
+          <th>总成本</th>
+          <th>净利润</th>
+          <th>利润率</th>
+          <th>ROI</th>
+          <th>评价</th>
+        </tr>
+      </thead>
+      <tbody id="s2_sens_rows"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== COMPARE ===== -->
+<div class="panel" id="panel-compare">
+  <div class="section">
+    <div class="section-title">三市场 · 两SKU · 综合对比</div>
+    <table class="sens-table">
+      <thead>
+        <tr>
+          <th>市场</th>
+          <th>SKU</th>
+          <th>固定成本</th>
+          <th>盈亏平衡价<br>(≥8%利润)</th>
+          <th>建议售价</th>
+          <th>实际利润率</th>
+          <th>净利润/件</th>
+          <th>策略建议</th>
+        </tr>
+      </thead>
+      <tbody id="compare_rows"></tbody>
+    </table>
+    <div class="formula-note" style="margin-top:12px;">
+      固定成本 = 出厂成本+头程+关税+FBA+退货损失+杂费（不含Referral和广告，它们是售价的百分比）
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+let currentMarket = 'us';
+
+function getFBAFee(weightKg, dl, dw, dh) {
+  const volWeight = dl * dw * dh / 5000;
+  const billWeight = Math.max(weightKg, volWeight);
+  const tiers = [
+    [0.125, 3.01],[0.25, 3.22],[0.375, 3.40],[0.5, 3.92],
+    [0.75, 4.42],[1, 5.00],[1.5, 5.70],[2, 6.50],[2.5, 7.20],
+    [3, 8.10],[4, 9.40],[5, 10.80],[6, 11.90],[7, 12.90],
+    [8, 14.00],[9, 14.70],[10, 15.80],[12, 17.60],[14, 19.50],
+    [16, 21.40],[18, 23.40],[20, 25.10]
+  ];
+  for (const [limit, fee] of tiers) {
+    if (billWeight <= limit) return fee;
+  }
+  return 25.10 + (billWeight - 20) * 1.30;
+}
+
+function getTariffs(sku, market) {
+  if (sku === 1) {
+    const base = market === 'us' ? 's1_tbase_us' : market === 'eu' ? 's1_tbase_eu' : 's1_tbase_uk';
+    const pot = market === 'us' ? 's1_tpot_us' : market === 'eu' ? 's1_tpot_eu' : 's1_tpot_uk';
+    return {
+      base: parseFloat(document.getElementById(base).value) / 100 || 0,
+      pot: parseFloat(document.getElementById(pot).value) / 100 || 0
+    };
+  } else {
+    const base = market === 'us' ? 's2_tbase_us' : market === 'eu' ? 's2_tbase_eu' : 's2_tbase_uk';
+    const pot = market === 'us' ? 's2_tpot_us' : market === 'eu' ? 's2_tpot_eu' : 's2_tpot_uk';
+    const tray = market === 'us' ? 's2_ttray_us' : market === 'eu' ? 's2_ttray_eu' : 's2_ttray_uk';
+    return {
+      base: parseFloat(document.getElementById(base).value) / 100 || 0,
+      pot: parseFloat(document.getElementById(pot).value) / 100 || 0,
+      tray: parseFloat(document.getElementById(tray).value) / 100 || 0
+    };
+  }
+}
+
+function calcSKU(priceUSD, market, isSKU2) {
+  const baseCNY = isSKU2
+    ? parseFloat(document.getElementById('s2_base_cny').value) : parseFloat(document.getElementById('s1_base_cny').value);
+  const potCNY = isSKU2
+    ? parseFloat(document.getElementById('s2_pot_cny').value) : parseFloat(document.getElementById('s1_pot_cny').value);
+  const trayCNY = isSKU2 ? parseFloat(document.getElementById('s2_tray_cny').value) : 0;
+  const fx = isSKU2 ? parseFloat(document.getElementById('s2_fx').value) : parseFloat(document.getElementById('s1_fx').value);
+  const freightCNY = isSKU2 ? parseFloat(document.getElementById('s2_freight_cny').value) : parseFloat(document.getElementById('s1_freight_cny').value);
+  const weight = isSKU2 ? parseFloat(document.getElementById('s2_weight').value) : parseFloat(document.getElementById('s1_weight').value);
+  const dl = isSKU2 ? parseFloat(document.getElementById('s2_dl').value) : parseFloat(document.getElementById('s1_dl').value);
+  const dw = isSKU2 ? parseFloat(document.getElementById('s2_dw').value) : parseFloat(document.getElementById('s1_dw').value);
+  const dh = isSKU2 ? parseFloat(document.getElementById('s2_dh').value) : parseFloat(document.getElementById('s1_dh').value);
+  const referralPct = (isSKU2 ? parseFloat(document.getElementById('s2_referral').value) : parseFloat(document.getElementById('s1_referral').value)) / 100;
+  const returnRate = (isSKU2 ? parseFloat(document.getElementById('s2_return').value) : parseFloat(document.getElementById('s1_return').value)) / 100;
+  const adsPct = (isSKU2 ? parseFloat(document.getElementById('s2_ads').value) : parseFloat(document.getElementById('s1_ads').value)) / 100;
+  const misc = isSKU2 ? parseFloat(document.getElementById('s2_misc').value) : parseFloat(document.getElementById('s1_misc').value);
+  const targetPct = (isSKU2 ? parseFloat(document.getElementById('s2_target').value) : parseFloat(document.getElementById('s1_target').value)) / 100;
+
+  const baseUSD = baseCNY / fx;
+  const potUSD = potCNY / fx;
+  const trayUSD = trayCNY / fx;
+  const totalUnitUSD = baseUSD + potUSD + trayUSD;
+  const freightUSD = freightCNY / fx;
+
+  // Proportional freight split
+  const freightBase = freightUSD * baseUSD / totalUnitUSD;
+  const freightPot = freightUSD * potUSD / totalUnitUSD;
+  const freightTray = freightUSD * trayUSD / totalUnitUSD;
+
+  const tariffs = isSKU2 ? getTariffs(2, market) : getTariffs(1, market);
+
+  const cifBase = baseUSD + freightBase;
+  const cifPot = potUSD + freightPot;
+  const cifTray = trayUSD + freightTray;
+
+  const dutyBase = cifBase * tariffs.base;
+  const dutyPot = cifPot * tariffs.pot;
+  const dutyTray = isSKU2 ? (cifTray * tariffs.tray) : 0;
+  const totalDuty = dutyBase + dutyPot + dutyTray;
+
+  const fba = getFBAFee(weight, dl, dw, dh);
+  const fixedCostBeforeReturn = totalUnitUSD + freightUSD + totalDuty + fba + misc;
+  const returnLoss = fixedCostBeforeReturn * returnRate;
+  const fixedTotal = fixedCostBeforeReturn + returnLoss;
+
+  const feeRate = referralPct + adsPct;
+  const bePrice = fixedTotal / (1 - feeRate - targetPct);
+
+  const referral = priceUSD * referralPct;
+  const ads = priceUSD * adsPct;
+  const totalCost = fixedTotal + referral + ads;
+  const profit = priceUSD - totalCost;
+  const marginPct = profit / priceUSD * 100;
+  const roi = profit / totalCost * 100;
+
+  const blendedTariff = (totalDuty / totalUnitUSD * 100).toFixed(1);
+
+  const rows = [
+    { name: `电陶炉底座出厂成本`, val: baseUSD, pct: baseUSD / priceUSD * 100, cls: isSKU2 ? 'sku1-row' : '' },
+    { name: `塔吉锅出厂成本`, val: potUSD, pct: potUSD / priceUSD * 100, cls: isSKU2 ? 'sku1-row' : '' },
+    ...(isSKU2 ? [{ name: `烤盘出厂成本`, val: trayUSD, pct: trayUSD / priceUSD * 100, cls: 'sku2-row' }] : []),
+    { name: `头程运费（按成本比例分摊）`, val: freightUSD, pct: freightUSD / priceUSD * 100, cls: '' },
+    { name: `关税-底座(8516×${(tariffs.base*100).toFixed(1)}%)`, val: dutyBase, pct: dutyBase / priceUSD * 100, cls: '' },
+    { name: `关税-塔吉锅(6912×${(tariffs.pot*100).toFixed(1)}%)`, val: dutyPot, pct: dutyPot / priceUSD * 100, cls: '' },
+    ...(isSKU2 ? [{ name: `关税-烤盘(×${(tariffs.tray*100).toFixed(1)}%)`, val: dutyTray, pct: dutyTray / priceUSD * 100, cls: 'sku2-row' }] : []),
+    { name: `综合关税税率≈${blendedTariff}%`, val: totalDuty, pct: totalDuty / priceUSD * 100, cls: '' },
+    { name: `FBA 处理+配送费`, val: fba, pct: fba / priceUSD * 100, cls: '' },
+    { name: `Amazon Referral(售价×${(referralPct*100)}%)`, val: referral, pct: referralPct * 100, cls: '' },
+    { name: `退货损失(固定成本×${(returnRate*100)}%)`, val: returnLoss, pct: returnLoss / priceUSD * 100, cls: '' },
+    { name: `广告/运营费(售价×${(adsPct*100)}%)`, val: ads, pct: adsPct * 100, cls: '' },
+    { name: `其他杂费`, val: misc, pct: misc / priceUSD * 100, cls: '' },
+  ];
+
+  return { totalCost, profit, marginPct, roi, rows, bePrice, fixedTotal, fba, totalDuty, blendedTariff };
+}
+
+function renderBreakevenBox(boxId, bePrice, currentPrice) {
+  const above = currentPrice >= bePrice;
+  const badge = document.getElementById(boxId);
+  const diff = currentPrice - bePrice;
+  badge.innerHTML = `<div class="breakeven-badge ${above ? 'good' : 'bad'}">
+    <div class="bleft">
+      <div class="bval">$${bePrice.toFixed(0)}</div>
+      <div class="blabel">盈亏平衡价（≥8%利润率）</div>
+    </div>
+    <div class="bright">
+      <div class="bcurr-label">当前定价</div>
+      <div class="bcurr-val">$${currentPrice}</div>
+      <div style="font-size:0.68rem;margin-top:2px;color:${above?'#4ade80':'#f87171'};">${above ? '✅ 达标（安全边际+$'+diff.toFixed(0)+'）' : '⚠ 低于盈亏价$'+(Math.abs(diff)).toFixed(0)}</div>
+    </div>
+  </div>`;
+}
+
+function renderCostRows(tbodyId, rows, totalCost, price) {
+  const tbody = document.getElementById(tbodyId);
+  let html = '';
+  let prevCls = '';
+  rows.forEach(r => {
+    const rowCls = r.cls ? ` class="${r.cls}"` : '';
+    const flag = r.pct > 15 ? '⚠高占比' : r.pct > 10 ? '注意' : '';
+    html += `<tr${rowCls}>
+      <td><span class="label-text">${r.name}</span></td>
+      <td class="num">$${r.val.toFixed(2)}</td>
+      <td class="pct">${r.pct.toFixed(1)}%</td>
+      <td class="${flag ? 'cost-flag' : 'cost-ok'}">${flag}</td>
+    </tr>`;
+    prevCls = r.cls;
+  });
+  html += `<tr class="total-row">
+    <td>总成本合计</td>
+    <td class="num">$${totalCost.toFixed(2)}</td>
+    <td class="pct">${(totalCost/price*100).toFixed(1)}%</td>
+    <td></td>
+  </tr>`;
+  tbody.innerHTML = html;
+}
+
+function renderSensitivity(tbodyId, priceArr, calcFn, currentPrice, bePrice, targetPct, isSKU2) {
+  const tbody = document.getElementById(tbodyId);
+  let html = '';
+  const suggestedPrices = isSKU2 ? [129, 139, 149, 159, 169] : [109, 119, 129, 139, 149];
+  
+  suggestedPrices.forEach(p => {
+    const r = calcFn(p, currentMarket);
+    const isCurr = Math.abs(p - currentPrice) < 0.5;
+    const isBe = Math.abs(p - bePrice) < 1;
+    let cls = '';
+    if (isBe) cls = 'threshold-row';
+    else if (isCurr) cls = 'curr-row';
+    else if (r.marginPct < 0) cls = 'warn-row';
+    
+    let flag = '';
+    if (r.marginPct < 0) flag = '🔴 亏损';
+    else if (r.marginPct < targetPct) flag = '🟡 未达标';
+    else if (r.marginPct >= 15) flag = '✅ 高利润';
+    else flag = '🟢 达标';
+
+    html += `<tr class="${cls}">
+      <td class="price-col">$${p}${isCurr ? ' ← 当前' : ''}</td>
+      <td>$${r.totalCost.toFixed(2)}</td>
+      <td>$${r.profit.toFixed(2)}</td>
+      <td style="color:${r.marginPct<0?'#f87171':r.marginPct>=8?'#4ade80':'#f59e0b'};font-weight:600;">${r.marginPct.toFixed(1)}%</td>
+      <td>${r.roi.toFixed(1)}%</td>
+      <td>${flag}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+function updatePriceInputColor(inputId, price, bePrice) {
+  const input = document.getElementById(inputId);
+  const statusEl = document.getElementById(inputId.replace('price', '') + 'price_status');
+  const statusEl2 = document.getElementById(inputId.replace('s1_price', 's1_price').replace('s2_price', 's2_price_status').replace('s1_price', 's1_price_status'));
+  input.classList.remove('over', 'under');
+  const status = document.getElementById(inputId.replace('price', '') + 'price_status');
+  if (!status) return;
+  if (price >= bePrice) {
+    input.classList.add('over');
+    const diff = price - bePrice;
+    status.className = 'price-status ok';
+    status.textContent = `✅ 达标（盈亏+${
+      diff.toFixed(0)}，利润率 ${
+      ((price - (calcSKU(price, currentMarket, inputId === 's2_price')).totalCost) / price * 100).toFixed(1)}%）`;
+  } else {
+    input.classList.add('under');
+    const diff = bePrice - price;
+    status.className = 'price-status warn';
+    status.textContent = `⚠ 低于盈亏价$${bePrice.toFixed(0)}，差$${diff.toFixed(0)}`;
+  }
+}
+
+function setMarket(m) {
+  currentMarket = m;
+  document.querySelectorAll('.market-btn').forEach((b, i) => {
+    b.classList.toggle('active', (m==='us'&&i===0)||(m==='eu'&&i===1)||(m==='uk'&&i===2));
+  });
+  recalc();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+function recalc() {
+  // SKU1
+  const p1 = parseFloat(document.getElementById('s1_price').value) || 129;
+  const r1 = calcSKU(p1, currentMarket, false);
+  renderBreakevenBox('s1_be_box', r1.bePrice, p1);
+  document.getElementById('s1_margin_disp').textContent = r1.marginPct.toFixed(1) + '%';
+  document.getElementById('s1_profit_disp').textContent = '$' + r1.profit.toFixed(1);
+  document.getElementById('s1_roi_disp').textContent = r1.roi.toFixed(1) + '%';
+  document.getElementById('s1_cost_disp').textContent = '$' + r1.totalCost.toFixed(1);
+  renderCostRows('s1_cost_rows', r1.rows, r1.totalCost, p1);
+  renderSensitivity('s1_sens_rows', null, (p) => calcSKU(p, currentMarket, false), p1, r1.bePrice, 0.08, false);
+  
+  // Update price status
+  const s1status = document.getElementById('s1_price_status');
+  if (r1.marginPct >= 8) {
+    s1status.className = 'price-status ok';
+    s1status.textContent = `✅ 利润率 ${r1.marginPct.toFixed(1)}% | ROI ${r1.roi.toFixed(1)}%`;
+  } else {
+    s1status.className = 'price-status warn';
+    s1status.textContent = `⚠ 利润率${r1.marginPct.toFixed(1)}%，未达8%`;
+  }
+
+  // SKU2
+  const p2 = parseFloat(document.getElementById('s2_price').value) || 149;
+  const r2 = calcSKU(p2, currentMarket, true);
+  renderBreakevenBox('s2_be_box', r2.bePrice, p2);
+  document.getElementById('s2_margin_disp').textContent = r2.marginPct.toFixed(1) + '%';
+  document.getElementById('s2_profit_disp').textContent = '$' + r2.profit.toFixed(1);
+  document.getElementById('s2_roi_disp').textContent = r2.roi.toFixed(1) + '%';
+  document.getElementById('s2_cost_disp').textContent = '$' + r2.totalCost.toFixed(1);
+  renderCostRows('s2_cost_rows', r2.rows, r2.totalCost, p2);
+  renderSensitivity('s2_sens_rows', null, (p) => calcSKU(p, currentMarket, true), p2, r2.bePrice, 0.08, true);
+
+  const s2status = document.getElementById('s2_price_status');
+  if (r2.marginPct >= 8) {
+    s2status.className = 'price-status ok';
+    s2status.textContent = `✅ 利润率 ${r2.marginPct.toFixed(1)}% | ROI ${r2.roi.toFixed(1)}%`;
+  } else {
+    s2status.className = 'price-status warn';
+    s2status.textContent = `⚠ 利润率${r2.marginPct.toFixed(1)}%，未达8%`;
+  }
+
+  // Summary
+  updateSummary();
+
+  // Compare
+  buildCompare();
+}
+
+function updateSummary() {
+  const markets = ['us', 'eu', 'uk'];
+  const mktNames = { us: '🇺🇸 美国', eu: '🇪🇺 欧盟', uk: '🇬🇧 英国' };
+  
+  markets.forEach((m, idx) => {
+    const r1 = calcSKU(129, m, false);
+    const r2 = calcSKU(149, m, true);
+    
+    const suffix = idx === 0 ? '' : '_' + m;
+    
+    // SKU1 summary
+    document.getElementById('sum1-factory').textContent = '$' + (parseFloat(document.getElementById('s1_base_cny').value)/6.85 + parseFloat(document.getElementById('s1_pot_cny').value)/6.85).toFixed(2);
+    document.getElementById('sum1-tariff').textContent = r1.blendedTariff + '%';
+    document.getElementById('sum1-fba').textContent = '$' + r1.fba.toFixed(2);
+    document.getElementById('sum1-fixed').textContent = '$' + r1.fixedTotal.toFixed(1);
+    document.getElementById('sum1-be').textContent = '$' + r1.bePrice.toFixed(0);
+    document.getElementById('sum1-suggest').textContent = '$129';
+    const m1 = calcSKU(129, m, false);
+    document.getElementById('sum1-margin').textContent = m1.marginPct.toFixed(1) + '%';
+    document.getElementById('sum1-margin').className = 'sval ' + (m1.marginPct >= 8 ? 'good' : 'warn');
+    document.getElementById('sum1-profit').textContent = '$' + m1.profit.toFixed(1);
+    document.getElementById('sum1-profit').className = 'sval ' + (m1.marginPct >= 8 ? 'good' : 'warn');
+    
+    // SKU2 summary
+    document.getElementById('sum2-factory').textContent = '$' + (134.5/6.85 + 122/6.85 + 19.4/6.85).toFixed(2);
+    document.getElementById('sum2-tariff').textContent = r2.blendedTariff + '%';
+    document.getElementById('sum2-fba').textContent = '$' + r2.fba.toFixed(2);
+    document.getElementById('sum2-fixed').textContent = '$' + r2.fixedTotal.toFixed(1);
+    document.getElementById('sum2-be').textContent = '$' + r2.bePrice.toFixed(0);
+    document.getElementById('sum2-suggest').textContent = '$149';
+    const m2 = calcSKU(149, m, true);
+    document.getElementById('sum2-margin').textContent = m2.marginPct.toFixed(1) + '%';
+    document.getElementById('sum2-margin').className = 'sval ' + (m2.marginPct >= 8 ? 'good' : 'warn');
+    document.getElementById('sum2-profit').textContent = '$' + m2.profit.toFixed(1);
+    document.getElementById('sum2-profit').className = 'sval ' + (m2.marginPct >= 8 ? 'good' : 'warn');
+  });
+}
+
+function buildCompare() {
+  const markets = ['us', 'eu', 'uk'];
+  const mktNames = { us: '🇺🇸 美国', eu: '🇪🇺 欧盟', uk: '🇬🇧 英国' };
+  const suggestions = {
+    us: { s1: 129, s2: 149 },
+    eu: { s1: 99, s2: 119 },
+    uk: { s1: 99, s2: 119 }
+  };
+
+  let html = '';
+  markets.forEach(m => {
+    [false, true].forEach(isSKU2 => {
+      const p = suggestions[m][isSKU2 ? 's2' : 's1'];
+      const r = calcSKU(p, m, isSKU2);
+      const above = r.marginPct >= 8;
+      const skuLabel = isSKU2 ? 'SKU2(+烤盘)' : 'SKU1';
+      const strategy = isSKU2
+        ? (m === 'us' ? '🎯 主推款，高利润' : '🎯 核心利润款')
+        : (m === 'us' ? '🟡 蓝海但关税重' : '✅ 关税低，利润好');
+      html += `<tr>
+        <td>${mktNames[m]}</td>
+        <td><span class="sku-tag ${isSKU2 ? 's2' : 's1'}">${skuLabel}</span></td>
+        <td>$${r.fixedTotal.toFixed(1)}</td>
+        <td style="color:#f59e0b;font-weight:700;">$${r.bePrice.toFixed(0)}</td>
+        <td><strong>$${p}</strong></td>
+        <td style="color:${above?'#4ade80':'#f87171'};font-weight:700;">${r.marginPct.toFixed(1)}%</td>
+        <td>$${r.profit.toFixed(1)}</td>
+        <td>${strategy}</td>
+      </tr>`;
+    });
+  });
+  document.getElementById('compare_rows').innerHTML = html;
+}
+
+recalc();
+</script>
+</body>
+</html>
