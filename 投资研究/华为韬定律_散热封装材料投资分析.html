@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>华为韬定律 · 散热封装材料产业链投资分析</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --card-hover: #1c2129;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-secondary: #8b949e;
+      --accent: #58a6ff;
+      --accent-dim: #1f6feb;
+      --green: #3fb950;
+      --yellow: #d29922;
+      --red: #f85149;
+      --purple: #a371f7;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 40px 24px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 48px 24px;
+      margin-bottom: 48px;
+      background: linear-gradient(135deg, #0d1117 0%, #1a1f35 50%, #0d1117 100%);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(88,166,255,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-date {
+      font-size: 12px;
+      color: var(--text-secondary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .tag-logic { background: #1f2a38; color: #79c0ff; border: 1px solid #2d4a6e; }
+    .tag-material { background: #1a2a20; color: #56d364; border: 1px solid #2d5a3a; }
+    .tag-invest { background: #2a1f38; color: #d2a8ff; border: 1px solid #4d2d6e; }
+
+    /* Section */
+    .section { margin-bottom: 48px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon { font-size: 22px; }
+    .section-title { font-size: 18px; font-weight: 700; color: #fff; }
+    .section-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--card);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+
+    /* Logic Chain */
+    .logic-chain {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 32px 0;
+      flex-wrap: wrap;
+    }
+    .logic-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-align: center;
+      min-width: 140px;
+    }
+    .logic-item-icon { font-size: 24px; margin-bottom: 6px; }
+    .logic-item-title { font-size: 13px; font-weight: 600; color: #fff; }
+    .logic-item-desc { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+    .logic-arrow { color: var(--text-secondary); font-size: 20px; padding: 0 8px; }
+
+    /* Stock Card */
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 14px;
+    }
+    .stock-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: all 0.2s;
+    }
+    .stock-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .stock-card-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .stock-code {
+      font-size: 11px;
+      color: var(--text-secondary);
+      background: var(--bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      border: 1px solid var(--border);
+    }
+    .stock-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      flex: 1;
+    }
+    .stock-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .badge-top { background: #1f3a1f; color: #56d364; }
+    .badge-key { background: #1f2a38; color: #79c0ff; }
+    .badge-watch { background: #2a2518; color: #d29922; }
+
+    .stock-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .metric {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .metric-label { font-size: 10px; color: var(--text-secondary); margin-bottom: 2px; }
+    .metric-value { font-size: 14px; font-weight: 700; color: #fff; }
+    .metric-value.green { color: var(--green); }
+    .metric-value.red { color: var(--red); }
+    .metric-value.yellow { color: var(--yellow); }
+
+    .stock-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      padding: 10px;
+      background: var(--bg);
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .stock-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .stock-tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .highlight-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .highlight-content {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .highlight-content strong { color: var(--text); }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    .data-table th {
+      background: var(--card);
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .data-table tr:hover td { background: var(--card-hover); }
+    .data-table .num { font-family: 'Courier New', monospace; }
+
+    /* Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-icon { font-size: 28px; margin-bottom: 8px; }
+    .summary-value { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+    .summary-label { font-size: 11px; color: var(--text-secondary); }
+    .summary-change { font-size: 11px; margin-top: 4px; }
+    .summary-change.up { color: var(--green); }
+    .summary-change.down { color: var(--red); }
+
+    /* Warning */
+    .disclaimer {
+      margin-top: 48px;
+      padding: 16px 20px;
+      background: #1c1409;
+      border: 1px solid #3d2a0a;
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .disclaimer strong { color: var(--yellow); }
+
+    /* Section Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 24px; }
+      .stock-grid { grid-template-columns: 1fr; }
+      .logic-chain { flex-direction: column; }
+      .logic-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-date">2026年5月25日 · 投资分析报告</div>
+  <div class="hero-title">华为「韬定律」· 散热封装材料<br>产业链<span>投资标的</span>全景梳理</div>
+  <div class="hero-subtitle">
+    逻辑折叠技术突破芯片设计边界，热密度上升带来散热/封装材料需求跃升。
+    本报告聚焦A股三大材料赛道：导热胶、固晶膜(DAF)、底部填充胶。
+  </div>
+  <div class="hero-tags">
+    <span class="tag tag-logic">🔬 逻辑折叠</span>
+    <span class="tag tag-material">🧪 封装材料</span>
+    <span class="tag tag-invest">📊 投资标的</span>
+  </div>
+</div>
+
+<!-- Logic Chain -->
+<div class="logic-chain">
+  <div class="logic-item">
+    <div class="logic-item-icon">📐</div>
+    <div class="logic-item-title">逻辑折叠</div>
+    <div class="logic-item-desc">电路架构创新<br>不依赖先进制程</div>
+  </div>
+  <div class="logic-arrow">→</div>
+  <div class="logic-item">
+    <div class="logic-item-icon">🔥</div>
+    <div class="logic-item-title">热密度上升</div>
+    <div class="logic-item-desc">双层逻辑堆叠<br>散热成为核心瓶颈</div>
+  </div>
+  <div class="logic-arrow">→</div>
+  <div class="logic-item">
+    <div class="logic-item-icon">🧪</div>
+    <div class="logic-item-title">材料需求爆发</div>
+    <div class="logic-item-desc">导热胶+固晶膜<br>+底部填充胶</div>
+  </div>
+  <div class="logic-arrow">→</div>
+  <div class="logic-item">
+    <div class="logic-item-icon">💰</div>
+    <div class="logic-item-title">国产替代</div>
+    <div class="logic-item-desc">华为供应链<br>材料端加速渗透</div>
+  </div>
+</div>
+
+<!-- Market Data -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📊</span>
+    <span class="section-title">市场规模与行业背景</span>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon">💎</div>
+      <div class="summary-value">407.6亿</div>
+      <div class="summary-label">全球先进封装市场 2024（美元）</div>
+      <div class="summary-change up">CAGR 10.6% → 2029年674.4亿</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">📦</div>
+      <div class="summary-value">12亿</div>
+      <div class="summary-label">中国DAF固晶膜市场 2024（人民币）</div>
+      <div class="summary-change up">国产化率仅5%，替代空间巨大</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">🩹</div>
+      <div class="summary-value">15.8亿</div>
+      <div class="summary-label">全球底部填充胶市场 2030预期（美元）</div>
+      <div class="summary-change up">AI+手机小型化双驱动</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">🏭</div>
+      <div class="summary-value">28.05亿</div>
+      <div class="summary-label">全球晶圆UV膜市场 2020（人民币）</div>
+      <div class="summary-change up">→ 2025年预计43.18亿</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <div class="highlight-title">💡 核心投资逻辑</div>
+    <div class="highlight-content">
+      <strong>韬定律 = 设计端创新 → 热密度↑ → 多层逻辑折叠 → 封装材料成为刚需。</strong><br><br>
+      关键结论：<br>
+      ① 导热胶：逻辑折叠热密度提升直接受益，现有制程体系即可生产，国产替代最顺畅<br>
+      ② 固晶膜(DAF)：多层堆叠必备材料，国产化率不足5%，稀缺性最高<br>
+      ③ 底部填充胶：华为已实现批量供货，供应链最明确，订单能见度最高
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 一、导热材料 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🔥</span>
+    <span class="section-title">一、导热材料（TIM · 热界面材料）</span>
+    <span class="section-count">4家核心标的</span>
+  </div>
+
+  <div class="stock-grid">
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">300602</span>
+        <span class="stock-name">飞荣达</span>
+        <span class="stock-badge badge-top">导热龙头</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~150亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Q1净利润</div>
+          <div class="metric-value green">+85.6%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Q1毛利率</div>
+          <div class="metric-value">17.5%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">PE（2024）</div>
+          <div class="metric-value">~50x</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        🔴 <strong>已批量供货华为</strong>，液冷模组进入华为服务器供应链，用于散热和电磁屏蔽。
+        Q1净利润5776万同比翻倍增长，订单持续放量。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">✅ 华为已验证</span>
+        <span class="stock-tag">✅ 液冷模组</span>
+        <span class="stock-tag">📈 净利润高增</span>
+      </div>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">300684</span>
+        <span class="stock-name">中石科技</span>
+        <span class="stock-badge badge-top">导热龙头</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~125亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Q1净利润</div>
+          <div class="metric-value green">+105.7%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Q1毛利率</div>
+          <div class="metric-value">29.9%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">PE（2024）</div>
+          <div class="metric-value">~45x</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        🟡 向华为提供导热材料（消费电子端），2025年来股价涨46%。Q1净利润6173万同比翻倍，
+        营收3.49亿同比增长16.4%，毛利率近30%在材料赛道中表现优秀。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">✅ 华为供应链</span>
+        <span class="stock-tag">📈 高毛利率</span>
+        <span class="stock-tag">📈 2025涨幅大</span>
+      </div>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">601137</span>
+        <span class="stock-name">博威合金</span>
+        <span class="stock-badge badge-key">关键合作</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~175亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">2024净利</div>
+          <div class="metric-value green">11.24亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">PE（TTM）</div>
+          <div class="metric-value">~15x</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">估值</div>
+          <div class="metric-value green">低估</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        🟡 <strong>华为直接合作</strong>，通讯基站芯片、手机散热、电磁屏蔽材料、新一代芯片封装材料均有合作。
+        估值仅15x PE，严重低估的华为半导体散热材料标的。2024净利润11亿创历史新高。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">✅ 华为直接合作</span>
+        <span class="stock-tag">💎 低估值</span>
+        <span class="stock-tag">📈 业绩新高</span>
+      </div>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">300709</span>
+        <span class="stock-name">精研科技</span>
+        <span class="stock-badge badge-watch">产业链</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~97亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Q2净利润</div>
+          <div class="metric-value green">9824万</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Q2增速</div>
+          <div class="metric-value green">+13.8%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">2025来涨幅</div>
+          <div class="metric-value green">~25%</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        🟢 英伟达AI芯片散热供应商，已获Intel认证进入英伟达供应商体系。
+        虽非直接华为标的，但AI服务器散热需求爆发是其核心驱动，华为逻辑折叠同样受益。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">✅ 英伟达供应商</span>
+        <span class="stock-tag">📈 AI散热受益</span>
+        <span class="stock-tag">⚠️ 非华为直接</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 二、固晶膜 DAF -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">💎</span>
+    <span class="section-title">二、固晶膜（DAF · 芯片粘接薄膜）</span>
+    <span class="section-count">1家核心标的 + 2家相关</span>
+  </div>
+
+  <div class="highlight-box" style="border-color: #d2a8ff; margin-bottom: 20px;">
+    <div class="highlight-title" style="color: #d2a8ff;">⭐ 最重要发现：A股唯一的DAF量产标的</div>
+    <div class="highlight-content">
+      <strong>固晶膜（DAF）是逻辑折叠多层堆叠的必备材料。</strong>全球市场日本企业主导，国产化率不足5%，
+      中国DAF膜市场2024年已突破12亿元，预计未来3年CAGR超过20%。<br><br>
+      <strong>德邦科技（688035）是目前A股唯一实现DAF膜量产出货的上市公司。</strong>
+      国内暂无其他企业有DAF量产产品，高度稀缺。
+    </div>
+  </div>
+
+  <div class="stock-grid">
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">688035</span>
+        <span class="stock-name">德邦科技</span>
+        <span class="stock-badge badge-top">稀缺标的</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~56亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">毛利率</div>
+          <div class="metric-value green">~55%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">PE（2024）</div>
+          <div class="metric-value yellow">~100x</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">DAF进展</div>
+          <div class="metric-value green">已量产</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        ⭐ <strong>A股唯一DAF/CDAF量产供应商</strong>，CDAF膜和AD胶已小批量交付客户，
+        TIM1材料获验证通过。DAF用于多层芯片堆叠，与逻辑折叠方向高度契合。
+        封装材料整体毛利率高达55%+，但目前订单规模小，PE近百倍偏贵。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">⭐ A股唯一DAF</span>
+        <span class="stock-tag">✅ 已量产出货</span>
+        <span class="stock-tag">⚠️ 估值偏高</span>
+      </div>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">688535</span>
+        <span class="stock-name">华海诚科</span>
+        <span class="stock-badge badge-key">环氧塑封料龙头</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~73亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">2024净利</div>
+          <div class="metric-value green">4006万</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">毛利率</div>
+          <div class="metric-value">25.6%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">PE（TTM）</div>
+          <div class="metric-value yellow">~180x</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        环氧塑封料国内龙头，HBM用封装材料进入样品测试阶段。
+        收购衡所华威整合国际客户资源，2025年产能释放对接华为AI芯片需求。
+        华为封装验证进行中，但尚未实现批量供货。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">✅ 华为验证中</span>
+        <span class="stock-tag">📈 HBM封装</span>
+        <span class="stock-tag">⚠️ 估值极高</span>
+      </div>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">688300</span>
+        <span class="stock-name">联瑞新材</span>
+        <span class="stock-badge badge-top">填料龙头</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~52亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">2024净利</div>
+          <div class="metric-value green">2.51亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">毛利率</div>
+          <div class="metric-value green">40.4%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">PE（TTM）</div>
+          <div class="metric-value green">~29x</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        🟢 <strong>球形氧化铝填料进入华为封装专利指定材料</strong>，
+        2024年半导体用填料收入增长30%，市占率提至25%。
+        华为封装专利指定供应商，逻辑折叠多层散热填料的直接受益者。
+        毛利率40%，净利2.5亿，PE仅29x，估值相对合理。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">✅ 华为专利指定</span>
+        <span class="stock-tag">💎 估值合理</span>
+        <span class="stock-tag">📈 业绩高增</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 三、底部填充胶 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🩹</span>
+    <span class="section-title">三、底部填充胶（Underfill）</span>
+    <span class="section-count">2家核心标的</span>
+  </div>
+
+  <div class="stock-grid">
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">300041</span>
+        <span class="stock-name">回天新材</span>
+        <span class="stock-badge badge-top">华为独家</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~60亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">2024净利</div>
+          <div class="metric-value green">+30%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">华为关系</div>
+          <div class="metric-value green">独家供货</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">核心产品</div>
+          <div class="metric-value">Underfill</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        ⭐ <strong>华为海思芯片封测独家供应商，底部填充胶(Underfill)已批量供货。</strong>
+        解决多层芯片堆叠热应力问题，Underfill环氧胶国内龙头，已进入华为、中芯国际供应链。
+        华为一体化封装核心标的，2025年新能源汽车封装材料订单爆发。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">⭐ 华为独家</span>
+        <span class="stock-tag">✅ 已批量供货</span>
+        <span class="stock-tag">📈 中芯国际</span>
+      </div>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-code">300398</span>
+        <span class="stock-name">飞凯材料</span>
+        <span class="stock-badge badge-key">先进封装</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">市值</div>
+          <div class="metric-value">~137亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">2024净利</div>
+          <div class="metric-value green">2.47亿</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">净利增速</div>
+          <div class="metric-value green">+119%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">毛利率</div>
+          <div class="metric-value">35.1%</div>
+        </div>
+      </div>
+      <div class="stock-desc">
+        🟡 先进封装临时键合材料+bumpin厚胶已实际导入华为盛合晶微产线。
+        净利润2.47亿同比翻倍，毛利率35%，PE约48x。
+        2024年净利润增长119%是最大亮点，封装材料赛道中业绩兑现最快的标的之一。
+      </div>
+      <div class="stock-tags">
+        <span class="stock-tag">✅ 华为盛合晶微</span>
+        <span class="stock-tag">📈 净利翻倍</span>
+        <span class="stock-tag">✅ 业绩兑现</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 四、综合对比 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📋</span>
+    <span class="section-title">四、综合对比与投资评级</span>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>公司</th>
+        <th>代码</th>
+        <th>核心产品</th>
+        <th>华为关系</th>
+        <th>市值</th>
+        <th>PE</th>
+        <th>毛利率</th>
+        <th>综合评级</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>回天新材</strong></td>
+        <td class="num">300041</td>
+        <td>Underfill底部填充胶</td>
+        <td>⭐ 独家批量供货</td>
+        <td class="num">~60亿</td>
+        <td class="num">适中</td>
+        <td class="num">较高</td>
+        <td><strong style="color:#3fb950">★★★★★ 首选</strong></td>
+      </tr>
+      <tr>
+        <td><strong>博威合金</strong></td>
+        <td class="num">601137</td>
+        <td>导热+散热材料</td>
+        <td>✅ 直接合作</td>
+        <td class="num">~175亿</td>
+        <td class="num">~15x</td>
+        <td class="num">较高</td>
+        <td><strong style="color:#3fb950">★★★★☆ 低估值</strong></td>
+      </tr>
+      <tr>
+        <td><strong>联瑞新材</strong></td>
+        <td class="num">688300</td>
+        <td>球形氧化铝填料</td>
+        <td>✅ 专利指定</td>
+        <td class="num">~52亿</td>
+        <td class="num">~29x</td>
+        <td class="num" style="color:#3fb950">40.4%</td>
+        <td><strong style="color:#3fb950">★★★★☆ 性价比</strong></td>
+      </tr>
+      <tr>
+        <td><strong>飞荣达</strong></td>
+        <td class="num">300602</td>
+        <td>液冷模组+导热</td>
+        <td>✅ 批量供货</td>
+        <td class="num">~150亿</td>
+        <td class="num">~50x</td>
+        <td class="num">17.5%</td>
+        <td><strong style="color:#58a6ff">★★★☆☆ 成长型</strong></td>
+      </tr>
+      <tr>
+        <td><strong>中石科技</strong></td>
+        <td class="num">300684</td>
+        <td>导热界面材料</td>
+        <td>✅ 华为供应链</td>
+        <td class="num">~125亿</td>
+        <td class="num">~45x</td>
+        <td class="num" style="color:#3fb950">29.9%</td>
+        <td><strong style="color:#58a6ff">★★★☆☆ 稳健型</strong></td>
+      </tr>
+      <tr>
+        <td><strong>德邦科技</strong></td>
+        <td class="num">688035</td>
+        <td>DAF固晶膜</td>
+        <td>✅ 已量产出货</td>
+        <td class="num">~56亿</td>
+        <td class="num" style="color:#d29922">~100x</td>
+        <td class="num" style="color:#3fb950">55%+</td>
+        <td><strong style="color:#d29922">★★★☆☆ 长期布局</strong></td>
+      </tr>
+      <tr>
+        <td><strong>飞凯材料</strong></td>
+        <td class="num">300398</td>
+        <td>先进封装临时键合</td>
+        <td>✅ 盛合晶微</td>
+        <td class="num">~137亿</td>
+        <td class="num">~48x</td>
+        <td class="num">35.1%</td>
+        <td><strong style="color:#58a6ff">★★★☆☆ 业绩驱动</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider">
+
+<!-- 五、今日市场表现 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📈</span>
+    <span class="section-title">五、2026年5月25日韬定律发布日市场表现</span>
+  </div>
+
+  <div class="highlight-box" style="border-color: #f85149;">
+    <div class="highlight-title" style="color: #f85149;">⚠️ 重要认知偏差提示</div>
+    <div class="highlight-content">
+      今日封装测试企业（通富微电、华天科技、甬矽电子等）出现10-20%的大涨，
+      但这些企业主要服务于<strong>物理堆叠路线</strong>（3D封装、CoWoS等），而非<strong>逻辑折叠设计创新</strong>。<br><br>
+      <strong>逻辑折叠的直接受益方向是：EDA + 设计端材料（导热胶/固晶膜/底部填充胶），
+      而非封装代工。</strong>封装材料赛道今日涨幅整体落后于封装代工，可能存在预期差。
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>公司</th>
+        <th>类型</th>
+        <th>今日涨幅</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>甬矽电子</td>
+        <td>封装代工</td>
+        <td class="num" style="color:#f85149"><strong>+20%</strong></td>
+        <td>华为海思直接封测供应商</td>
+      </tr>
+      <tr>
+        <td>华天科技</td>
+        <td>封装代工</td>
+        <td class="num" style="color:#f85149"><strong>+10%</strong></td>
+        <td>封装代工</td>
+      </tr>
+      <tr>
+        <td>通富微电</td>
+        <td>封装代工</td>
+        <td class="num" style="color:#f85149"><strong>+10%</strong></td>
+        <td>封装代工</td>
+      </tr>
+      <tr>
+        <td>晶方科技</td>
+        <td>封装代工</td>
+        <td class="num" style="color:#f85149"><strong>+10%</strong></td>
+        <td>封装代工</td>
+      </tr>
+      <tr>
+        <td>华大九天</td>
+        <td>EDA</td>
+        <td class="num" style="color:#f85149"><strong>+15%</strong></td>
+        <td>✅ 韬定律直接受益设计工具</td>
+      </tr>
+      <tr>
+        <td>封装材料股</td>
+        <td>材料</td>
+        <td class="num">温和上涨</td>
+        <td>⚠️ 涨幅落后于封装代工，存在预期差</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider">
+
+<!-- 六、风险提示 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">⚠️</span>
+    <span class="section-title">六、主要风险因素</span>
+  </div>
+
+  <div class="stock-grid">
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-name">🔬 技术验证风险</span>
+      </div>
+      <div class="stock-desc">
+        封装材料进入华为供应链需要1-3年的验证周期，部分公司仍处于"验证导入初期"。
+        德邦科技DAF膜订单量仍小，业绩贡献需要时间。
+      </div>
+    </div>
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-name">📊 估值风险</span>
+      </div>
+      <div class="stock-desc">
+        德邦科技PE~100x、华海诚科PE~180x，严重高估短期业绩增速。
+        华为概念火热时容易产生泡沫，需警惕情绪退潮后的估值回归。
+      </div>
+    </div>
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-name">🏭 产能过剩风险</span>
+      </div>
+      <div class="stock-desc">
+        逻辑折叠能否大规模量产、是否真的需要大量封装材料，仍需时间验证。
+        若技术路线不及预期，材料端扩产可能造成价格下跌。
+      </div>
+    </div>
+    <div class="stock-card">
+      <div class="stock-card-top">
+        <span class="stock-name">🤝 客户集中风险</span>
+      </div>
+      <div class="stock-desc">
+        回天新材等公司对华为依赖度高，若华为产品销量不及预期，
+        材料供应商订单将直接受冲击。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  <strong>免责声明：</strong>本报告所有数据来源于公开信息（上市公司公告、投资者互动平台、行业研报），仅供参考。
+  不构成任何投资建议。股市有风险，投资需谨慎。据此操作，风险自担。
+  本报告生成时间：2026年5月25日。
+</div>
+
+</body>
+</html>
