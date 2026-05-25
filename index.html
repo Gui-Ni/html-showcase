@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>分析报告展示站</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --sidebar-bg: #161b22;
+      --card-bg: #21262d;
+      --card-hover: #30363d;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-dim: #1f6feb;
+      --tag-bg: #1f2a38;
+      --tag-text: #79c0ff;
+      --danger: #f85149;
+      --success: #3fb950;
+      --radius: 10px;
+      --transition: 0.2s;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== Top Bar ===== */
+    .topbar {
+      height: 56px;
+      background: var(--sidebar-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+
+    .topbar-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .topbar-logo .dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .topbar-config {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .config-input {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 160px;
+      transition: border-color var(--transition);
+    }
+    .config-input:focus { outline: none; border-color: var(--accent); }
+
+    .btn-config {
+      background: var(--accent-dim);
+      color: #fff;
+      border: none;
+      padding: 5px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .btn-config:hover { background: var(--accent); }
+
+    .mode-badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .mode-badge.local { background: var(--tag-bg); color: var(--tag-text); }
+    .mode-badge.github { background: #1a3a2a; color: var(--success); }
+
+    /* ===== Main Layout ===== */
+    .layout {
+      display: flex;
+      height: calc(100vh - 56px);
+      margin-top: 56px;
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 16px 12px;
+    }
+
+    .sidebar-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      padding: 0 8px;
+      margin-bottom: 8px;
+      margin-top: 16px;
+    }
+    .sidebar-section-title:first-child { margin-top: 0; }
+
+    .folder-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .folder-item:hover { background: var(--card-hover); }
+    .folder-item.active {
+      background: var(--card-bg);
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+    .folder-item .icon { font-size: 16px; }
+    .folder-item .count {
+      margin-left: auto;
+      font-size: 11px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+
+    /* ===== Content Area ===== */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ===== File List ===== */
+    .file-list {
+      padding: 20px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .file-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .file-list-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .file-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .file-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(88, 166, 255, 0.1);
+    }
+
+    .file-card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    .file-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .file-card-tag {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .file-card-tag.analysis { background: #1f2a38; color: #79c0ff; }
+    .file-card-tag.report { background: #2a1f38; color: #d2a8ff; }
+    .file-card-tag.pricing { background: #1f382a; color: #56d364; }
+    .file-card-tag.default { background: #1f2937; color: #9ca3af; }
+
+    .file-card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ===== Preview Pane ===== */
+    .preview-pane {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      border-left: 1px solid var(--border);
+    }
+    .preview-pane.open { display: flex; }
+
+    .preview-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--sidebar-bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-sm {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-sm.close { color: var(--danger); border-color: transparent; }
+    .btn-sm.close:hover { background: #2a1515; border-color: var(--danger); }
+
+    .preview-iframe-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .preview-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    .preview-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 14px;
+      gap: 8px;
+    }
+    .preview-loading.hidden { display: none; }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--text-muted);
+      padding: 40px;
+    }
+    .empty-state .big-icon { font-size: 56px; opacity: 0.3; }
+    .empty-state p { font-size: 14px; text-align: center; max-width: 300px; line-height: 1.6; }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .sidebar { width: 160px; min-width: 160px; }
+      .file-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="dot"></div>
+    分析报告展示站
+  </div>
+  <div class="topbar-config">
+    <span class="mode-badge local" id="modeBadge">本地模式</span>
+    <input class="config-input" id="repoInput" placeholder="owner/repo (可选)" title="GitHub 仓库，如: username/showcase">
+    <button class="btn-config" id="connectBtn">连接 GitHub</button>
+  </div>
+</div>
+
+<!-- Main Layout -->
+<div class="layout">
+  <!-- Sidebar: Project Folders -->
+  <div class="sidebar">
+    <div class="sidebar-section-title">项目分类</div>
+    <div id="folderList"></div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content" id="contentArea">
+    <!-- File List View (default) -->
+    <div id="fileListView">
+      <div class="file-list">
+        <div class="file-list-header">
+          <div class="file-list-title" id="currentFolderTitle">🏠 全部报告</div>
+        </div>
+        <div class="file-grid" id="fileGrid"></div>
+      </div>
+    </div>
+
+    <!-- Preview Pane -->
+    <div class="preview-pane" id="previewPane">
+      <div class="preview-toolbar">
+        <span class="preview-title" id="previewTitle">预览中...</span>
+        <button class="btn-sm" id="openNewTab" title="新窗口打开">↗ 新窗口</button>
+        <button class="btn-sm close" id="closePreview">✕ 关闭</button>
+      </div>
+      <div class="preview-iframe-wrap">
+        <div class="preview-loading" id="previewLoading">
+          <div class="spinner"></div>
+          加载中...
+        </div>
+        <iframe class="preview-iframe" id="previewFrame"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // Configuration
+  // ============================================================
+  const CONFIG_KEY = 'showcase_config';
+  let config = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
+  let allFiles = [];       // { name, path, folder, tag }
+  let currentFolder = null;
+  let isGitHubMode = false;
+
+  // ============================================================
+  // Folder definitions
+  // ============================================================
+  const FOLDER_ICONS = {
+    '厨房用品': '🍳',
+    '户外灯具': '💡',
+    '投资研究': '📈',
+    'default': '📁'
+  };
+
+  // Tag inference from filename
+  function inferTag(name) {
+    const lower = name.toLowerCase();
+    if (/pricing|价格|定价|simulator/i.test(name)) return 'pricing';
+    if (/analysis|分析|report|报告|voc|竞品/i.test(name)) return 'analysis';
+    if (/strategy|strategy|策略/i.test(name)) return 'report';
+    return 'default';
+  }
+
+  // ============================================================
+  // Local file discovery (via import.meta or static mapping)
+  // ============================================================
+  const LOCAL_FILES = [
+    // 厨房用品
+    { name: '竞品分析报告', path: '厨房用品/competitive_analysis.html', folder: '厨房用品', tag: 'analysis' },
+    { name: 'HEPA滤网VOC分析', path: '厨房用品/hepa_filter_analysis.html', folder: '厨房用品', tag: 'analysis' },
+    { name: 'HEPA滤网定价策略', path: '厨房用品/hepa_filter_pricing.html', folder: '厨房用品', tag: 'pricing' },
+    { name: '定价模拟器', path: '厨房用品/pricing_simulator_v3.html', folder: '厨房用品', tag: 'pricing' },
+  ];
+
+  // ============================================================
+  // Render sidebar
+  // ============================================================
+  function renderSidebar() {
+    const folderMap = {};
+    allFiles.forEach(f => {
+      folderMap[f.folder] = (folderMap[f.folder] || 0) + 1;
+    });
+
+    let html = '';
+    // All
+    html += `<div class="folder-item ${!currentFolder ? 'active' : ''}" data-folder="">
+      <span class="icon">🏠</span> 全部报告
+      <span class="count">${allFiles.length}</span>
+    </div>`;
+
+    Object.keys(folderMap).sort().forEach(folder => {
+      const icon = FOLDER_ICONS[folder] || FOLDER_ICONS['default'];
+      html += `<div class="folder-item ${currentFolder === folder ? 'active' : ''}" data-folder="${folder}">
+        <span class="icon">${icon}</span> ${folder}
+        <span class="count">${folderMap[folder]}</span>
+      </div>`;
+    });
+
+    document.getElementById('folderList').innerHTML = html;
+
+    // Bind events
+    document.querySelectorAll('.folder-item').forEach(el => {
+      el.addEventListener('click', () => {
+        currentFolder = el.dataset.folder || null;
+        renderSidebar();
+        renderFileGrid();
+        closePreview();
+      });
+    });
+  }
+
+  // ============================================================
+  // Render file grid
+  // ============================================================
+  function renderFileGrid() {
+    const filtered = currentFolder
+      ? allFiles.filter(f => f.folder === currentFolder)
+      : allFiles;
+
+    const folderTitle = currentFolder
+      ? `${FOLDER_ICONS[currentFolder] || '📁'} ${currentFolder}`
+      : '🏠 全部报告';
+    document.getElementById('currentFolderTitle').textContent = folderTitle;
+
+    if (filtered.length === 0) {
+      document.getElementById('fileGrid').innerHTML = `
+        <div style="grid-column:1/-1; text-align:center; padding:60px 0; color:var(--text-muted);">
+          <div style="font-size:48px;opacity:0.3">📭</div>
+          <p style="margin-top:16px">该分类下暂无报告<br>把 HTML 文件放入对应文件夹即可自动显示</p>
+        </div>`;
+      return;
+    }
+
+    // Sort by modified time (most recent first) — for GitHub mode, this is done server-side
+    // For local, maintain order
+    const TAG_LABELS = { analysis: '📊 分析', pricing: '💰 定价', report: '📋 报告', default: '📄 文件' };
+
+    let html = '';
+    filtered.forEach(f => {
+      const tagLabel = TAG_LABELS[f.tag] || TAG_LABELS['default'];
+      html += `<div class="file-card" data-path="${f.path}">
+        <div class="file-card-name">${f.name}</div>
+        <div class="file-card-meta">
+          <span class="file-card-tag ${f.tag}">${tagLabel}</span>
+          <span>${f.folder}</span>
+        </div>
+        <div class="file-card-desc">点击预览 · ${f.path}</div>
+      </div>`;
+    });
+    document.getElementById('fileGrid').innerHTML = html;
+
+    // Bind card click
+    document.querySelectorAll('.file-card').forEach(el => {
+      el.addEventListener('click', () => openPreview(el.dataset.path, el.querySelector('.file-card-name').textContent));
+    });
+  }
+
+  // ============================================================
+  // Preview
+  // ============================================================
+  function openPreview(path, name) {
+    const pane = document.getElementById('previewPane');
+    const frame = document.getElementById('previewFrame');
+    const title = document.getElementById('previewTitle');
+    const loading = document.getElementById('previewLoading');
+    const listView = document.getElementById('fileListView');
+
+    title.textContent = name;
+    pane.classList.add('open');
+    listView.style.display = 'none';
+    loading.classList.remove('hidden');
+
+    let src;
+    if (isGitHubMode && config.repo) {
+      src = `https://htmlpreview.github.io/?https://github.com/${config.repo}/blob/main/${path}`;
+    } else {
+      src = path;
+    }
+
+    frame.onload = () => loading.classList.add('hidden');
+    frame.src = src;
+  }
+
+  function closePreview() {
+    const pane = document.getElementById('previewPane');
+    const listView = document.getElementById('fileListView');
+    pane.classList.remove('open');
+    listView.style.display = 'flex';
+    document.getElementById('previewFrame').src = 'about:blank';
+  }
+
+  function openNewTab() {
+    const src = document.getElementById('previewFrame').src;
+    if (src && src !== 'about:blank') window.open(src, '_blank');
+  }
+
+  // ============================================================
+  // GitHub mode
+  // ============================================================
+  async function loadFromGitHub(repo) {
+    if (!repo) return;
+    isGitHubMode = true;
+    document.getElementById('modeBadge').textContent = 'GitHub 模式';
+    document.getElementById('modeBadge').className = 'mode-badge github';
+
+    try {
+      const apiBase = `https://api.github.com/repos/${repo}`;
+      const dirs = ['厨房用品', '户外灯具', '投资研究', '机器人', '其他'];
+      allFiles = [];
+
+      for (const dir of dirs) {
+        const res = await fetch(`${apiBase}/contents/${encodeURIComponent(dir)}`, {
+          headers: { Accept: 'application/vnd.github.v3+json' }
+        });
+        if (!res.ok) continue;
+        const items = await res.json();
+        for (const item of items) {
+          if (item.name.endsWith('.html')) {
+            allFiles.push({
+              name: item.name.replace('.html', '').replace(/_/g, ' '),
+              path: `${dir}/${item.name}`,
+              folder: dir,
+              tag: inferTag(item.name),
+              updated: item.updated_at
+            });
+          }
+        }
+      }
+
+      // Sort by updated desc
+      allFiles.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+    } catch (e) {
+      console.error('GitHub load failed:', e);
+      document.getElementById('modeBadge').textContent = '连接失败，回退本地';
+      document.getElementById('modeBadge').className = 'mode-badge local';
+      isGitHubMode = false;
+      loadLocal();
+    }
+
+    renderSidebar();
+    renderFileGrid();
+  }
+
+  function loadLocal() {
+    allFiles = [...LOCAL_FILES];
+    renderSidebar();
+    renderFileGrid();
+  }
+
+  // ============================================================
+  // Init
+  // ============================================================
+  function init() {
+    document.getElementById('closePreview').addEventListener('click', closePreview);
+    document.getElementById('openNewTab').addEventListener('click', openNewTab);
+
+    document.getElementById('connectBtn').addEventListener('click', () => {
+      const repo = document.getElementById('repoInput').value.trim();
+      config.repo = repo;
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+      if (repo) {
+        loadFromGitHub(repo);
+      } else {
+        isGitHubMode = false;
+        document.getElementById('modeBadge').textContent = '本地模式';
+        document.getElementById('modeBadge').className = 'mode-badge local';
+        loadLocal();
+      }
+    });
+
+    // Pre-fill if configured
+    if (config.repo) {
+      document.getElementById('repoInput').value = config.repo;
+      loadFromGitHub(config.repo);
+    } else {
+      loadLocal();
+    }
+  }
+
+  init();
+</script>
+
+</body>
+</html>

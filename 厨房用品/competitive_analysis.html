@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>竞品分析报告 - 远红外电陶炉+塔吉锅</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #0f1117; color: #e5e7eb; line-height: 1.6; }
+  
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+  
+  /* Hero */
+  .hero { text-align: center; padding: 48px 24px; background: linear-gradient(135deg, #1a1f35 0%, #0f1117 100%); border-bottom: 1px solid #2a3148; margin-bottom: 40px; border-radius: 16px; }
+  .hero h1 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .hero .subtitle { color: #7c8db5; font-size: 0.95rem; }
+  .hero .tag { display: inline-block; background: #1a3a2a; color: #4ade80; padding: 4px 16px; border-radius: 20px; font-size: 0.8rem; margin-top: 16px; border: 1px solid #22543d; }
+
+  /* Our product highlight */
+  .our-product { background: linear-gradient(135deg, #0f2a1a 0%, #1a3a2a 100%); border: 2px solid #22543d; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
+  .our-product .label { color: #4ade80; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .our-product h2 { color: #fff; font-size: 1.5rem; margin-bottom: 16px; }
+  .our-product .price-tag { display: inline-block; background: #22543d; color: #4ade80; padding: 4px 16px; border-radius: 8px; font-weight: 700; margin-bottom: 16px; }
+  .our-product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+  .stat-card { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 16px; }
+  .stat-card .val { font-size: 1.5rem; font-weight: 700; color: #fff; }
+  .stat-card .key { font-size: 0.8rem; color: #7c8db5; margin-top: 4px; }
+  .stat-card.highlight { border: 1px solid #22543d; }
+  .stat-card.highlight .val { color: #4ade80; }
+
+  /* Section titles */
+  .section-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #2a3148; }
+  
+  /* Filter bar */
+  .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+  .filter-bar .chip { padding: 6px 16px; border-radius: 20px; background: #1e2436; border: 1px solid #2a3148; color: #7c8db5; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+  .filter-bar .chip.active { background: #2563eb; border-color: #2563eb; color: #fff; }
+  .filter-bar .chip:hover { border-color: #4a5568; }
+
+  /* Competitive grid */
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-bottom: 40px; }
+
+  /* Competitor card */
+  .comp-card { background: #1a2030; border: 1px solid #2a3148; border-radius: 12px; padding: 20px; transition: all 0.2s; }
+  .comp-card:hover { border-color: #4a5568; transform: translateY(-2px); }
+  .comp-card.our { border-color: #22543d; background: linear-gradient(135deg, #0f2a1a 0%, #1a2030 100%); }
+  
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .comp-name { font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.3; flex: 1; }
+  .comp-price { font-size: 1rem; font-weight: 700; color: #f59e0b; white-space: nowrap; margin-left: 12px; }
+  
+  .card-meta { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .meta-tag { background: #1e2436; padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; color: #7c8db5; }
+  .meta-tag.stars { color: #facc15; }
+  .meta-tag.bsr { color: #60a5fa; }
+
+  .card-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .spec-item { background: #0f1117; border-radius: 6px; padding: 8px 10px; }
+  .spec-item .spec-key { font-size: 0.7rem; color: #7c8db5; margin-bottom: 2px; }
+  .spec-item .spec-val { font-size: 0.82rem; color: #e5e7eb; font-weight: 600; }
+
+  .card-pros-cons { margin-bottom: 12px; }
+  .pc-label { font-size: 0.7rem; font-weight: 700; margin-bottom: 4px; }
+  .pc-label.pro { color: #4ade80; }
+  .pc-label.con { color: #f87171; }
+  .pc-text { font-size: 0.8rem; color: #9ca3af; line-height: 1.5; }
+
+  .card-tech { display: inline-block; background: #1e2436; border: 1px solid #2a3148; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; color: #a5b4fc; }
+  .card-tech.ours { background: #1a3a2a; border-color: #22543d; color: #4ade80; }
+
+  /* Comparison matrix */
+  .matrix-section { background: #1a2030; border: 1px solid #2a3148; border-radius: 12px; padding: 24px; margin-bottom: 40px; overflow-x: auto; }
+  .matrix-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 800px; }
+  .matrix-table th { background: #0f1117; color: #7c8db5; padding: 10px 12px; text-align: left; font-weight: 600; border-bottom: 1px solid #2a3148; white-space: nowrap; }
+  .matrix-table td { padding: 10px 12px; border-bottom: 1px solid #1e2436; vertical-align: top; }
+  .matrix-table tr:hover td { background: #1e2436; }
+  .matrix-table .highlight-row td { background: #0f2a1a !important; }
+  .matrix-table .highlight-row td:first-child::before { content: '★ '; color: #4ade80; }
+  .matrix-table .price-high { color: #f87171; }
+  .matrix-table .price-low { color: #4ade80; }
+  .matrix-table .tech-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; }
+  .tag-infra { background: #1a3a2a; color: #4ade80; }
+  .tag-induction { background: #1e2436; color: #60a5fa; }
+  .tag-ceramic { background: #2a1f35; color: #c084fc; }
+  .tag-ir { background: #2a1f1a; color: #fb923c; }
+  .tag-castiron { background: #1f1a2a; color: #a78bfa; }
+  .tag-other { background: #1e2436; color: #9ca3af; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+  .swot-card { border-radius: 12px; padding: 20px; }
+  .swot-card h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; letter-spacing: 0.05em; }
+  .swot-card ul { list-style: none; }
+  .swot-card li { font-size: 0.82rem; padding: 4px 0; padding-left: 16px; position: relative; color: #d1d5db; }
+  .swot-card li::before { content: '•'; position: absolute; left: 0; }
+  .swot-s { background: #0f2a1a; border: 1px solid #22543d; }
+  .swot-s h3 { color: #4ade80; }
+  .swot-w { background: #2a1a1a; border: 1px solid #5a2020; }
+  .swot-w h3 { color: #f87171; }
+  .swot-o { background: #1a2a0f; border: 1px solid #3a5a20; }
+  .swot-o h3 { color: #a3e635; }
+  .swot-t { background: #2a1f0f; border: 1px solid #5a4020; }
+  .swot-t h3 { color: #fb923c; }
+
+  /* Tech comparison */
+  .tech-section { background: #1a2030; border: 1px solid #2a3148; border-radius: 12px; padding: 24px; margin-bottom: 40px; }
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .tech-card { background: #0f1117; border-radius: 8px; padding: 16px; text-align: center; }
+  .tech-card .tech-name { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .tech-card .tech-type { font-size: 0.72rem; color: #7c8db5; margin-bottom: 8px; }
+  .tech-card .tech-pros { font-size: 0.75rem; color: #4ade80; }
+  .tech-card .tech-cons { font-size: 0.75rem; color: #f87171; margin-top: 4px; }
+  .tech-card.highlight { border: 2px solid #22543d; }
+  .tech-card.highlight .tech-name { color: #4ade80; }
+
+  /* Insight box */
+  .insight-box { background: #1e2436; border: 1px solid #2a3148; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+  .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 10px; }
+  .insight-box p { font-size: 0.85rem; color: #d1d5db; line-height: 1.7; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container { padding: 12px; }
+    .comp-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.4rem; }
+    .our-product-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>竞品分析报告</h1>
+    <p class="subtitle">电动塔吉锅 × 远红外电陶炉 · Amazon 市场研究</p>
+    <div class="tag">🟢 蓝海市场 — 无直接竞品</div>
+  </div>
+
+  <!-- Our Product Highlight -->
+  <div class="our-product">
+    <div class="label">我们的产品</div>
+    <h2>远红外电陶炉 + 富硒紫砂塔吉锅</h2>
+    <div class="price-tag">成本约 $36 · 建议定价 $99–$129</div>
+    <div class="our-product-grid">
+      <div class="stat-card highlight">
+        <div class="val">蓝海</div>
+        <div class="key">市场竞争度</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="val">2L</div>
+        <div class="key">容量</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="val">3.88kg</div>
+        <div class="key">重量</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">Φ275mm</div>
+        <div class="key">锅口直径</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="val">5档</div>
+        <div class="key">火力调节</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">300-1500W</div>
+        <div class="key">功率范围</div>
+      </div>
+    </div>
+    <div style="margin-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <div>
+        <div class="pc-label pro">✓ 核心优势</div>
+        <div class="pc-text">亚马逊上"电动塔吉"几乎空白；天然富硒紫砂无涂层（Non-toxic趋势）；浮雕烫金高颜值礼品属性；出厂成本仅$36，利润空间充足</div>
+      </div>
+      <div>
+        <div class="pc-label con">⚠ 已知风险</div>
+        <div class="pc-text">2L容量偏小（竞品3.1-6L）；紫砂陶瓷运输易破损；底座是否支持其他锅具待确认</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Insight -->
+  <div class="insight-box">
+    <h4>🔑 核心发现</h4>
+    <p>目前亚马逊上<strong>不存在电动塔吉锅</strong>竞品。现有产品分为两个极端：① 无电塔吉锅（铸铁珐琅，需配炉灶）② 通用电炉（电磁炉/陶瓷炉，无法做塔吉锅）。我们的产品填补了两者之间的空白，解决了"老外买塔吉锅后发现挑炉子或容易在明火上烧裂"的最大痛点。</p>
+  </div>
+
+  <!-- Competitive Grid -->
+  <div class="section-title">竞品详情（按价格排序）</div>
+
+  <div class="comp-grid">
+
+    <!-- Our product -->
+    <div class="comp-card our">
+      <div class="card-header">
+        <div class="comp-name">远红外电陶炉+塔吉锅（自身）</div>
+        <div class="comp-price">$99–129</div>
+      </div>
+      <div class="card-tech card-tech.ours">远红外辐射加热</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs" style="grid-template-columns:1fr 1fr 1fr;">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">1000W/1500W</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">2L</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">5档火力</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优势</div>
+        <div class="pc-text">蓝海差异化；天然紫砂无涂层；高颜值礼品；出厂成本$36</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">⚠ 劣势</div>
+        <div class="pc-text">容量偏小（2L）；陶瓷运输破损风险；功能相对单一</div>
+      </div>
+    </div>
+
+    <!-- Nuwave Gold -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">Nuwave 精密感应炉灶金色</div>
+        <div class="comp-price">$107.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.5 (1136条)</span>
+        <span class="meta-tag bsr">#24,470 BSR</span>
+      </div>
+      <div class="card-tech">感应加热(Induction)</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">700/900/1500W</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">38-302°C</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">30.5cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">2.5kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">96档精确温控；防碎陶瓷玻璃；便携轻便；3功率设置</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">非远红外；需配特定锅具（感应专用）</div>
+      </div>
+    </div>
+
+    <!-- Karinear -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">Karinear 2燃烧器电灶</div>
+        <div class="comp-price">$169.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.6 (240条)</span>
+        <span class="meta-tag bsr">#30,200 BSR</span>
+      </div>
+      <div class="card-tech">陶瓷发热(Radiant)</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">2000W</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">204-649°C</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">61cm双灶</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">5kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">双灶设计；旋钮控制；定时器240min；过热保护；儿童锁</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">体积大；功率较高；非远红外</div>
+      </div>
+    </div>
+
+    <!-- 象印 EP-PFC20HA -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">象印 EP-PFC20HA 阴阳火锅</div>
+        <div class="comp-price">$199.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.6 (222条)</span>
+        <span class="meta-tag bsr">#50,423 BSR</span>
+      </div>
+      <div class="card-tech">阴阳火锅电煎锅</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">1300W</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">2-3L双区</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">34.9×38.7cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">7.72kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">象印品牌好；阴阳双锅设计；可换烤盘</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">价格较高；评论少；非远红外</div>
+      </div>
+    </div>
+
+    <!-- 象印 EP-PBC10 -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">象印 EP-PBC10 电动煎锅</div>
+        <div class="comp-price">$124.84</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.7 (1379条)</span>
+        <span class="meta-tag bsr">#33,171 BSR</span>
+      </div>
+      <div class="card-tech">电热煎锅</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">1250W</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">约4L</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">80-221°C</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">5.22kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">象印品牌好；评论最多(1379)；耐用多功能</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">功能单一；非远红外；需配锅</div>
+      </div>
+    </div>
+
+    <!-- Nuwave Diamond Probe -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">Nuwave 钻石感应炉灶</div>
+        <div class="comp-price">$99.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.5 (286条)</span>
+        <span class="meta-tag bsr">#93,686 BSR</span>
+      </div>
+      <div class="card-tech">感应加热+探针</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">3档功率</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">10-260°C</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">30.2×26cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">2.27kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">探针测温精准；91种温度；可存46个食谱；4种编程食谱</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">感应加热需特定锅具；非远红外</div>
+      </div>
+    </div>
+
+    <!-- ANHANE -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">ANHANE 1800W 电炉</div>
+        <div class="comp-price">$54.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.5 (373条)</span>
+        <span class="meta-tag bsr">#36,572 BSR</span>
+      </div>
+      <div class="card-tech">远红外陶瓷加热</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">200-1800W</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">80-266°C</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">35.8×28cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">约3kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">远红外不挑锅；过热保护；儿童锁；自动关闭；防滑设计；散热风扇</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">品牌知名度低；单灶设计</div>
+      </div>
+    </div>
+
+    <!-- Nuoupai -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">Nuoupai 单台面燃烧器</div>
+        <div class="comp-price">$49.88</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.6 (142条)</span>
+        <span class="meta-tag bsr">#37,748 BSR</span>
+      </div>
+      <div class="card-tech">远红外陶瓷加热</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">1800W</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">10档功率</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">36.1×27.9cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">2.28kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">兼容所有锅具；24h定时；儿童锁；过热保护；易清洁</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">评论较少(142条)</div>
+      </div>
+    </div>
+
+    <!-- 电热板单灶 -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">电热板单燃烧器陶瓷炉</div>
+        <div class="comp-price">$45.87</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.5 (442条)</span>
+        <span class="meta-tag bsr">#46,928 BSR</span>
+      </div>
+      <div class="card-tech">红外陶瓷加热</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">1800W</div></div>
+          <div class="spec-item"><div class="spec-key">温度</div><div class="spec-val">10级功率</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">35.6×27.9cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">2.33kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">超薄设计；兼容所有锅具；24h定时；儿童锁</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">单灶设计；非远红外</div>
+      </div>
+    </div>
+
+    <!-- KooK Moroccan Tagine -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">KooK Moroccan Tagine 塔吉锅</div>
+        <div class="comp-price">$76.95</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.8 (1013条)</span>
+        <span class="meta-tag bsr">#34,089 BSR</span>
+      </div>
+      <div class="card-tech">铸铁珐琅(需炉灶)</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">需炉灶</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">3.3QT(3.1L)</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">30cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">5.51kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">正宗塔吉锅；评论超1000（评分4.8）；珐琅铸铁耐用；可用于感应炉/燃气/烤箱</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">非电热（需配炉灶）；慢炖功能单一；不能用于电磁炉</div>
+      </div>
+    </div>
+
+    <!-- CERAMAX PRO -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">CERAMAX PRO 电热锅</div>
+        <div class="comp-price">$39.97</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.6 (636条)</span>
+        <span class="meta-tag bsr">#6,702 BSR</span>
+      </div>
+      <div class="card-tech">陶瓷电热</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">双温控</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">1.5L</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">35.6×12.7cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">1.87kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">不粘涂层；双温控；安全外壳；节能；BSR排名最高#6,702</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">非远红外；品牌弱；容量小(1.5L)</div>
+      </div>
+    </div>
+
+    <!-- TWIN 分隔电热锅 -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">TWIN 带分隔器电热锅</div>
+        <div class="comp-price">$49.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.3 (156条)</span>
+        <span class="meta-tag bsr">#55,366 BSR</span>
+      </div>
+      <div class="card-tech">火锅电热</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">1500W</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">4-5L</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">32.8×44.2cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">3.9kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">分隔双区；1500W快热</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">功能单一；评论少</div>
+      </div>
+    </div>
+
+    <!-- AORAN 6L -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">AORAN 6L 电热锅</div>
+        <div class="comp-price">$44.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.6 (135条)</span>
+        <span class="meta-tag bsr">#41,041 BSR</span>
+      </div>
+      <div class="card-tech">大容量火锅</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">功率可调</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">6L</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">37.1×30cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">3kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">6L大容量；分隔设计；不粘；无烟；配件丰富</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">功能单一；评论少</div>
+      </div>
+    </div>
+
+    <!-- Audecook -->
+    <div class="comp-card">
+      <div class="card-header">
+        <div class="comp-name">Audecook 电热锅</div>
+        <div class="comp-price">$35.99</div>
+      </div>
+      <div class="card-meta">
+        <span class="meta-tag stars">⭐ 4.6 (559条)</span>
+        <span class="meta-tag bsr">#55,387 BSR</span>
+      </div>
+      <div class="card-tech">多功能电热</div>
+      <div style="margin:12px 0;">
+        <div class="card-specs">
+          <div class="spec-item"><div class="spec-key">功率</div><div class="spec-val">600W max</div></div>
+          <div class="spec-item"><div class="spec-key">容量</div><div class="spec-val">1.7L</div></div>
+          <div class="spec-item"><div class="spec-key">尺寸</div><div class="spec-val">35.6×19.8cm</div></div>
+          <div class="spec-item"><div class="spec-key">重量</div><div class="spec-val">1.10kg</div></div>
+        </div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label pro">✓ 优点</div>
+        <div class="pc-text">不粘涂层；双功率调节；过热保护；配件丰富(蒸笼/夹子)</div>
+      </div>
+      <div class="card-pros-cons">
+        <div class="pc-label con">✗ 缺点</div>
+        <div class="pc-text">品牌弱；功率较小(600W)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tech Comparison -->
+  <div class="section-title">加热技术横向对比</div>
+  <div class="tech-section">
+    <div class="tech-grid">
+      <div class="tech-card highlight">
+        <div class="tech-name">远红外辐射加热</div>
+        <div class="tech-type">我们的技术</div>
+        <div class="tech-pros">✓ 兼容所有锅具 | 穿透加热 | 健康烹饪</div>
+        <div class="tech-cons">陶瓷发热效率略低于感应</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">感应加热 Induction</div>
+        <div class="tech-type">Nuwave系列</div>
+        <div class="tech-pros">✓ 热效率高 | 精确控温 | 快速加热</div>
+        <div class="tech-cons">✗ 需专用铁磁锅具；贵</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">红外陶瓷加热</div>
+        <div class="tech-type">ANHANE/Nuoupai</div>
+        <div class="tech-pros">✓ 不挑锅 | 成本低</div>
+        <div class="tech-cons">加热均匀性一般</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">电热陶瓷</div>
+        <div class="tech-type">CERAMAX/Audecook</div>
+        <div class="tech-pros">✓ 结构简单 | 便宜</div>
+        <div class="tech-cons">✗ 热效率低；不健康涂层风险</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-name">铸铁珐琅</div>
+        <div class="tech-type">KooK塔吉锅</div>
+        <div class="tech-pros">✓ 耐用 | 正宗 | 评分4.8</div>
+        <div class="tech-cons">✗ 非电热；电磁炉不适用</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matrix -->
+  <div class="section-title">竞品横向矩阵</div>
+  <div class="matrix-section">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>产品名称</th>
+          <th>价格</th>
+          <th>评分</th>
+          <th>技术</th>
+          <th>容量</th>
+          <th>功率</th>
+          <th>BSR</th>
+          <th>核心优势</th>
+          <th>核心劣势</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td>远红外电陶炉+塔吉锅（自身）</td>
+          <td class="price-high">$99-129</td>
+          <td>—</td>
+          <td><span class="tech-tag tag-infra">远红外</span></td>
+          <td>2L</td>
+          <td>1000/1500W</td>
+          <td>—</td>
+          <td>蓝海、无涂层、礼品属性</td>
+          <td>容量小、运输风险</td>
+        </tr>
+        <tr>
+          <td>Nuwave 精密感应炉灶金色</td>
+          <td class="price-high">$107.99</td>
+          <td>4.5 (1136)</td>
+          <td><span class="tech-tag tag-induction">感应</span></td>
+          <td>N/A</td>
+          <td>1500W</td>
+          <td>#24,470</td>
+          <td>96档精确温控</td>
+          <td>需专用锅</td>
+        </tr>
+        <tr>
+          <td>Nuwave 钻石感应炉灶</td>
+          <td class="price-high">$99.99</td>
+          <td>4.5 (286)</td>
+          <td><span class="tech-tag tag-induction">感应+探针</span></td>
+          <td>N/A</td>
+          <td>3档功率</td>
+          <td>#93,686</td>
+          <td>探针测温精准；91种温度</td>
+          <td>需专用锅；非远红外</td>
+        </tr>
+        <tr>
+          <td>象印 EP-PBC10 电动煎锅</td>
+          <td class="price-high">$124.84</td>
+          <td>4.7 (1379)</td>
+          <td><span class="tech-tag tag-other">电热煎锅</span></td>
+          <td>4L</td>
+          <td>1250W</td>
+          <td>#33,171</td>
+          <td>品牌强；评论最多</td>
+          <td>功能单一；非远红外</td>
+        </tr>
+        <tr>
+          <td>象印 EP-PFC20HA 阴阳火锅</td>
+          <td class="price-high">$199.99</td>
+          <td>4.6 (222)</td>
+          <td><span class="tech-tag tag-other">火锅电煎</span></td>
+          <td>2-3L</td>
+          <td>1300W</td>
+          <td>#50,423</td>
+          <td>象印品牌；阴阳双锅</td>
+          <td>价格高</td>
+        </tr>
+        <tr>
+          <td>Karinear 2燃烧器电灶</td>
+          <td class="price-high">$169.99</td>
+          <td>4.6 (240)</td>
+          <td><span class="tech-tag tag-ceramic">陶瓷发热</span></td>
+          <td>N/A</td>
+          <td>2000W</td>
+          <td>#30,200</td>
+          <td>双灶；定时240min</td>
+          <td>体积大</td>
+        </tr>
+        <tr>
+          <td>KooK Moroccan Tagine 塔吉锅</td>
+          <td>$76.95</td>
+          <td>4.8 (1013)</td>
+          <td><span class="tech-tag tag-castiron">铸铁珐琅</span></td>
+          <td>3.1L</td>
+          <td>需炉灶</td>
+          <td>#34,089</td>
+          <td>正宗塔吉；评论多评分高</td>
+          <td>非电热；挑炉子</td>
+        </tr>
+        <tr>
+          <td>ANHANE 1800W 电炉</td>
+          <td class="price-low">$54.99</td>
+          <td>4.5 (373)</td>
+          <td><span class="tech-tag tag-ir">远红外陶瓷</span></td>
+          <td>N/A</td>
+          <td>1800W</td>
+          <td>#36,572</td>
+          <td>远红外不挑锅；功能全</td>
+          <td>品牌弱</td>
+        </tr>
+        <tr>
+          <td>Nuoupai 单台面燃烧器</td>
+          <td class="price-low">$49.88</td>
+          <td>4.6 (142)</td>
+          <td><span class="tech-tag tag-ir">远红外陶瓷</span></td>
+          <td>N/A</td>
+          <td>1800W</td>
+          <td>#37,748</td>
+          <td>兼容所有锅具；功能全</td>
+          <td>评论少</td>
+        </tr>
+        <tr>
+          <td>电热板单燃烧器陶瓷炉</td>
+          <td class="price-low">$45.87</td>
+          <td>4.5 (442)</td>
+          <td><span class="tech-tag tag-ceramic">红外陶瓷</span></td>
+          <td>N/A</td>
+          <td>1800W</td>
+          <td>#46,928</td>
+          <td>超薄；24h定时</td>
+          <td>单灶</td>
+        </tr>
+        <tr>
+          <td>TWIN 带分隔器电热锅</td>
+          <td>$49.99</td>
+          <td>4.3 (156)</td>
+          <td><span class="tech-tag tag-other">火锅电热</span></td>
+          <td>4-5L</td>
+          <td>1500W</td>
+          <td>#55,366</td>
+          <td>分隔双区</td>
+          <td>功能单一</td>
+        </tr>
+        <tr>
+          <td>Audecook 电热锅</td>
+          <td class="price-low">$35.99</td>
+          <td>4.6 (559)</td>
+          <td><span class="tech-tag tag-other">多功能电热</span></td>
+          <td>1.7L</td>
+          <td>600W</td>
+          <td>#55,387</td>
+          <td>配件丰富</td>
+          <td>功率小；品牌弱</td>
+        </tr>
+        <tr>
+          <td>AORAN 6L 电热锅</td>
+          <td class="price-low">$44.99</td>
+          <td>4.6 (135)</td>
+          <td><span class="tech-tag tag-other">火锅电热</span></td>
+          <td>6L</td>
+          <td>功率可调</td>
+          <td>#41,041</td>
+          <td>6L大容量</td>
+          <td>功能单一</td>
+        </tr>
+        <tr>
+          <td>CERAMAX PRO 电热锅</td>
+          <td class="price-low">$39.97</td>
+          <td>4.6 (636)</td>
+          <td><span class="tech-tag tag-other">陶瓷电热</span></td>
+          <td>1.5L</td>
+          <td>双温控</td>
+          <td>#6,702</td>
+          <td>BSR最高；不粘</td>
+          <td>容量小；品牌弱</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SWOT -->
+  <div class="section-title">SWOT分析（自身产品）</div>
+  <div class="swot-grid">
+    <div class="swot-card swot-s">
+      <h3>S · 优势 Strengths</h3>
+      <ul>
+        <li>亚马逊无直接竞品（蓝海）</li>
+        <li>天然富硒紫砂，100%无涂层（Non-toxic炊具趋势）</li>
+        <li>远红外加热不挑锅，兼容性强</li>
+        <li>浮雕/烫金高颜值，强烈异域礼品属性</li>
+        <li>出厂成本仅$36，定价$99-129利润空间充足</li>
+        <li>一机两用：塔吉锅+通用电陶炉</li>
+      </ul>
+    </div>
+    <div class="swot-card swot-w">
+      <h3>W · 劣势 Weaknesses</h3>
+      <ul>
+        <li>2L容量偏小（竞品3-6L），仅够1-2人</li>
+        <li>紫砂陶瓷易碎，跨境物流破损风险高</li>
+        <li>品牌知名度从零开始</li>
+        <li>仅有塔吉锅单一形态，功能定位较窄</li>
+        <li>塔吉锅文化认知门槛（非主流烹饪方式）</li>
+      </ul>
+    </div>
+    <div class="swot-card swot-o">
+      <h3>O · 机会 Opportunities</h3>
+      <ul>
+        <li>#slowcooker TikTok 3.47亿浏览量；#tagine持续上升</li>
+        <li>欧美"无毒炊具"趋势加速，无涂层产品受追捧</li>
+        <li>节日礼品旺季（感恩节/圣诞节）礼品属性契合</li>
+        <li>KooK塔吉锅$76.95且无电热款，证明市场存在</li>
+        <li>摩洛哥美食文化在欧美持续流行</li>
+        <li>远红外健康烹饪概念可做内容营销</li>
+      </ul>
+    </div>
+    <div class="swot-card swot-t">
+      <h3>T · 威胁 Threats</h3>
+      <ul>
+        <li>大品牌（如Nuwave/象印）随时可切入此品类</li>
+        <li>陶瓷运输破损导致高退货率和差评</li>
+        <li>亚马逊平台政策（危险品/食品接触材料）合规风险</li>
+        <li>仿品跟随：一旦爆款容易被跟卖</li>
+        <li>跨境外汇和物流成本波动影响利润</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Strategic insights -->
+  <div class="section-title">定价策略建议</div>
+  <div class="insight-box">
+    <h4>💡 定价分析</h4>
+    <p>参考同类产品价格区间：<strong>$35–$200</strong>。我们的竞品分为两类——<strong>① 电炉类</strong>（$45-170，ANHANE/Nuoupai/Nuwave/Karinear）和<strong>② 塔吉锅类</strong>（KooK $76.95，铸铁无电）。我们的独特价值在于"电动塔吉锅"这一空白。建议定价 <strong>$99-109</strong>（中高端），低于象印EP-PBC10($124)和Nuwave($107-170)，高于ANHANE($54)和普通电热锅($35-50)，体现"差异化蓝海+礼品品质"定位。</p>
+  </div>
+
+  <div class="insight-box">
+    <h4>🎯 差异化定位关键词</h4>
+    <p>
+      <strong>主打：</strong>Electric Tagine Pot / Moroccan Slow Cooker / Non-toxic Clay Pot<br>
+      <strong>次打：</strong>Far Infrared Cooking / Portable induction-free / Teflon-free cookware<br>
+      <strong>场景：</strong>Gift for foodies / Healthy cooking / TikTok recipe pot / Moroccan cooking
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
