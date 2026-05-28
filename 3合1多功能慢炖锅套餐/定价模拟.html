@@ -154,8 +154,8 @@
   <div class="strategy-box">
     <h4>🎯 产品结构说明</h4>
     <p>
-      <span class="sku-tag s1">SKU1</span> 电陶炉 + 塔吉锅（出厂成本 ¥256.5 = $37.45）<br>
-      <span class="sku-tag s2">SKU2</span> 电陶炉 + 烤盘 + 塔吉锅（出厂成本 ¥275.9 = $40.28）<br>
+      <span class="sku-tag s1">SKU1</span> 电陶炉 + 塔吉锅（出厂成本 ¥256.5 + 包装 ¥15.6 = ¥272.1，$39.7）<br>
+      <span class="sku-tag s2">SKU2</span> 电陶炉 + 烤盘 + 塔吉锅（出厂成本 ¥275.9 + 包装 ¥15.6 = ¥291.5，$42.6）<br>
       <span class="txt-note">烤盘成本仅¥19.4，但溢价$20，利润贡献极高，建议主推SKU2</span>
     </p>
   </div>
@@ -208,25 +208,30 @@
       <div class="input-group">
         <label>塔吉锅 (CNY)</label>
         <input type="number" id="s1_pot_cny" value="122" oninput="recalc()">
-        <span class="input-note">合计¥256.5</span>
+        <span class="input-note">产品¥256.5 + 包装¥15.6 = ¥272.1（已确认）</span>
       </div>
       <div class="input-group">
         <label>USD/CNY 汇率</label>
         <input type="number" id="s1_fx" value="6.85" step="0.01" oninput="recalc()">
       </div>
       <div class="input-group">
+        <label>包装成本 (CNY)</label>
+        <input type="number" id="s1_pkg_cny" value="15.6" step="0.1" oninput="recalc()">
+        <span class="input-note">纸盒+包材（已确认）</span>
+      </div>
+      <div class="input-group">
         <label>包装后重量 (kg)</label>
-        <input type="number" id="s1_weight" value="5.5" step="0.1" oninput="recalc()">
-        <span class="input-warn">⚠ 待确认（底座2.5+锅3.88+包材）</span>
+        <input type="number" id="s1_weight" value="6.7" step="0.1" oninput="recalc()">
+        <span class="input-note">实际称重（已确认）</span>
       </div>
       <div class="input-group">
         <label>包装尺寸 (cm)</label>
         <div class="input-dim-row">
-          <input type="number" id="s1_dl" value="56" oninput="recalc()" placeholder="长">
-          <input type="number" id="s1_dw" value="30" oninput="recalc()" placeholder="宽">
-          <input type="number" id="s1_dh" value="35" oninput="recalc()" placeholder="高">
+          <input type="number" id="s1_dl" value="51" oninput="recalc()" placeholder="长">
+          <input type="number" id="s1_dw" value="36.5" oninput="recalc()" placeholder="宽">
+          <input type="number" id="s1_dh" value="33" oninput="recalc()" placeholder="高">
         </div>
-        <span class="input-warn">⚠ 长≥Φ275×2=550mm（待确认）</span>
+        <span class="input-note">510×365×330mm（已确认）</span>
       </div>
       <div class="input-group">
         <label>头程运费 (CNY/件)</label>
@@ -385,25 +390,30 @@
       <div class="input-group">
         <label>烤盘 (CNY)</label>
         <input type="number" id="s2_tray_cny" value="19.4" oninput="recalc()">
-        <span class="input-note">合计¥275.9（已确认）</span>
+        <span class="input-note">产品¥275.9 + 包装¥15.6 = ¥291.5（已确认）</span>
       </div>
       <div class="input-group">
         <label>USD/CNY 汇率</label>
         <input type="number" id="s2_fx" value="6.85" step="0.01" oninput="recalc()">
       </div>
       <div class="input-group">
+        <label>包装成本 (CNY)</label>
+        <input type="number" id="s2_pkg_cny" value="15.6" step="0.1" oninput="recalc()">
+        <span class="input-note">纸盒+包材（已确认）</span>
+      </div>
+      <div class="input-group">
         <label>包装后重量 (kg)</label>
-        <input type="number" id="s2_weight" value="5.8" step="0.1" oninput="recalc()">
-        <span class="input-warn">⚠ 待确认</span>
+        <input type="number" id="s2_weight" value="6.7" step="0.1" oninput="recalc()">
+        <span class="input-note">实际称重（已确认）</span>
       </div>
       <div class="input-group">
         <label>包装尺寸 (cm)</label>
         <div class="input-dim-row">
-          <input type="number" id="s2_dl" value="58" oninput="recalc()" placeholder="长">
-          <input type="number" id="s2_dw" value="32" oninput="recalc()" placeholder="宽">
-          <input type="number" id="s2_dh" value="38" oninput="recalc()" placeholder="高">
+          <input type="number" id="s2_dl" value="51" oninput="recalc()" placeholder="长">
+          <input type="number" id="s2_dw" value="36.5" oninput="recalc()" placeholder="宽">
+          <input type="number" id="s2_dh" value="33" oninput="recalc()" placeholder="高">
         </div>
-        <span class="input-warn">⚠ 待确认（SKU1+烤盘）</span>
+        <span class="input-note">510×365×330mm（已确认）</span>
       </div>
       <div class="input-group">
         <label>头程运费 (CNY/件)</label>
@@ -617,6 +627,7 @@ function getTariffs(sku, market) {
 }
 
 function calcSKU(priceUSD, market, isSKU2) {
+  const pkgCNY = isSKU2 ? parseFloat(document.getElementById('s2_pkg_cny').value) : parseFloat(document.getElementById('s1_pkg_cny').value);
   const baseCNY = isSKU2
     ? parseFloat(document.getElementById('s2_base_cny').value) : parseFloat(document.getElementById('s1_base_cny').value);
   const potCNY = isSKU2
@@ -634,26 +645,31 @@ function calcSKU(priceUSD, market, isSKU2) {
   const misc = isSKU2 ? parseFloat(document.getElementById('s2_misc').value) : parseFloat(document.getElementById('s1_misc').value);
   const targetPct = (isSKU2 ? parseFloat(document.getElementById('s2_target').value) : parseFloat(document.getElementById('s1_target').value)) / 100;
 
+  const pkgUSD = pkgCNY / fx;
   const baseUSD = baseCNY / fx;
   const potUSD = potCNY / fx;
   const trayUSD = trayCNY / fx;
-  const totalUnitUSD = baseUSD + potUSD + trayUSD;
+  const productUnitUSD = baseUSD + potUSD + trayUSD;
+  const totalUnitUSD = productUnitUSD + pkgUSD;
   const freightUSD = freightCNY / fx;
 
-  // Proportional freight split
+  // Proportional freight split (include packaging)
   const freightBase = freightUSD * baseUSD / totalUnitUSD;
   const freightPot = freightUSD * potUSD / totalUnitUSD;
   const freightTray = freightUSD * trayUSD / totalUnitUSD;
+  const freightPkg = freightUSD * pkgUSD / totalUnitUSD;
 
   const tariffs = isSKU2 ? getTariffs(2, market) : getTariffs(1, market);
 
   const cifBase = baseUSD + freightBase;
   const cifPot = potUSD + freightPot;
   const cifTray = trayUSD + freightTray;
+  const cifPkg = pkgUSD + freightPkg;
 
   const dutyBase = cifBase * tariffs.base;
   const dutyPot = cifPot * tariffs.pot;
   const dutyTray = isSKU2 ? (cifTray * tariffs.tray) : 0;
+  const dutyPkg = 0; // 包装材料通常不单独计税
   const totalDuty = dutyBase + dutyPot + dutyTray;
 
   const fba = getFBAFee(weight, dl, dw, dh);
@@ -677,6 +693,7 @@ function calcSKU(priceUSD, market, isSKU2) {
     { name: `电陶炉底座出厂成本`, val: baseUSD, pct: baseUSD / priceUSD * 100, cls: isSKU2 ? 'sku1-row' : '' },
     { name: `塔吉锅出厂成本`, val: potUSD, pct: potUSD / priceUSD * 100, cls: isSKU2 ? 'sku1-row' : '' },
     ...(isSKU2 ? [{ name: `烤盘出厂成本`, val: trayUSD, pct: trayUSD / priceUSD * 100, cls: 'sku2-row' }] : []),
+    { name: `包装成本(CNY¥${pkgCNY})`, val: pkgUSD, pct: pkgUSD / priceUSD * 100, cls: '' },
     { name: `头程运费（按成本比例分摊）`, val: freightUSD, pct: freightUSD / priceUSD * 100, cls: '' },
     { name: `关税-底座(8516×${(tariffs.base*100).toFixed(1)}%)`, val: dutyBase, pct: dutyBase / priceUSD * 100, cls: '' },
     { name: `关税-塔吉锅(6912×${(tariffs.pot*100).toFixed(1)}%)`, val: dutyPot, pct: dutyPot / priceUSD * 100, cls: '' },
@@ -862,7 +879,7 @@ function updateSummary() {
     const suffix = idx === 0 ? '' : '_' + m;
     
     // SKU1 summary
-    document.getElementById('sum1-factory').textContent = '$' + (parseFloat(document.getElementById('s1_base_cny').value)/6.85 + parseFloat(document.getElementById('s1_pot_cny').value)/6.85).toFixed(2);
+    document.getElementById('sum1-factory').textContent = '$' + (parseFloat(document.getElementById('s1_base_cny').value)/6.85 + parseFloat(document.getElementById('s1_pot_cny').value)/6.85 + 15.6/6.85).toFixed(2);
     document.getElementById('sum1-tariff').textContent = r1.blendedTariff + '%';
     document.getElementById('sum1-fba').textContent = '$' + r1.fba.toFixed(2);
     document.getElementById('sum1-fixed').textContent = '$' + r1.fixedTotal.toFixed(1);
@@ -875,7 +892,7 @@ function updateSummary() {
     document.getElementById('sum1-profit').className = 'sval ' + (m1.marginPct >= 8 ? 'good' : 'warn');
     
     // SKU2 summary
-    document.getElementById('sum2-factory').textContent = '$' + (134.5/6.85 + 122/6.85 + 19.4/6.85).toFixed(2);
+    document.getElementById('sum2-factory').textContent = '$' + (134.5/6.85 + 122/6.85 + 19.4/6.85 + 15.6/6.85).toFixed(2);
     document.getElementById('sum2-tariff').textContent = r2.blendedTariff + '%';
     document.getElementById('sum2-fba').textContent = '$' + r2.fba.toFixed(2);
     document.getElementById('sum2-fixed').textContent = '$' + r2.fixedTotal.toFixed(1);
