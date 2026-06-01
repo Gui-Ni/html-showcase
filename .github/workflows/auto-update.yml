@@ -24,6 +24,15 @@ jobs:
           const SKIP_DIRS = ['.github', 'node_modules', '_assets'];
           const SUPPORTED_EXTENSIONS = ['.html'];
 
+          // Auto-assign tag by file/folder name keywords
+          function detectTag(name, folder) {
+            const text = (name + ' ' + folder).toLowerCase();
+            if (/定价|价格|价格策略|溢价|毛利|cost|price/.test(text)) return 'pricing';
+            if (/竞品|分析报告|市场|research|分析$|趋势|行业|竞争/.test(text)) return 'analysis';
+            if (/投资|财报|股票|估值|ipo|invest|stock/.test(text)) return 'analysis';
+            return 'report';
+          }
+
           function walk(dir) {
             const entries = fs.readdirSync(dir, { withFileTypes: true });
             let files = [];
@@ -37,7 +46,8 @@ jobs:
                 const rel = full.replace(/^\.\//, '').replace(/\\/g, '/');
                 const folder = path.dirname(rel);
                 const name = path.basename(entry.name, '.html');
-                files.push({ name, path: rel, folder, tag: 'report' });
+                const tag = detectTag(name, folder);
+                files.push({ name, path: rel, folder, tag });
               }
             }
             return files;
@@ -52,6 +62,9 @@ jobs:
           html = html.replace(/const FILES = \[\s\S]*?\];/, filesArray);
           fs.writeFileSync('index.html', html, 'utf8');
           console.log(`Updated index.html with ${files.length} files`);
+          const tagStats = {};
+          files.forEach(f => { tagStats[f.tag] = (tagStats[f.tag] || 0) + 1; });
+          console.log('Tag distribution:', JSON.stringify(tagStats));
           const folders = [...new Set(files.map(f => f.folder))];
           console.log('Detected folders:', folders.join(', '));
           const check = fs.readFileSync('index.html', 'utf8');
@@ -59,7 +72,7 @@ jobs:
             if (check.includes(folder)) {
               console.log('✅ ' + folder + ' found in index.html');
             } else {
-              console.log('❌ ' + folder + ' MISSING from index.html — walk() bug!');
+              console.log('❌ ' + folder + ' MISSING from index.html');
             }
           });
           EOF
@@ -72,7 +85,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes — nothing to commit"
           else
-            git commit -m "chore: auto-update file list"
+            git commit -m "chore: auto-update file list with smart tag detection"
             git push
           fi
 
