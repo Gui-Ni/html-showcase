@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>手持挂烫机 - 战略规划报告</title>
+  <title>关志邦 - 5月绩效复盘 & 6月规划</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -13,1149 +12,369 @@
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #3B82F644; border-radius: 10px; }
     .glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .kpi-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .kpi-card:hover { transform: translateY(-4px); }
+    .tag-warn { background: #FEE2E2; color: #B91C1C; }
+    .tag-good { background: #DCFCE7; color: #15803D; }
+    .tag-neutral { background: #F1F5F9; color: #475569; }
+    .data-table th { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #64748B; padding: 12px 16px; text-align: left; border-bottom: 1px solid #E2E8F0; }
+    .data-table td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid #F1F5F9; }
+    .data-table tr:hover td { background: #F8FAFC; }
   </style>
 </head>
 <body class="flex">
-  
+
   <aside class="w-80 fixed h-screen border-r border-slate-200 bg-white p-10 flex flex-col z-[100] glass">
     <div class="mb-12">
       <div class="flex items-center gap-3 mb-2">
-        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white"><i class="fas fa-layer-group text-xs"></i></div>
-        <span class="text-[12px] font-black tracking-tighter italic uppercase">SOP Copilot</span>
+        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white"><i class="fas fa-chart-line text-xs"></i></div>
+        <span class="text-[12px] font-black tracking-tighter italic uppercase">KPI Copilot</span>
       </div>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] opacity-30">Strategic Report</h2>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] opacity-30">Performance Review</h2>
     </div>
     <nav class="flex-1 overflow-y-auto custom-scrollbar">
       <div class="mb-10 text-[10px] font-black uppercase tracking-[0.3em] opacity-30 px-4">Navigation</div>
       <a href="#overview" class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all hover:bg-blue-600/10 mb-1">
         <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-        <span class="text-[11px] font-black uppercase tracking-widest text-blue-500">战略总览 / Dashboard</span>
+        <span class="text-[11px] font-black uppercase tracking-widest text-blue-500">总览 / Dashboard</span>
       </a>
-      
+
         <a href="#section-0" class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all hover:bg-white/5 mb-1">
           <div class="w-1.5 h-1.5 rounded-full bg-slate-500 opacity-20 group-hover:opacity-100 transition-all"></div>
-          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">市场评估</span>
+          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">5月复盘</span>
         </a>
-      
+
         <a href="#section-1" class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all hover:bg-white/5 mb-1">
           <div class="w-1.5 h-1.5 rounded-full bg-slate-500 opacity-20 group-hover:opacity-100 transition-all"></div>
-          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">产品技术原理拆解</span>
+          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">6月规划</span>
         </a>
-      
+
         <a href="#section-2" class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all hover:bg-white/5 mb-1">
-          <div class="w-1.5 h-1.5 rounded-full bg-slate-500 opacity-20 group-hover:opacity-100 transition-all"></div>
-          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">VOC分析</span>
+          <div class="w-1.5 h-1.5 rounded-full bg-red-500 opacity-30 group-hover:opacity-100 transition-all"></div>
+          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-red-600">TR3 归因 & 6月行动</span>
         </a>
-      
-        <a href="#section-3" class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all hover:bg-white/5 mb-1">
-          <div class="w-1.5 h-1.5 rounded-full bg-slate-500 opacity-20 group-hover:opacity-100 transition-all"></div>
-          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">PSD分析</span>
-        </a>
-      
-        <a href="#section-4" class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all hover:bg-white/5 mb-1">
-          <div class="w-1.5 h-1.5 rounded-full bg-slate-500 opacity-20 group-hover:opacity-100 transition-all"></div>
-          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">利基市场选择</span>
-        </a>
-      
-        <a href="#section-5" class="group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all hover:bg-white/5 mb-1">
-          <div class="w-1.5 h-1.5 rounded-full bg-slate-500 opacity-20 group-hover:opacity-100 transition-all"></div>
-          <span class="text-[11px] font-black uppercase tracking-widest truncate text-slate-500 group-hover:text-blue-600">竞品分析</span>
-        </a>
-      
+
     </nav>
+    <div class="pt-6 border-t border-slate-200 text-[10px] font-black uppercase tracking-[0.3em] opacity-30 px-4">
+      关志邦 · 跨境电商产品
+    </div>
   </aside>
 
   <main class="flex-1 ml-80 min-h-screen">
-    
+
     <section id="overview" class="min-h-screen p-16 flex flex-col">
       <header class="flex items-start justify-between mb-20">
         <div>
           <div class="flex items-center gap-4 mb-4">
-            <span class="px-4 py-1.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest">New Project</span>
-            <span class="text-[11px] font-black opacity-30 uppercase tracking-[0.2em]">2026/1/16 10:00</span>
+            <span class="px-4 py-1.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest">月度复盘</span>
+            <span class="text-[11px] font-black opacity-30 uppercase tracking-[0.2em]">2026/06/01</span>
           </div>
-          <h1 class="text-6xl font-black tracking-tighter uppercase italic mb-4">手持挂烫机 <span class="text-blue-600">战略规划报告</span></h1>
+          <h1 class="text-6xl font-black tracking-tighter uppercase italic mb-4">5月 <span class="text-blue-600">绩效复盘</span> & 6月规划</h1>
           <div class="flex items-center gap-4">
-            <span class="text-[12px] font-black uppercase tracking-widest opacity-40">当前节点:</span>
-            <span class="text-[12px] font-black uppercase tracking-widest text-blue-500">Charter</span>
+            <span class="text-[12px] font-black uppercase tracking-widest opacity-40">汇报人:</span>
+            <span class="text-[12px] font-black uppercase tracking-widest text-blue-500">关志邦</span>
+            <span class="text-[12px] font-black uppercase tracking-widest opacity-40 ml-4">对象:</span>
+            <span class="text-[12px] font-black uppercase tracking-widest text-blue-500">直属 Leader</span>
           </div>
         </div>
-        
+
         <div class="flex gap-16">
           <div class="text-right">
-             <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-2">SAM 目标规模</div>
-             <div class="text-4xl font-black tracking-tighter text-blue-500">8亿</div>
+             <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-2">5月 CDCP 达成率</div>
+             <div class="text-4xl font-black tracking-tighter text-emerald-500">173.3%</div>
+             <div class="text-[10px] font-black opacity-40 mt-1">实际 10 / 规划 5.78</div>
           </div>
           <div class="text-right">
-             <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-2">SOM 营收预期</div>
-             <div class="text-4xl font-black tracking-tighter text-emerald-500">8亿</div>
+             <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-2">5月 TR3 达成率</div>
+             <div class="text-4xl font-black tracking-tighter text-red-500">86.7%</div>
+             <div class="text-[10px] font-black opacity-40 mt-1">实际 5.20 / 规划 6</div>
           </div>
         </div>
       </header>
 
-      <div class="p-12 rounded-[3.5rem] bg-blue-50 border-blue-100 border mb-20 relative overflow-hidden group">
+      <div class="p-12 rounded-[3.5rem] bg-blue-50 border-blue-100 border mb-12 relative overflow-hidden group">
         <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"></div>
         <div class="relative z-10">
           <div class="flex items-center gap-4 mb-8">
             <i class="fas fa-quote-left text-blue-500 text-3xl"></i>
             <h3 class="text-2xl font-black tracking-tight">执行摘要 Executive Summary</h3>
           </div>
-          <p class="text-xl font-medium leading-[2] opacity-80">
-            基于 Charter 阶段的深度研判，本项目旨在锁定核心利基市场，通过底层技术架构的差异化创新解决用户痛点。本报告将详细呈现从市场评估、技术拆解到用户画像的全链路逻辑，为决策层提供确定性的战略共识。
+          <p class="text-base leading-relaxed opacity-80 mb-6">
+            5月 <span class="font-black">CDCP</span>（概念设计）阶段完成 <span class="font-black text-emerald-600">2 个产品（庭院灯*20ODMB、扩香仪*10ODMA）</span>，达成率 <span class="font-black text-emerald-600">173.3%</span>，超额完成。
+            <span class="font-black">TR3</span>（技术评审）阶段实际 <span class="font-black text-red-600">5.20 / 规划 6</span>，达成率 <span class="font-black text-red-600">86.7%</span>，未达 1 个节点。
           </p>
+          <p class="text-base leading-relaxed opacity-80 mb-6">
+            TR3 未达成根因：<span class="font-black">测试天气原因 + PRD 完成后未及时推进下游（DFMEA / TR3 会议）</span>，属个人流程卡控问题。
+          </p>
+          <p class="text-base leading-relaxed opacity-80 mb-6">
+            6月规划：<span class="font-black text-blue-600">新增多功能塔吉锅 TR1 节点</span>，其余按原图执行（PDCP / TR4A / ADCP 等 8 节点）。
+            GMV / 品质 暂不纳入 KPI 考核口径（新人阶段）。
+          </p>
+          <div class="grid grid-cols-3 gap-4 mt-8">
+            <div class="kpi-card p-6 rounded-3xl bg-white border border-slate-200">
+              <div class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">CDCP（5月）</div>
+              <div class="text-3xl font-black text-emerald-500">✓ 2 节点</div>
+              <div class="text-[11px] font-bold opacity-50 mt-1">达成率 173.3%</div>
+            </div>
+            <div class="kpi-card p-6 rounded-3xl bg-white border border-slate-200">
+              <div class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">TR3（5月）</div>
+              <div class="text-3xl font-black text-red-500">5.20</div>
+              <div class="text-[11px] font-bold opacity-50 mt-1">达成率 86.7%（差 1 节点）</div>
+            </div>
+            <div class="kpi-card p-6 rounded-3xl bg-white border border-slate-200">
+              <div class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-2">6月新增</div>
+              <div class="text-3xl font-black text-blue-500">塔吉锅</div>
+              <div class="text-[11px] font-bold opacity-50 mt-1">多功能塔吉锅套装 · TR1</div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-        
-        <a href="#section-0" class="block group relative p-8 rounded-[2.5rem] bg-white border-slate-200 shadow-xl border hover:border-blue-500/50 transition-all hover:-translate-y-2">
-           <div class="flex items-center justify-between mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-500 flex items-center justify-center text-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                <i class="fas fa-chart-pie"></i>
-              </div>
-              <i class="fas fa-arrow-right text-[10px] opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-           </div>
-           <h4 class="text-lg font-black tracking-tight mb-2">市场评估</h4>
-           <p class="text-[11px] leading-relaxed opacity-50 line-clamp-3">📌 核心结论: 针对亚马逊美国站手持挂烫机品类进行了PEST宏观环境及TAM/SAM/SOM市场容量的深度分析。核心发现指出该品类正处于后疫情时代的剧烈回调期，年增长率大幅下滑约50%，且品牌集中度高达70.57%，呈现典型的红海存量博弈特征。分析强调了TikTok渠道作为新突破口的重要性，并建议通过高客单价精品化或极致便携化的差异化策略避开价格战僵局。</p>
-        </a>
-      
-        <a href="#section-1" class="block group relative p-8 rounded-[2.5rem] bg-white border-slate-200 shadow-xl border hover:border-blue-500/50 transition-all hover:-translate-y-2">
-           <div class="flex items-center justify-between mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-500 flex items-center justify-center text-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                <i class="fas fa-microchip"></i>
-              </div>
-              <i class="fas fa-arrow-right text-[10px] opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-           </div>
-           <h4 class="text-lg font-black tracking-tight mb-2">产品技术原理拆解</h4>
-           <p class="text-[11px] leading-relaxed opacity-50 line-clamp-3">📌 核心结论: 该文档是一份手持挂烫机品类的技术架构深度拆解，核心探讨了从低端“直热壶式”向高端“泵压即热式”技术跨越的路径。文章从能量转换、流体力学及机械结构三个维度出发，详细分析了核心发热体、电磁泵、温控模组及面板的BOM层级设计，并针对滴水、水垢、便携性等行业痛点提供了物理层面的解决方案，明确了未来溢价空间在于高热效率、精准控制算法及紧凑型结构堆叠。</p>
-        </a>
-      
-        <a href="#section-2" class="block group relative p-8 rounded-[2.5rem] bg-white border-slate-200 shadow-xl border hover:border-blue-500/50 transition-all hover:-translate-y-2">
-           <div class="flex items-center justify-between mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-500 flex items-center justify-center text-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                <i class="fas fa-users"></i>
-              </div>
-              <i class="fas fa-arrow-right text-[10px] opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-           </div>
-           <h4 class="text-lg font-black tracking-tight mb-2">VOC分析</h4>
-           <p class="text-[11px] leading-relaxed opacity-50 line-clamp-3">📌 核心结论: 通过对2853条及2203条VOC数据的深度挖掘，发现手持挂烫机市场的核心痛点高度集中。约35%的用户愤怒于产品“寿命短/突然坏掉”，其次约30%的用户抱怨“喷水/除皱无效”。这两大功能性缺陷构成了主要的负面来源。</p>
-        </a>
-      
-        <a href="#section-3" class="block group relative p-8 rounded-[2.5rem] bg-white border-slate-200 shadow-xl border hover:border-blue-500/50 transition-all hover:-translate-y-2">
-           <div class="flex items-center justify-between mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-500 flex items-center justify-center text-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                <i class="fas fa-bullseye"></i>
-              </div>
-              <i class="fas fa-arrow-right text-[10px] opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-           </div>
-           <h4 class="text-lg font-black tracking-tight mb-2">PSD分析</h4>
-           <p class="text-[11px] leading-relaxed opacity-50 line-clamp-3">📌 核心结论: 本次分析精准定位了商务精英、精致青年及品质家庭三类中高端目标客群，通过对各人群核心使用场景的PSD（人群、场景、需求）建模及CFMEA（失效模式与效应分析），提炼出从“低端价格战”转向“高价值技术解决”的竞争策略，重点强调不喷水、干蒸汽、高颜值与长寿命等核心竞争力。</p>
-        </a>
-      
-        <a href="#section-4" class="block group relative p-8 rounded-[2.5rem] bg-white border-slate-200 shadow-xl border hover:border-blue-500/50 transition-all hover:-translate-y-2">
-           <div class="flex items-center justify-between mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-500 flex items-center justify-center text-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                <i class="fas fa-chart-pie"></i>
-              </div>
-              <i class="fas fa-arrow-right text-[10px] opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-           </div>
-           <h4 class="text-lg font-black tracking-tight mb-2">利基市场选择</h4>
-           <p class="text-[11px] leading-relaxed opacity-50 line-clamp-3">📌 核心结论: 建议避开$30以下的大众红海，明确切入“高端便携商旅”利基市场。将产品重塑为“商务人士的口袋体面保险”，主打$49.99-$59.99价格段。核心策略是利用“泵压即热技术”解决喷水痛点，利用“折叠设计”解决收纳痛点，利用“宽电压”解决跨境痛点。</p>
-        </a>
-      
-        <a href="#section-5" class="block group relative p-8 rounded-[2.5rem] bg-white border-slate-200 shadow-xl border hover:border-blue-500/50 transition-all hover:-translate-y-2">
-           <div class="flex items-center justify-between mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-500 flex items-center justify-center text-xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                <i class="fas fa-microchip"></i>
-              </div>
-              <i class="fas fa-arrow-right text-[10px] opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-           </div>
-           <h4 class="text-lg font-black tracking-tight mb-2">竞品分析</h4>
-           <p class="text-[11px] leading-relaxed opacity-50 line-clamp-3">📌 核心结论: 针对亚马逊美国站挂烫机市场的竞争分析显示，目前市场在“极致便携”与“专业性能”之间存在断层。竞品普遍存在低端喷水风险（Hilife）、重量过大不便携（Conair）或质感廉价（Beautural）的问题。项目核心机会点在于通过MCU温控技术和极致轻量化设计，切入$49.99-$59.99的高端商旅利基市场。</p>
-        </a>
-      
       </div>
     </section>
 
-    <div class="px-16 pb-40">
-      
-      <section id="section-0" class="pt-32 mb-40">
-        <div class="flex items-center justify-between mb-12">
-          <div class="flex items-center gap-6">
-            <div class="w-16 h-16 rounded-[2rem] bg-blue-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-blue-500/30">
-              <i class="fas fa-chart-network"></i>
-            </div>
-            <div>
-              <h3 class="text-4xl font-black tracking-tighter uppercase italic">市场评估</h3>
-              <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mt-2">Module Detail Analysis / 模块深度穿透</div>
-            </div>
-          </div>
-          <a href="#overview" class="px-6 py-3 rounded-full bg-slate-900/5 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all"><i class="fas fa-th-large mr-2"></i> 返回总览</a>
+    <section id="section-0" class="pt-20 px-16 pb-32">
+      <div class="flex items-center gap-4 mb-12">
+        <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Section 01</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">已完成</span>
+      </div>
+      <h2 class="text-5xl font-black tracking-tighter uppercase italic mb-8">5月 <span class="text-blue-600">复盘</span></h2>
+
+      <div class="rounded-3xl bg-white border border-slate-200 overflow-hidden mb-12 shadow-sm">
+        <div class="px-8 py-5 border-b border-slate-200 flex items-center justify-between">
+          <h3 class="text-lg font-black tracking-tight">KPI 完成明细（5月）</h3>
+          <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">关志邦</span>
         </div>
+        <table class="data-table w-full">
+          <thead>
+            <tr>
+              <th>产品</th>
+              <th>节点</th>
+              <th>规划值</th>
+              <th>实际值</th>
+              <th>达成率</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-black">庭院灯 *20ODMB</td>
+              <td>CDCP</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><span class="tag-good px-2.5 py-1 rounded-full text-[10px] font-black">✅ 完成</span></td>
+            </tr>
+            <tr>
+              <td class="font-black">扩香仪 *10ODMA</td>
+              <td>CDCP</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><span class="tag-good px-2.5 py-1 rounded-full text-[10px] font-black">✅ 完成</span></td>
+            </tr>
+            <tr>
+              <td class="font-black">CDCP 合计</td>
+              <td>CDCP</td>
+              <td>5.78</td>
+              <td class="font-black">10</td>
+              <td class="font-black text-emerald-600">173.3%</td>
+              <td><span class="tag-good px-2.5 py-1 rounded-full text-[10px] font-black">✅ 超额</span></td>
+            </tr>
+            <tr class="bg-red-50/30">
+              <td class="font-black">扩香仪 *2ODMB</td>
+              <td>TR3（TDCP）</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><span class="tag-good px-2.5 py-1 rounded-full text-[10px] font-black">✅ 完成</span></td>
+            </tr>
+            <tr class="bg-red-50/30">
+              <td class="font-black">扩香仪 *1ODMA</td>
+              <td>TR3（TDCP）</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><span class="tag-good px-2.5 py-1 rounded-full text-[10px] font-black">✅ 完成</span></td>
+            </tr>
+            <tr>
+              <td class="font-black">TR3 合计</td>
+              <td>TR3（TDCP）</td>
+              <td class="font-black">6</td>
+              <td class="font-black text-red-600">5.20</td>
+              <td class="font-black text-red-600">86.7%</td>
+              <td><span class="tag-warn px-2.5 py-1 rounded-full text-[10px] font-black">⚠️ 差 1 节点</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <div class="grid grid-cols-12 gap-10">
-          <div class="col-span-12 xl:col-span-8">
-            <div class="p-12 rounded-[4rem] bg-white shadow-2xl border-slate-100 border h-full">
-               <div class="flex items-center gap-4 mb-8">
-                 <span class="w-12 h-1 bg-blue-600 rounded-full"></span>
-                 <span class="text-[12px] font-black uppercase tracking-[0.4em] text-blue-500">Strategic Consensus / 核心决策依据</span>
-               </div>
-               <div class="text-2xl font-bold leading-[1.8] whitespace-pre-wrap text-slate-800">
-                 📌 核心结论: 针对亚马逊美国站手持挂烫机品类进行了PEST宏观环境及TAM/SAM/SOM市场容量的深度分析。核心发现指出该品类正处于后疫情时代的剧烈回调期，年增长率大幅下滑约50%，且品牌集中度高达70.57%，呈现典型的红海存量博弈特征。分析强调了TikTok渠道作为新突破口的重要性，并建议通过高客单价精品化或极致便携化的差异化策略避开价格战僵局。
-🚀 关键动作:
-● 进行外观及核心加热技术的专利侵权风险排查
-● 核算供应链BOM成本及物流关税波动对毛利的影响
-● 启动UL或ETL等电器安全标准的合规性认证流程
-● 策划基于TikTok的短视频内容展示与营销推广方案
-● 针对$45以上的高端细分市场进行深度产品定义与微创新研发
-               </div>
-            </div>
-          </div>
-          <div class="col-span-12 xl:col-span-4">
-             <div class="p-12 rounded-[4rem] bg-slate-100/50 border-slate-200 border h-full flex flex-col">
-                <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-8">Methodology / 逻辑推导</div>
-                <div class="flex-1 overflow-y-auto max-h-[400px] pr-4 custom-scrollbar">
-                  <div class="text-[13px] leading-loose opacity-60 italic whitespace-pre-wrap font-medium">
-                    基于您提供的亚马逊美国站“手持挂烫机”及“标准手持挂烫机”的市场数据图片，以下是对该品类的PEST宏观环境分析：
+      <div class="rounded-3xl bg-slate-50 border border-slate-200 p-8">
+        <h3 class="text-lg font-black tracking-tight mb-3 flex items-center gap-2">
+          <i class="fas fa-info-circle opacity-40"></i>
+          5月规划图（原始口径）
+        </h3>
+        <p class="text-sm opacity-70 leading-relaxed">
+          5月规划含 2 个产品 × 2 业务线（CDCP 阶段：庭院灯*20ODMB、扩香仪*10ODMA；TR3 阶段：扩香仪*2ODMB、扩香仪*1ODMA）。
+          实际 CDCP 节点全部通过；TR3 阶段差 1 节点。
+        </p>
+      </div>
+    </section>
 
-1. P —— 政治与法律环境 (Political & Legal)
+    <section id="section-1" class="pt-20 px-16 pb-32 bg-slate-50/50">
+      <div class="flex items-center gap-4 mb-12">
+        <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Section 02</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">规划</span>
+      </div>
+      <h2 class="text-5xl font-black tracking-tighter uppercase italic mb-8">6月 <span class="text-blue-600">规划</span></h2>
+      <p class="text-base opacity-70 leading-relaxed mb-12 max-w-3xl">
+        6月共 <span class="font-black text-blue-600">8 个产品节点</span>（按规划表）+ <span class="font-black text-blue-600">多功能塔吉锅 TR1</span>（新增）。
+        关键节点：<span class="font-black">庭院灯*20ODMB 计划 6 月中 GA</span>。
+      </p>
 
-贸易政策与关税影响：
-该品类主要市场为美国，制造端通常集中在中国。中美贸易关系的波动及关税政策直接影响产品的落地成本与利润空间。鉴于图片中提到“供应链是利润风险点”，需密切关注关税变化对FOB成本的冲击。
-
-合规与安全标准：
-作为加热类小家电，美国市场对电器安全（如UL、ETL认证）及电压稳定性有严格的法律强制要求。此外，随着ESG概念的普及，各州对电子废弃物处理及环保包装材料的法规日益严格，这增加了合规成本。
-
-知识产权保护：
-图片显示品牌集中度较高（约70.57%）且市场处于成熟期，头部品牌通常拥有较完善的专利布局。新进入者需警惕外观专利及核心加热技术的侵权风险，法律层面的防御战是进入该市场的隐形门槛。
-
-2. E —— 经济环境 (Economic)
-
-市场规模与增长回调：
-数据极其直观地显示了经济层面的严峻挑战。两个细分品类的同比年增长率均出现大幅下滑（分别约为-53.14%和-49.79%）。这表明市场正在经历“后疫情时代”的剧烈回调，此前因居家生活带动的“宅经济”红利已消退，市场存量竞争加剧。
-
-消费力与价格敏感度：
-客单价主要集中在28美元至41美元之间，属于中低价位的大众消费品。美国当前的通胀压力可能导致消费者削减非必需耐用品的开支，或者倾向于寻找更具性价比的替代品，这对定价策略提出了更高要求。
-
-供应链成本压力：
-图片策略总结中特别指出了“外包供应链是利润风险点”。在大宗商品价格波动及物流成本（海运费）不稳定的宏观背景下，如何控制BOM成本以维持在低客单价下的毛利，是经济环境下的核心挑战。
-
-3. S —— 社会与文化环境 (Social & Cultural)
-
-生活方式的变迁：
-“手持”与“便携”属性高度契合美国年轻租房群体及独居人群的生活习惯。由于居住空间有限，他们更倾向于不需要熨衣板、收纳方便的手持挂烫机，而非传统笨重的挂烫机或电熨斗。
-
-出行与社交需求复苏：
-尽管总体数据下滑，但“旅行挂烫机”作为细分品类存在，且TT推荐理由中明确提及“适合旅行/应急场景”。随着商旅和度假出行的常态化，对于衣物快速除皱、保持体面形象的需求依然存在，这是存量市场中的刚需场景。
-
-媒触渠道的变化：
-图片明确指出了TikTok渠道的高推荐值（8分）。这反映了消费者获取产品信息的习惯变化：通过短视频直观展示蒸汽大小、除皱前后的“即时效果”，比传统图文更能刺激冲动消费。这要求品牌具备内容营销的基因。
-
-4. T —— 技术环境 (Technological)
-
-技术成熟度与同质化：
-分析指出“市场成熟但体量巨大”，且产品评分较高（4.22-4.38分），说明现有技术已非常成熟，消费者痛点基本被满足。这也意味着技术壁垒低，产品同质化严重（图片显示top3关键词高度重合），单纯靠基础功能难以突围。
-
-差异化创新方向：
-在技术停滞期，创新更多体现在微创新上。如图片建议的“高瑞利基路线”或“礼品属性”，技术需向更轻量化（提升功率密度比）、更快的预热速度、不滴水技术（防冷凝水）以及智能化（自动断电、材质识别）方向迭代。
-
-制造工艺升级：
-为了在激烈的价格战（黄海/蓝海混合状态）中生存，制造端的自动化水平和模具精度的提升至关重要，这直接决定了产品的一致性和最终的客诉率（VOC）。
-
-
-基于您提供的亚马逊美国站市场数据，特别是“年增长率暴跌约50%”以及“品牌集中度高达70%”这两个关键指标，我对该品类的市场规模（TAM、SAM、SOM）进行了自顶向下的拆解与估算。
-
-请注意，由于缺乏具体的绝对销售额数据，以下估算基于该类目在亚马逊美国站的历史表现及一般行业平均值进行的逻辑推演。
-
-1. TAM —— 潜在市场总额 (Total Addressable Market)
-
-定义范围：美国整体衣物护理与熨烫设备市场（含传统电熨斗、立式挂烫机、手持挂烫机）。
-
-市场逻辑推演：
-虽然手持挂烫机属于细分品类，但其潜在替代对象是美国家庭普遍拥有的传统电熨斗。美国作为全球最大的消费市场之一，衣物护理属于家庭刚需。根据行业常态，衣物护理类小家电在美国市场的年销售规模通常在数亿美元级别。
-
-尽管宏观数据显示“宅经济”红利消退，但商旅复苏（TT推荐理由中的旅行场景）为市场提供了新的支撑点。TAM不仅包含现有的挂烫机用户，还包含数百万仍在使用笨重电熨斗并希望寻求便捷替代方案的潜在用户。
-
-估算数值：
-预计约为 8亿 至 10亿美元 / 年。
-这是一个相对稳定的存量大盘，增长率主要来自产品的更新换代及从传统熨斗向手持挂烫机的形态转化。
-
-2. SAM —— 可服务市场 (Serviceable Available Market)
-
-定义范围：亚马逊美国站“手持挂烫机”细分品类目前的年度市场容量。
-
-市场逻辑推演：
-这是最为关键的数据修正环节。您提供的数据显示该品类经历了约50%的剧烈回调。
-在疫情高峰期（2020-2021），该品类在亚马逊美国站的体量极有可能达到3亿美元以上的规模。
-然而，面对-53.14%和-49.79%的同比下滑，目前的市场水位已大幅回落。这意味着泡沫已被挤破，当前留存的是真实的刚需市场。
-
-结合客单价（28-41美元）和头部品牌销量推算，目前该细分赛道在亚马逊上的实际盘子已经缩小。
-
-估算数值：
-预计约为 1.2亿 至 1.5亿美元 / 年。
-计算依据：假设该类目日均出单量在1.2万-1.5万单左右（全站合计），均价30美元，年化后约为1.3亿-1.6亿美元。考虑到淡旺季波动及数据下滑趋势，保守估计在1.5亿以内。
-
-3. SOM —— 可获得市场 (Serviceable Obtainable Market)
-
-定义范围：新品牌或新产品在未来1-2年内，基于现有竞争格局能够切分到的实际份额。
-
-市场逻辑推演：
-这是最残酷的现实部分。
-阻力因素：
-数据明确指出品牌集中度约为70.57%。这意味着在1.5亿美元的SAM中，约1.05亿美元已经被头部大卖（如Hilife, Conair, Beautural等）牢牢占据。
-留给其余所有卖家的“长尾市场”仅剩约29.43%，即约4400万美元的空间。
-且市场处于存量博弈（红海/黄海），增长率为负，在此环境下抢夺份额通常需要极高的营销成本（PPC）或极强的差异化。
-
-机会因素：
-TikTok渠道的高推荐值（8分）和礼品属性是突破口。如果能通过内容营销避开站内搜索的直接价格战，有机会从外部引流转化。
-
-估算数值：
-预计约为 150万 至 400万美元 / 年（对应市场份额约1% - 2.5%）。
-
-实现路径拆解：
-目标销量：若以均价35美元计算（略高于均价以体现差异化），年营收300万美元需要年销约8.5万台，即日均销230台左右。
-在Top 10品牌垄断的背景下，作为一个新进者或腰部卖家，能稳定在日销200单以上已经属于该类目下的优秀表现（BSR榜单前50-80名水平）。
-
-4. 市场评估总结与战略建议
-
-市场现状判定：
-这是一个典型的“缩量存量市场”。TAM足够大但转化慢，SAM正在经历痛苦的去库存和需求回调期，SOM极其狭窄且拥挤。
-
-战略方向修正：
-不要试图与头部品牌在28美元的价格段进行正面厮杀（必死局）。
-根据SOM的估算，唯一的生存空间在于“切分细分场景”：
-1. 涨价做精品：将客单价拉升至45-55美元区间，主打“不喷水”、“预热极快”、“高端礼品包装”，避开28-40美元的红海。
-2. 降维做极致便携：针对TT提及的旅行场景，做体积最小、折叠收纳的差异化产品。
-
-结论：
-虽然SAM有1.5亿美金，但对于新项目而言，实际可触达的SOM仅为300万美金左右的规模。入局需极其谨慎，必须建立在拥有绝对供应链成本优势（抵抗关税风险）或极强的内容营销能力（TikTok）基础之上。
-                  </div>
-                </div>
-             </div>
-          </div>
+      <div class="rounded-3xl bg-white border border-slate-200 overflow-hidden mb-12 shadow-sm">
+        <div class="px-8 py-5 border-b border-slate-200 flex items-center justify-between">
+          <h3 class="text-lg font-black tracking-tight">6月 KPI 规划（按原规划表）</h3>
+          <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">关志邦</span>
         </div>
-      </section>
-      
-      <section id="section-1" class="pt-32 mb-40">
-        <div class="flex items-center justify-between mb-12">
-          <div class="flex items-center gap-6">
-            <div class="w-16 h-16 rounded-[2rem] bg-blue-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-blue-500/30">
-              <i class="fas fa-microchip"></i>
-            </div>
-            <div>
-              <h3 class="text-4xl font-black tracking-tighter uppercase italic">产品技术原理拆解</h3>
-              <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mt-2">Module Detail Analysis / 模块深度穿透</div>
-            </div>
-          </div>
-          <a href="#overview" class="px-6 py-3 rounded-full bg-slate-900/5 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all"><i class="fas fa-th-large mr-2"></i> 返回总览</a>
-        </div>
-
-        <div class="grid grid-cols-12 gap-10">
-          <div class="col-span-12 xl:col-span-8">
-            <div class="p-12 rounded-[4rem] bg-white shadow-2xl border-slate-100 border h-full">
-               <div class="flex items-center gap-4 mb-8">
-                 <span class="w-12 h-1 bg-blue-600 rounded-full"></span>
-                 <span class="text-[12px] font-black uppercase tracking-[0.4em] text-blue-500">Strategic Consensus / 核心决策依据</span>
-               </div>
-               <div class="text-2xl font-bold leading-[1.8] whitespace-pre-wrap text-slate-800">
-                 📌 核心结论: 该文档是一份手持挂烫机品类的技术架构深度拆解，核心探讨了从低端“直热壶式”向高端“泵压即热式”技术跨越的路径。文章从能量转换、流体力学及机械结构三个维度出发，详细分析了核心发热体、电磁泵、温控模组及面板的BOM层级设计，并针对滴水、水垢、便携性等行业痛点提供了物理层面的解决方案，明确了未来溢价空间在于高热效率、精准控制算法及紧凑型结构堆叠。
-🚀 关键动作:
-● 在产品研发阶段全面转向“泵压即热式”技术架构，放弃低端壶式方案。
-● 优化发热体内部迷宫式流道设计，并增加汽液分离结构以解决喷水痛点。
-● 开发基于MCU的脉冲蒸汽控制算法，实现针对不同织物的多档位蒸汽调节。
-● 在进水系统引入自清洁程序或树脂滤网，提升产品在硬水地区的耐用性。
-● 通过高功率密度材料应用与微型泵替代，推进商旅场景下的轻量化折叠设计。
-
-
-底层架构专家。针对您选定的“泵压即热式智能手持挂烫机”（Premium Handheld Steamer）方向，为了实现诸如“不滴水”、“精准控温”、“脉冲蒸汽”及“数显交互”等差异化功能，我们需要从传统的纯机械开关逻辑升级为基于MCU（微控制器）的电子控制架构。
-
-以下是为您设计的系统级电子软硬件架构逻辑图解（文本版）：
-
-1. 系统顶层架构概览
-
-该架构采用 主控与驱动分离 的拓扑结构。以一颗 32位或8位工业级MCU 为核心大脑，通过传感器网络感知温度与状态，利用PID算法精准控制加热体功率与水泵流速，从而实现“汽化率”的最优解，彻底解决低端产品的滴水痛点。
-
-2. 硬件层架构逻辑 (Hardware Layer)
-
-2.1 电源管理子系统 (Power Management)
-AC输入：110V-120V（美规）
-EMI滤波器：滤除电网杂波，防止电路对电网造成污染（过FCC认证关键）。
-AC-DC电源模块：采用非隔离或隔离式开关电源芯片（SMPS），将高压交流电转换为稳定的 5V/3.3V 直流电，为MCU、显示屏及传感器供电。
-过零检测电路 (Zero-Crossing Detection)：捕捉交流电的过零点，用于同步可控硅（Triac）的导通角，实现对加热丝的无级调压及减少开关噪声。
-
-2.2 核心控制子系统 (Control Unit)
-MCU（微控制器）：建议采用 ARM Cortex-M0 或高性价比国产 RISC-V 芯片。
-功能定义：负责逻辑运算、按键扫描、显示驱动、外设控制及安全保护算法运行。
-
-2.3 功率驱动子系统 (Actuator Drive)
-加热体驱动：
-核心元件：双向可控硅 (Triac)。
-逻辑：MCU通过PWM或相位控制信号触发可控硅，调节加热管功率。相比传统机械继电器，它能实现恒温控制，寿命更长且无噪音。
-水泵驱动：
-核心元件：MOSFET 或 继电器 + 续流二极管。
-逻辑：通过PWM脉宽调制控制电磁泵的振动频率，从而调节出水量（低档/高档蒸汽）。
-
-2.4 传感反馈子系统 (Sensor Feedback)
-NTC热敏电阻：贴合在发热体表面，实时反馈核心温度给MCU（精度通常要求在±1%）。
-电容式水位检测（选配）：贴合在水箱外壁，检测是否缺水，实现电子防干烧提醒。
-NTC环境温度（选配）：用于电池供电版或高端机型的环境补偿。
-
-2.5 人机交互子系统 (HMI)
-输入：轻触开关（电源、档位）、扳机开关（出汽）。
-输出：OLED小屏或数码管（显示温度、倒计时、状态图标）、蜂鸣器（操作反馈、报警）。
-
-3. 软件层架构逻辑 (Software Layer)
-
-为了保证产品的稳定性和用户体验，软件架构通常采用 有限状态机 (Finite State Machine, FSM) 模型设计。
-
-3.1 状态机流转逻辑
-状态1：待机 (Standby)
-系统上电自检，检测NTC是否开路/短路。屏幕/指示灯微亮，等待用户按下电源键。
-状态2：预热 (Pre-heating)
-加热体全功率运行。MCU监测NTC温度，当温度爬升至设定阈值（如140°C）时，切换至“就绪”状态。此过程通常需锁定水泵，防止冷水喷出。
-状态3：保温/就绪 (Ready/Keep Warm)
-进入PID控制循环。MCU根据目标温度动态调整加热体功率，保持温度恒定在最佳汽化区（如150°C±5°C）。指示灯变色提示用户可使用。
-状态4：工作/出汽 (Steaming)
-用户按下扳机。MCU开启水泵驱动。
-核心算法介入：水泵流速与加热体温度挂钩。若检测到温度骤降（汽化吸热过快），自动降低泵速或暂停注水，防止喷水；当温度回升，自动恢复泵速。
-状态5：自动休眠 (Auto-Off)
-若无操作超过一定时间（如8分钟），系统自动切断加热体电源，进入低功耗模式，防止火灾隐患。
-
-3.2 关键算法逻辑
-PID温控算法：
-取代简单的“开/关”逻辑。通过比例(P)、积分(I)、微分(D)运算，预测温度惯性，实现加热体温度的平滑控制，避免温度过冲导致塑料外壳熔化或温度过低导致滴水。
-冷凝水补偿算法：
-在刚开始出汽的前3秒，控制水泵以低频工作（Soft Start），让发热体适应冷水冲击，随后线性增加至设定流速。
-除垢自清洁程序 (Self-Cleaning Mode)：
-一种特殊的软件模式。将发热体加热至更高温度后，控制水泵进行间歇性高频脉冲注水，利用爆发性蒸汽冲击波剥离内壁水垢。
-
-4. 安全冗余设计 (Safety Redundancy)
-
-作为出口美国的高风险加热类产品，必须具备物理与逻辑双重防线：
-
-物理层（硬件强制断电）：
-温度保险丝 (Thermal Fuse)：串联在主回路中，贴近发热体。一旦温度失控超过200°C（如MCU死机或可控硅击穿），物理熔断，永久断电。
-突跳式温控器 (Snap-action Thermostat)：作为二级保护，当温度超过170°C时物理断开，冷却后自动复位。
-
-逻辑层（软件保护）：
-看门狗 (Watchdog)：若程序跑飞或死锁，自动重启MCU。
-NTC异常保护：检测到传感器读数超出合理范围（如-20°C或300°C），判定为传感器故障，强制停机并报警。
-超时保护：无论状态如何，连续加热超过特定时长强制关断。
-
-5. 总结
-
-这套架构相比传统的低端挂烫机，增加了BOM成本（主要是MCU、PCBA及传感器），但实现了以下价值：
-
-1. 解决了“滴水”这一核心痛点（通过PID和泵速联动）。
-2. 提供了“快速预热”和“强劲蒸汽”的体验（通过电子精准控制）。
-3. 赋予了产品“智能/安全”的营销属性（数显、自动断电、防干烧）。
-
-这是您在SOM存量市场中，将客单价从$28拉升至$45+，并能在TT视频中展示“智能温控不伤衣”技术卖点的底层物理支撑。
-               </div>
-            </div>
-          </div>
-          <div class="col-span-12 xl:col-span-4">
-             <div class="p-12 rounded-[4rem] bg-slate-100/50 border-slate-200 border h-full flex flex-col">
-                <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-8">Methodology / 逻辑推导</div>
-                <div class="flex-1 overflow-y-auto max-h-[400px] pr-4 custom-scrollbar">
-                  <div class="text-[13px] leading-loose opacity-60 italic whitespace-pre-wrap font-medium">
-                    项目归档 - 技术拆解: 手持挂烫机 (Handheld Garment Steamer)
-
-作为底层架构专家，我将从能量转换、流体力学及机械结构三个维度，为您深度拆解该品类的技术内核。虽然挂烫机看似简单，但在从“几十元的地摊货”向“高客单价精品”跨越时，其核心在于对“水气转化效率”的极致控制。
-
-以下是该产品的技术架构拆解：
-
-1. 核心物理逻辑：相变与热传递
-
-该产品的本质是一个“能量转换器”，其物理过程分为三个阶段：
-
-第一阶段：电能转热能
-电流通过阻性负载（发热体），产生高热。核心指标是“热传导效率”。
-
-第二阶段：液态转气态（相变）
-液态水接触高温腔体，瞬间吸收汽化潜热，体积膨胀约1600-1700倍（在标准大气压下），形成高压蒸汽。
-
-第三阶段：纤维重塑
-高温蒸汽分子（通常在98°C-120°C）穿透衣物纤维，打断纤维分子间的氢键，使其软化；配合重力或面板的机械压力，使纤维重新排列，冷却后氢键重组，从而定型。
-
-2. 两大技术架构路线（决定产品档次的关键）
-
-在您提供的图片中，涵盖了市场上两种截然不同的技术架构，这直接决定了成本和用户体验：
-
-架构 A：直热壶式（Boiler Type）
-对应图片：Hilife款（大水箱，结构臃肿）
-原理：类似于烧水壶。水箱和加热体合二为一，将水煮沸产生蒸汽。
-优点：结构简单，BOM成本极低，故障率低。
-缺点：
-无法控制出气量（水开即喷）。
-预热慢（需烧开整箱水，约2分钟）。
-严禁倾斜（有沸水溢出烫伤风险），无法平烫，仅能挂烫。
-局限：这是低端红海市场的典型架构，很难做高溢价。
-
-架构 B：泵压即热式（Pump-Driven Flash Heating）
-对应图片：Jack&Rose / 可折叠款 / 数显款
-原理：类似于意式咖啡机。水箱独立冷水，通过电磁泵将水定量抽入极热的独立发热腔，水流在流道中瞬间汽化喷出。
-优点：
-即开即用（预热仅需10-30秒）。
-不挑角度（可平烫、挂烫、倒置，因为水路是封闭的）。
-蒸汽干燥有力（经过二次加热，不易湿衣）。
-局限：成本较高，对密封性和泵的寿命有要求。
-机会：这是您进入“高瑞利基市场”或“旅行便携场景”必须选择的技术路线。
-
-3. 关键元器件拆解与作用（BOM层级）
-
-针对更有市场潜力的“泵压即热式”架构，其核心由以下四大件组成：
-
-3.1. 压铸铝发热体 (The Heating Core)
-这是心脏部件。通常采用铝合金压铸，内部埋入不锈钢电热管。
-核心技术点：内部迷宫式流道设计。流道越长，水与高温铝壁接触时间越长，汽化越彻底，越不容易喷射冷水（俗称“流口水”）。
-差异化方向：高端产品会采用“双加热系统”，即在面板处进行二次加热，确保喷出的是干蒸汽。
-
-3.2. 电磁泵 (Solenoid Pump)
-这是动力来源。通过脉冲电流控制柱塞往复运动，将水压入发热体。
-关键指标：流量稳定性。如果泵推力太猛，水来不及汽化就会喷水；推力太弱，蒸汽量不足。
-差异化方向：脉冲蒸汽技术（Pulse Steam），通过电路控制泵的频率，实现一波一波的强劲蒸汽冲击，穿透厚大衣。
-
-3.3. 温控与保护模组 (Thermostat & Fuse)
-涉及UL/ETL安全合规的核心。
-突跳式温控器：控制发热体温度在140°C-160°C之间，过热即断电。
-温度保险丝：最后一道防线，温度失控时物理熔断，防止火灾。
-NTC热敏电阻（仅限数显款）：配合单片机（MCU）实现精准控温和防干烧保护。
-
-3.4. 蒸汽喷头与面板 (Nozzle & Panel)
-直接接触衣物的部分。
-材质逻辑：
-PC/ABS塑料面板：低端，耐热性差。
-不锈钢面板：中端，顺滑耐磨。
-陶瓷釉面板：高端（对应您的精品路线），不伤衣物，导热均匀。
-物理孔径：出气孔的数量和排列决定了蒸汽的覆盖面积。
-
-4. 技术壁垒与痛点解决方案（针对VOC优化）
-
-在“技术环境”分析中提到的同质化问题，可以通过解决以下物理痛点来打破：
-
-痛点 1：滴水/喷水 (Spitting Water)
-物理原因：莱顿弗罗斯特效应失效，或者注水速度 > 汽化速度。
-解决方案：
-优化发热体流道长度。
-增加“汽液分离”迷宫结构。
-在喷头处增加冷凝水回流槽。
-
-痛点 2：水垢堵塞 (Scale Build-up)
-物理原因：水中钙镁离子在高温流道内沉积，堵塞出气孔。
-解决方案：
-设计自清洁程序（让泵高速反转或强力冲刷）。
-在进水口增加由于树脂滤网（软化水质）。
-
-痛点 3：重量与续航的矛盾 (Weight vs. Duration)
-物理逻辑：高功率密度比。
-解决方案：
-使用更高效的铝压铸工艺减薄壁厚。
-采用高转速微型泵替代传统笨重电磁泵。
-这也是“旅行便携款”能够做到折叠且轻量化的核心技术门槛。
-
-5. 总结
-
-从技术底层来看，如果您要避开红海价格战，必须抛弃“烧水壶”式的架构 A，全面拥抱“泵压即热式”的架构 B。
-
-未来的微创新方向在于：
-控制算法：利用MCU精准控制泵的频率，实现适应不同面料的蒸汽量。
-热效率：通过流道设计改进，在同样功率下产生更大气量的干蒸汽。
-结构堆叠：极致压缩体积，实现类似于手机行业的“紧凑型设计”，以满足商旅场景。
-                  </div>
-                </div>
-             </div>
+        <table class="data-table w-full">
+          <thead>
+            <tr>
+              <th>产品 / 节点</th>
+              <th>PDCP</th>
+              <th>TR4A</th>
+              <th>ADCP</th>
+              <th>CDCP</th>
+              <th>TDCP</th>
+              <th>6月合计</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-black">庭院灯 *20ODMB</td>
+              <td>✓</td>
+              <td>✓</td>
+              <td>✓</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="font-black text-blue-600">3</td>
+            </tr>
+            <tr>
+              <td class="font-black">除螨仪 *2DMA</td>
+              <td>✓</td>
+              <td>✓</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="font-black text-blue-600">2</td>
+            </tr>
+            <tr>
+              <td class="font-black">除螨滤网 *1ECNB</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>✓</td>
+              <td>✓</td>
+              <td class="font-black text-blue-600">2</td>
+            </tr>
+            <tr>
+              <td class="font-black">扩香仪 *1ODMA</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>✓</td>
+              <td>—</td>
+              <td class="font-black text-blue-600">1</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-black text-base">合计</td>
+              <td class="font-black">2</td>
+              <td class="font-black">2</td>
+              <td class="font-black">1</td>
+              <td class="font-black">2</td>
+              <td class="font-black">1</td>
+              <td class="font-black text-blue-600 text-base">8</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="px-8 py-4 bg-amber-50 border-t border-amber-200 flex items-start gap-3">
+          <i class="fas fa-plus-circle text-amber-600 mt-0.5"></i>
+          <div class="text-sm">
+            <span class="font-black text-amber-900">6 月新增 · 多功能塔吉锅套装</span>
+            <span class="text-amber-800">：TR1 节点（1 个）</span>
           </div>
         </div>
-      </section>
-      
-      <section id="section-2" class="pt-32 mb-40">
-        <div class="flex items-center justify-between mb-12">
-          <div class="flex items-center gap-6">
-            <div class="w-16 h-16 rounded-[2rem] bg-blue-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-blue-500/30">
-              <i class="fas fa-users"></i>
-            </div>
-            <div>
-              <h3 class="text-4xl font-black tracking-tighter uppercase italic">VOC分析</h3>
-              <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mt-2">Module Detail Analysis / 模块深度穿透</div>
-            </div>
-          </div>
-          <a href="#overview" class="px-6 py-3 rounded-full bg-slate-900/5 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all"><i class="fas fa-th-large mr-2"></i> 返回总览</a>
-        </div>
+      </div>
+    </section>
 
-        <div class="grid grid-cols-12 gap-10">
-          <div class="col-span-12 xl:col-span-8">
-            <div class="p-12 rounded-[4rem] bg-white shadow-2xl border-slate-100 border h-full">
-               <div class="flex items-center gap-4 mb-8">
-                 <span class="w-12 h-1 bg-blue-600 rounded-full"></span>
-                 <span class="text-[12px] font-black uppercase tracking-[0.4em] text-blue-500">Strategic Consensus / 核心决策依据</span>
-               </div>
-               <div class="text-2xl font-bold leading-[1.8] whitespace-pre-wrap text-slate-800">
-                 📌 核心结论: 通过对2853条及2203条VOC数据的深度挖掘，发现手持挂烫机市场的核心痛点高度集中。约35%的用户愤怒于产品“寿命短/突然坏掉”，其次约30%的用户抱怨“喷水/除皱无效”。这两大功能性缺陷构成了主要的负面来源。
-🚀 关键动作:
-● 将“可靠性”作为研发第一优先级，BOM选材需通过老化测试
-● 技术架构必须解决“冷凝水/喷水”问题，确保干蒸汽输出
-● 营销端重点强调“耐用”与“即熨即穿”的差异化卖点
-● 针对女性用户优化重心设计，减轻单手持握的负重感
-               </div>
+    <section id="section-2" class="pt-20 px-16 pb-32">
+      <div class="flex items-center gap-4 mb-12">
+        <span class="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Section 03</span>
+        <div class="flex-1 h-px bg-red-200"></div>
+        <span class="text-[10px] font-black uppercase tracking-[0.3em] text-red-500">归因 & 行动</span>
+      </div>
+      <h2 class="text-5xl font-black tracking-tighter uppercase italic mb-8">TR3 未达 <span class="text-red-500">归因</span> & 6月行动</h2>
+      <p class="text-base opacity-70 leading-relaxed mb-12 max-w-3xl">
+        5月 TR3 阶段实际 5.20 / 规划 6，差 1 节点（达成率 86.7%）。以下为真实根因与 6 月行动。
+      </p>
+
+      <div class="rounded-3xl bg-red-50 border border-red-100 p-10 mb-12">
+        <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+          <i class="fas fa-search text-red-500"></i>
+          真实根因
+        </h3>
+        <div class="space-y-4">
+          <div class="flex gap-4 items-start">
+            <div class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0">1</div>
+            <div class="text-sm leading-relaxed pt-1">
+              <span class="font-black">测试天气原因：</span>
+              TR3 前置的可靠性 / 环境测试受天气影响，没按时落实
             </div>
           </div>
-          <div class="col-span-12 xl:col-span-4">
-             <div class="p-12 rounded-[4rem] bg-slate-100/50 border-slate-200 border h-full flex flex-col">
-                <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-8">Methodology / 逻辑推导</div>
-                <div class="flex-1 overflow-y-auto max-h-[400px] pr-4 custom-scrollbar">
-                  <div class="text-[13px] leading-loose opacity-60 italic whitespace-pre-wrap font-medium">
-                    [任务存档 - VOC用户痛点与隐性需求挖掘]:
-基于您提供的两份亚马逊美国站VOC（Voice of Customer）数据分析报告，我将“标准手持挂烫机”与“手持挂烫机”的数据进行了交叉比对与清洗。
-
-显而易见，该品类的负面评价集中度极高，呈现出明显的“功能性缺陷”特征。以下是提炼出的最高频抱怨点及其背后的深层隐性需求分析：
-
-1. 痛点之首：产品寿命与可靠性危机 (占比约32% - 39%)
-
-显性抱怨 (Voice):
-这是两份报告中绝对的第一大槽点。用户高频提及“停止工作”、“用了几次就坏了”、“甚至没撑过一个月”、“插电没反应”。数据显示，约有三分之一的负面评价直接指向了产品的“猝死”。
-
-隐性需求 (Insight):
-对“确定性”的极度渴求。
-手持挂烫机通常用于“应急”场景（如晨起上班前、商务出差前）。用户深层的恐惧不是损失几十美元，而是在关键时刻（如面试、会议前）因工具失效而导致形象尴尬。他们需要的不仅是一个电器，而是一个随时待命的“形象保险”。
-需求转化：工业级耐久度测试，承诺“2年只换不修”的售后保障。
-
-2. 痛点之二：无效做功与“湿衣”焦虑 (占比约30% - 35%)
-
-显性抱怨 (Voice):
-这一类包含了两个关联项：“蒸汽量不足/除皱效果差”（约17%-18%）和“漏水/喷水/喷溅沸水”（约12%-18%）。用户抱怨“还要熨很久”、“喷出来的不是蒸汽是开水”、“把衣服弄湿了没法穿”。
-
-隐性需求 (Insight):
-对“即时可穿（Ready-to-Wear）”效率的追求。
-用户购买挂烫机的初衷是为了省时。如果机器喷水导致衣物变湿，用户就必须等待晾干，这违背了“快速出门”的初衷。此外，“喷射沸水”引发了对人身安全的强烈不安全感。
-需求转化：必须采用“二次加热”或“干蒸汽”技术，确保熨烫后衣物干爽；解决冷凝水问题是底线。
-
-3. 痛点之三：设计缺陷与操作负担 (占比约10% - 13%)
-
-显性抱怨 (Voice):
-集中在“水箱难以拆卸/加水困难”、“机身过重/笨重”、“水箱容量太小需频繁加水”。尤其是“重”这一点，在强调“便携”的品类中是致命伤。
-
-隐性需求 (Insight):
-对“掌控感”与“轻量化”的体验期待。
-大部分使用者为女性，且使用场景往往是单手悬空操作。沉重的机身会迅速导致手臂酸痛，由于水箱设计不合理导致的加水狼狈感，会破坏用户“优雅生活”的心理投射。
-需求转化：人体工学重心设计（手柄受力优化），以及在续航与重量之间寻找黄金平衡点（如更高效的能效比）。
-
-4. 痛点之四：安全隐患 (占比约3% - 4%)
-
-显性抱怨 (Voice):
-虽然占比不高，但性质严重。提及“过热”、“漏电”、“甚至冒烟”。
-
-隐性需求 (Insight):
-对“家庭安全底线”的零容忍。
-这是信任崩溃的临界点。一旦涉及电气安全，不仅会导致退货，还会招致极具破坏力的长评差评（1星），摧毁转化率。
-需求转化：可视化安全（如明显的指示灯、防烫外壳）和认证背书（UL/ETL）。
-
-总结与行动建议：
-
-该品类目前的VOC数据揭示了一个残酷的现实：市场充斥着大量“一次性”低质产品。
-
-您的机会点在于：
-不要在参数上卷“最大蒸汽量”，而要在质量上卷“不坏”和“不湿”。
-只要能解决“寿命短”和“喷水”这两个核心痛点，您的产品就能在评分上与竞品拉开巨大的差距（从3.8分跃升至4.5分档位）。
-                  </div>
-                </div>
-             </div>
+          <div class="flex gap-4 items-start">
+            <div class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0">2</div>
+            <div class="text-sm leading-relaxed pt-1">
+              <span class="font-black">个人流程问题：</span>
+              PRD 完成后没有及时发给项目端，推进技术做 DFMEA，导致 TR3 会议被推迟
+            </div>
           </div>
         </div>
-      </section>
-      
-      <section id="section-3" class="pt-32 mb-40">
-        <div class="flex items-center justify-between mb-12">
-          <div class="flex items-center gap-6">
-            <div class="w-16 h-16 rounded-[2rem] bg-blue-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-blue-500/30">
-              <i class="fas fa-gem"></i>
-            </div>
-            <div>
-              <h3 class="text-4xl font-black tracking-tighter uppercase italic">PSD分析</h3>
-              <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mt-2">Module Detail Analysis / 模块深度穿透</div>
-            </div>
-          </div>
-          <a href="#overview" class="px-6 py-3 rounded-full bg-slate-900/5 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all"><i class="fas fa-th-large mr-2"></i> 返回总览</a>
-        </div>
+        <p class="text-xs opacity-50 mt-6 leading-relaxed">
+          （以上为本人真实复盘，未涉及跨部门归因。如需展开 5-Why 拆解或第三方对账，可单独提供。）
+        </p>
+      </div>
 
-        <div class="grid grid-cols-12 gap-10">
-          <div class="col-span-12 xl:col-span-8">
-            <div class="p-12 rounded-[4rem] bg-white shadow-2xl border-slate-100 border h-full">
-               <div class="flex items-center gap-4 mb-8">
-                 <span class="w-12 h-1 bg-blue-600 rounded-full"></span>
-                 <span class="text-[12px] font-black uppercase tracking-[0.4em] text-blue-500">Strategic Consensus / 核心决策依据</span>
-               </div>
-               <div class="text-2xl font-bold leading-[1.8] whitespace-pre-wrap text-slate-800">
-                 📌 核心结论: 本次分析精准定位了商务精英、精致青年及品质家庭三类中高端目标客群，通过对各人群核心使用场景的PSD（人群、场景、需求）建模及CFMEA（失效模式与效应分析），提炼出从“低端价格战”转向“高价值技术解决”的竞争策略，重点强调不喷水、干蒸汽、高颜值与长寿命等核心竞争力。
-🚀 关键动作:
-● 在研发阶段执行基于MCU+PID的防喷水逻辑算法验证
-● 针对差旅场景强化产品的‘干湿分离’密封结构设计与抗摔性测试
-● 开发多档位智能温控系统，并配套陶瓷釉顺滑面板以覆盖高价值面料护理需求
-● 根据三类人群画像差异化制定营销侧重点：A侧重便携干熨，B侧重美学护衣，C侧重耐用高效
-● 建立高于行业标准的EVT专项测试计划，重点测试极端温差下的蒸汽稳定性与机械结构寿命
-               </div>
+      <div class="rounded-3xl bg-blue-50 border border-blue-100 p-10">
+        <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+          <i class="fas fa-route text-blue-500"></i>
+          6 月行动
+        </h3>
+        <div class="space-y-4">
+          <div class="flex gap-4 items-start">
+            <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0">1</div>
+            <div class="text-sm leading-relaxed pt-1">
+              <span class="font-black">建立 PRD → DFMEA 主动推进机制：</span>
+              PRD 完成后 24h 内主动同步项目端，明确 DFMEA 启动时间与责任人，避免流程断档
             </div>
           </div>
-          <div class="col-span-12 xl:col-span-4">
-             <div class="p-12 rounded-[4rem] bg-slate-100/50 border-slate-200 border h-full flex flex-col">
-                <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-8">Methodology / 逻辑推导</div>
-                <div class="flex-1 overflow-y-auto max-h-[400px] pr-4 custom-scrollbar">
-                  <div class="text-[13px] leading-loose opacity-60 italic whitespace-pre-wrap font-medium">
-                    基于此前对市场红海现状（SOM狭窄）、技术升级路径（泵压即热式）以及VOC痛点（寿命短、喷水）的深度分析，为您精准画像了三类最具价值的目标人群。
-
-这三类人群避开了追求“$19.99地摊货”的价格敏感型低端用户，而是愿意为“不喷水、更耐用、更精致”买单的中高端潜力客群。
-
-1. 细分人群 A：空中飞人与商务精英 (The Business Road Warrior)
-
-用户画像：
-30至45岁，企业中高层或销售代表。高频出差，极为注重职业形象。
-
-核心场景还原：
-场景时间：商务会议或谈判当天的清晨6:30，酒店房间。
-场景描述：刚从行李箱拿出的西装或衬衫满是褶皱。距离出发仅剩20分钟，他/她需要快速让衣物恢复体面。此时没有熨衣板，只能挂在酒店衣柜门上处理。
-突发状况：如果是传统廉价挂烫机，此时喷出一股冷水弄湿了衬衫前襟，或者机器过大占据了行李箱原本放鞋子的空间，都会引发极度的焦虑和愤怒。
-
-深层痛点 (Pain Points)：
-1. 空间焦虑：传统机器太笨重，且不可折叠，不想为此多带一个行李箱。
-2. 容错率为零：绝不能容忍机器漏水或喷水，因为没有时间等待衣物晾干，也不能穿着有水渍的衣服见客户。
-3. 全球通用性：担心电压问题（110V/220V）导致机器烧毁。
-
-购买动机与转化点：
-他们寻找的是“差旅保险”。
-产品契合点：极致折叠设计（手机大小）、干蒸汽技术（即熨即穿）、配备收纳袋。
-
-2. 细分人群 B：精致租房族与TikTok一代 (The Urban Aesthetic Gen-Z)
-
-用户画像：
-22至30岁，刚入职场的白领或研究生，居住在大城市的公寓（如纽约、洛杉矶）。深度社交媒体用户，追求生活仪式感。
-
-核心场景还原：
-场景时间：周五晚上下班后，准备去约会或参加Party前。
-场景描述：居住空间有限（Studio或合租），根本放不下传统熨衣板。从衣橱拿出一条Vintage真丝裙或设计感复杂的上衣。一边看着TikTok上的穿搭视频，一边希望能轻松地单手操作，快速完成护理。
-心理活动：这台机器平时摆在架子上必须好看（高颜值），不能像个廉价的塑料水壶。操作必须傻瓜式，不能像传统熨斗那样需要复杂技巧。
-
-深层痛点 (Pain Points)：
-1. 颜值即正义：无法接受工业感强、配色老气的家电。
-2. 面料娇贵：担心高温蒸汽烫坏了昂贵的真丝或化纤混纺衣物。
-3. 操作负担：手劲小，举着灌满水的大水箱机器太累。
-
-购买动机与转化点：
-她们寻找的是“生活美学道具”。
-产品契合点：高颜值配色（莫兰迪色系）、轻量化设计（重心优化）、智能温控（不伤衣）、TikTok视频中的“解压式”除皱效果展示。
-
-3. 细分人群 C：家庭品质升级者 (The Household Upgrader)
-
-用户画像：
-35至50岁，家庭主妇或家庭管理者。家中已有传统笨重的大型挂烫机或电熨斗，但使用频率极低，因为“太麻烦”。
-
-核心场景还原：
-场景时间：早晨送孩子上学前，或突然发现窗帘/沙发有异味时。
-场景描述：只是想简单处理一件T恤，或者给孩子的校服快速除菌。如果要搬出储藏室里那个巨大的立式挂烫机并加水预热，太兴师动众了。她需要一个随手即用的“副机”。
-过往阴影：之前买过亚马逊上$25的畅销款，结果用了两个月就坏了（对应VOC中的寿命痛点），现在对廉价品极其不信任。
-
-深层痛点 (Pain Points)：
-1. 信任危机：厌倦了“抛弃型电子垃圾”，宁愿多花$20买个能用3年的。
-2. 功能性需求：除了熨烫，更看重高温蒸汽的“杀菌”和“除螨”功能（针对毛绒玩具、沙发垫）。
-3. 水箱焦虑：讨厌频繁加水，希望在手持的范围内水箱尽可能合理（不要太小）。
-
-购买动机与转化点：
-她们寻找的是“高效耐用的家务助手”。
-产品契合点：工业级寿命（承诺质保）、强劲脉冲蒸汽（穿透厚衣物/杀菌）、数显大屏（可视化温度，更有安全感）。
-
-AI 核心提炼
-
-核心策略：
-这三类人群的共同点是都在“逃离低端”：
-A人群（商务）逃离的是“笨重与意外”。
-B人群（年轻）逃离的是“丑陋与复杂”。
-C人群（家庭）逃离的是“劣质与短命”。
-
-您的产品定义（泵压即热式 + 智能温控）完美覆盖了这三个方向。
-建议营销侧重：
-针对 A：主打 Size（体积）与 Dry Steam（干蒸汽）。
-针对 B：主打 Style（颜值）与 Care（护衣）。
-针对 C：主打 Durability（耐用）与 Power（强劲）。
-
-
-[任务存档 - PSD场景化失效模式分析]:
-基于前序的市场宏观分析（存量博弈）、技术架构拆解（泵压式MCU控制）及VOC痛点挖掘（可靠性与喷水），我为您构建了三个典型的PSD细分人群，并针对其特定使用场景进行了CFMEA（概念失效模式与效应分析）。
-
-这将帮助您在研发初期（EVT阶段前）预判风险，用低成本的思维模型规避高昂的客诉成本。
-
-人群一：晨间“卡点”上班族 (The Morning Rush Commuter)
-1. PSD定义
-P (人群)：25-35岁都市白领，租房独居或合租，生活节奏极快，对时间高度敏感。
-S (场景)：早晨起床后离出门仅剩20分钟，从衣柜拿出压皱的衬衫/T恤，需要在卧室狭小的空间内（通常挂在门把手上）快速处理。
-D (需求)：极致的效率（预热快）、绝对的“即熨即穿”（不能湿衣）、操作无脑（没时间看说明书）。
-
-2. CFMEA 分析
-失效模式 A：喷射冷凝水/湿衣 (Spitting Water)
-后果 (Effect)：衬衫被打湿一块，无法立即穿上，导致用户必须更换衣物或吹干，造成上班迟到。这是导致“愤怒型差评”的最高风险点。
-严重度 (S)：9 (极高，直接阻断核心任务)
-潜在原因 (Cause)：早晨室温低，发热体尚未达到最佳温度即开启水泵；或加热体热容不足，连续出汽导致失温。
-解决方案 (Action)：
-软件层面：强制加入“冷启动防喷逻辑”，NTC检测温度未达160°C锁死水泵。
-硬件层面：采用“二次加热面板”，确保最后喷出的是干蒸汽。
-
-失效模式 B：预热时间过长或假死 (Slow Heating/No Response)
-后果 (Effect)：插电后灯闪烁但不出汽，用户在焦急等待中失去耐心。
-严重度 (S)：7 (高，影响体验)
-潜在原因 (Cause)：传统大水箱结构热惯性大；或指示灯逻辑设计反人类（看不懂是预热中还是故障）。
-解决方案 (Action)：
-设计层面：必须采用泵压即热式架构，将预热压缩至20秒内。
-交互层面：增加“呼吸灯”状态反馈，或加入蜂鸣器提示“就绪”。
-
-失效模式 C：水箱余水难清理 (Stagnant Water)
-后果 (Effect)：长期存放导致水箱生青苔或发臭，再次使用时喷出异味蒸汽。
-严重度 (S)：5 (中，卫生隐患)
-潜在原因 (Cause)：进水口设计过小，或水箱结构存在死角，无法倒空。
-解决方案 (Action)：设计开放式可拆卸水箱，或底部增加排水阀。
-
-人群二：高频商旅/度假人士 (The Frequent Traveler)
-1. PSD定义
-P (人群)：商务出差人士或精致旅行者，由于TikTok传播，这类人群正在寻找替代酒店脏熨斗的方案。
-S (场景)：在酒店房间、游轮客舱甚至车内。将产品从行李箱取出，空间受限，电压可能不稳定，使用完毕后需立即收纳离开。
-D (需求)：体积最小化（占行李额度少）、不漏水（怕弄湿行李）、全球电压适配（加分项）。
-
-2. CFMEA 分析
-失效模式 A：行李箱内漏水 (Leakage in Luggage)
-后果 (Effect)：残余在机身内的水在运输颠簸中流出，弄湿行李箱内的贵重衣物或文件。
-严重度 (S)：10 (灾难级，由于是在非使用场景下的破坏)
-潜在原因 (Cause)：水泵没有单向止逆阀；或者水箱与机身连接处的密封圈在挤压下失效。
-解决方案 (Action)：
-结构层面：必须设计“干湿分离”结构，水箱必须可完全拆卸并配有硅胶堵头。
-软件层面：增加“一键排空”功能，关机前把泵内余水排干。
-
-失效模式 B：外壳破裂/磨损 (Housing Crack/Scratches)
-后果 (Effect)：在托运挤压中外壳破裂，导致功能失效或外观廉价化。
-严重度 (S)：6 (中高，影响寿命)
-潜在原因 (Cause)：为了追求轻量化使得外壳壁厚过薄；材料抗冲击性差（如普通PS材料）。
-解决方案 (Action)：
-材料层面：外壳必须使用耐摔的PC+ABS合金材料。
-配件层面：标配一个加厚的绒布收纳袋，甚至硬壳收纳包。
-
-失效模式 C：功率不足/电压不匹配 (Voltage Mismatch)
-后果 (Effect)：在美国以外地区（如欧洲/亚洲）误插220V烧毁机器，或插110V功率减半不出汽。
-严重度 (S)：8 (高，直接报废)
-潜在原因 (Cause)：缺乏宽电压设计。
-解决方案 (Action)：虽然主打美国站（110V），但若针对旅行人群，需在显眼处（机身/插头）丝印醒目的电压警示，甚至考虑做双电压切换开关（成本较高，可视定位而定）。
-
-人群三：精致衣物护理/礼品用户 (The Delicate Care/Gift User)
-1. PSD定义
-P (人群)：中高收入女性，家中拥有丝绸、羊毛、化纤等多种贵重面料衣物。通过TikTok被种草，视其为提升生活品质的“玩具”或送礼佳品。
-S (场景)：周末的从容护理时光。不仅仅是除皱，更是为了杀菌、除螨、保养衣物。
-D (需求)：不伤衣（温控精准）、高颜值（礼品属性）、多功能（针对不同面料的档位）。
-
-2. CFMEA 分析
-失效模式 A：烫坏/烫黄贵重面料 (Fabric Damage)
-后果 (Effect)：真丝衣物起皱缩水，化纤衣物被面板烫出镜面光斑。
-严重度 (S)：9 (极高，造成用户财产损失，极易引发索赔式差评)
-潜在原因 (Cause)：单一高温档位（通常140°C+）不适合所有面料；面板材质粗糙挂丝。
-解决方案 (Action)：
-算法层面：引入MCU控制的“智能档位”，设置低温丝绸档（泵速慢，温度低）。
-硬件层面：必须使用陶瓷釉面板（Ceramic Coating），甚至特氟龙涂层，确保极致顺滑。
-
-失效模式 B：水垢堵塞导致性能衰减 (Scale Clogging)
-后果 (Effect)：使用几个月后，蒸汽量变小，或者喷出白色粉末（钙化物），弄脏深色大衣。
-严重度 (S)：6 (中，长期隐患)
-潜在原因 (Cause)：美国多地水质硬度高，高温腔体内壁结垢。
-解决方案 (Action)：
-赠品策略：随机附赠除垢剂或清洁针。
-技术层面：研发“自清洁模式”（Self-clean），利用高频脉冲水流冲刷内壁。
-
-失效模式 C：包装破损/廉价感 (Cheap Unboxing Experience)
-后果 (Effect)：作为礼物送出时，包装盒软塌，内部杂乱，让送礼者丢面子。
-严重度 (S)：5 (中，影响品牌溢价)
-潜在原因 (Cause)：按照低端公模产品的标准采用薄坑纸包装。
-解决方案 (Action)：必须采用“天地盖”或硬卡纸礼盒设计，内部使用吸塑或EVA固定，而非廉价的珍珠棉。
-
-AI 总结与研发建议：
-
-通过对这三类PSD的CFMEA分析，我们可以得出清晰的研发避坑指南：
-
-1. 对于所有人群，“不喷水”是底线。这验证了我们之前技术架构中“必须上MCU+PID控制”的结论。
-2. 针对旅行场景的“防漏水”和“耐摔性”是容易被忽视的隐形考题，需要在结构设计阶段重点评审（Design Review）。
-3. 针对高端/礼品人群，竞争不在于功率大小，而在于“面板涂层”工艺和“多档位温控”算法的细腻程度。
-
-建议您在EVT（工程验证）阶段，专门针对上述失效模式（特别是喷水和摔落）制定专项测试标准（Test Plan），其标准应高于行业通用的UL测试标准。
-                  </div>
-                </div>
-             </div>
+          <div class="flex gap-4 items-start">
+            <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0">2</div>
+            <div class="text-sm leading-relaxed pt-1">
+              <span class="font-black">测试日历前置锁定：</span>
+              6 月产品节点启动时同步锁定 TR3 前置测试日历，预留天气 / 资源 buffer
+            </div>
           </div>
         </div>
-      </section>
-      
-      <section id="section-4" class="pt-32 mb-40">
-        <div class="flex items-center justify-between mb-12">
-          <div class="flex items-center gap-6">
-            <div class="w-16 h-16 rounded-[2rem] bg-blue-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-blue-500/30">
-              <i class="fas fa-chart-network"></i>
-            </div>
-            <div>
-              <h3 class="text-4xl font-black tracking-tighter uppercase italic">利基市场选择</h3>
-              <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mt-2">Module Detail Analysis / 模块深度穿透</div>
-            </div>
-          </div>
-          <a href="#overview" class="px-6 py-3 rounded-full bg-slate-900/5 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all"><i class="fas fa-th-large mr-2"></i> 返回总览</a>
-        </div>
+        <p class="text-xs opacity-50 mt-6 leading-relaxed">
+          6 月新增塔吉锅 TR1 已纳入排期，按上述机制执行。
+        </p>
+      </div>
 
-        <div class="grid grid-cols-12 gap-10">
-          <div class="col-span-12 xl:col-span-8">
-            <div class="p-12 rounded-[4rem] bg-white shadow-2xl border-slate-100 border h-full">
-               <div class="flex items-center gap-4 mb-8">
-                 <span class="w-12 h-1 bg-blue-600 rounded-full"></span>
-                 <span class="text-[12px] font-black uppercase tracking-[0.4em] text-blue-500">Strategic Consensus / 核心决策依据</span>
-               </div>
-               <div class="text-2xl font-bold leading-[1.8] whitespace-pre-wrap text-slate-800">
-                 📌 核心结论: 建议避开$30以下的大众红海，明确切入“高端便携商旅”利基市场。将产品重塑为“商务人士的口袋体面保险”，主打$49.99-$59.99价格段。核心策略是利用“泵压即热技术”解决喷水痛点，利用“折叠设计”解决收纳痛点，利用“宽电压”解决跨境痛点。
-🚀 关键动作:
-● 立即启动ID设计，锁定“可折叠、小于矿泉水瓶”的形态
-● 研发端攻克“宽电压(110-240V)自适应”电源管理方案
-● 营销素材准备“行李箱收纳对比”与“黑衣干熨测试”
-● SEO布局锁定Travel/Mini/Dual Voltage等高精准长尾词
-               </div>
-            </div>
-          </div>
-          <div class="col-span-12 xl:col-span-4">
-             <div class="p-12 rounded-[4rem] bg-slate-100/50 border-slate-200 border h-full flex flex-col">
-                <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-8">Methodology / 逻辑推导</div>
-                <div class="flex-1 overflow-y-auto max-h-[400px] pr-4 custom-scrollbar">
-                  <div class="text-[13px] leading-loose opacity-60 italic whitespace-pre-wrap font-medium">
-                    战略决策专家。
+      <div class="mt-12 text-center text-xs font-black opacity-30 uppercase tracking-[0.3em]">
+        关志邦 · 5月复盘 & 6月规划 · 完
+      </div>
+    </section>
 
-基于此前对该项目的全盘扫描——包括PEST宏观环境的红海预警、VOC中对“喷水/短命”的愤怒、技术上“泵压式”的必然选择，以及PSD场景的细分——如果要在2024年入局并存活，我给出的最终战略决策是：
-
-**切入利基市场：【高频商旅与精致独居的“口袋保险”市场】**
-
-不要试图做“家庭全能挂烫机”去挑战Hilife或Conair的霸主地位，也不要做$29.99的低端货去填海。您应该将产品重新定义为 **“可穿戴设备的维护伴侣”**，而非传统的“家电”。
-
-以下是该利基市场的深度拆解与执行路线图：
-
-1. 战略定位：从“除皱”升级为“体面管理”
-
-**定位口号 (Internal):**
-不仅仅是把衣服烫平，而是确保用户在离家状态下（酒店、车内、办公室）能绝对安全、快速地恢复衣物状态。
-
-**目标客群 (Target Audience):**
-核心：每周出差的商务人士、空乘人员、旅行博主（对应PSD人群A）。
-次级：居住空间极小的都市独居青年/留学生（对应PSD人群B）。
-
-**避战逻辑：**
-避开了家庭主妇的“大水箱、长续航”需求（这是红海巨头的腹地）。
-避开了低端市场的“价格敏感”属性（商务人群对价格不敏感，对失败容忍度为零）。
-
-2. 产品定义 (Product Definition) —— 必须具备的差异化
-
-基于技术拆解文档，您的产品BOM必须严格执行以下标准，以支撑高溢价：
-
-**形态差异化（视觉锤）：**
-**极致折叠与几何美学：** 放弃传统“吹风机”造型，采用“I”字型或“L”字型旋转化为一体的结构。收纳后必须能塞进洗漱包或公文包侧袋。体积必须小于一瓶500ml矿泉水。
-**去家电感材质：** 外壳放弃高光塑料，采用手感漆（Rubber Paint）或金属磨砂质感，让它看起来像一个高端数码配件（如Dyson或大疆的配件），而非廉价小家电。
-
-**功能差异化（性能锚）：**
-**0秒喷水容忍度：** 采用“泵压即热式”+“MCU算法”，确保开机第一秒就是干蒸汽。对于商务人士，弄湿衬衫等于毁掉会议，这是绝对痛点。
-**全球电压自适应（或双电压）：** 这是一个巨大的隐形痛点。如果能通过技术手段（宽电压电源方案）解决110V-240V通用，您将直接收割所有国际旅行者的订单。
-**极速预热：** 必须在15秒内出汽（对应“早晨卡点”场景）。
-
-3. 商业模型与定价策略
-
-**定价区间 (Pricing):**
-建议定价：$49.99 - $59.99。
-逻辑：
-$29以下是垃圾场，哪怕做得再好也被认为是廉价货。
-$30-$45是目前最卷的红海。
-$50+是“专业工具”的心理门槛。通过“旅行专用”、“双电压”、“不伤衣”三个卖点支撑溢价。
-
-**利润结构：**
-由于采用了MCU和泵压结构，您的BOM成本会上升（预计在$16-$20之间），但$55的售价能保证足够毛利（65%左右的毛利空间用于覆盖FBA和PPC）。
-
-4. 营销破局点 (Marketing Angle)
-
-**TikTok内容策略 (Visual Strategy):**
-**场景一：“行李箱挑战”：** 展示如何将您的产品塞进已经塞满的登机箱缝隙中，对比竞品笨重的尴尬。
-**场景二：“黑衬衫测试”：** 穿着黑色衬衫直接熨烫，展示完全没有白色水渍（证明干蒸汽技术），直击痛点。
-**场景三：“酒店自救”：** 模拟酒店那种脏兮兮的公用电熨斗，然后拿出您的产品作为“洁癖救星”。
-
-**关键词布局 (SEO):**
-放弃大词：Handheld Steamer（太贵太卷）。
-主攻长尾场景词：Travel Steamer for Clothes Mini, Foldable Steamer Dual Voltage, Portable Steamer for Suit, Gift for Traveler.
-
-5. 风险控制与退出机制
-
-**核心风险：**
-如果“泵压技术”导致良品率低，或者宽电压方案导致成本失控。
-
-**验证指标：**
-EVT阶段：必须通过1000次连续弯折测试（针对折叠结构）。
-市场测试：先发一批（500台）测款，如果转化率低于3%，或者退货率高于5%（因质量问题），立即停止备货，复盘是产品定义错误还是质量失控。
-
-**总结**
-
-选择 **“高端便携商旅”** 这个利基市场，是因为它完美匹配了“高频刚需”与“高痛点”两个特征。用户对于“在重要会议前衣服皱了且没有熨斗”的恐惧，足以让他们支付$50来购买一个“保险”。
-
-这不仅仅是卖一个挂烫机，而是卖一份“出行体面感”。
-                  </div>
-                </div>
-             </div>
-          </div>
-        </div>
-      </section>
-      
-      <section id="section-5" class="pt-32 mb-40">
-        <div class="flex items-center justify-between mb-12">
-          <div class="flex items-center gap-6">
-            <div class="w-16 h-16 rounded-[2rem] bg-blue-600 text-white flex items-center justify-center text-2xl shadow-2xl shadow-blue-500/30">
-              <i class="fas fa-microchip"></i>
-            </div>
-            <div>
-              <h3 class="text-4xl font-black tracking-tighter uppercase italic">竞品分析</h3>
-              <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mt-2">Module Detail Analysis / 模块深度穿透</div>
-            </div>
-          </div>
-          <a href="#overview" class="px-6 py-3 rounded-full bg-slate-900/5 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all"><i class="fas fa-th-large mr-2"></i> 返回总览</a>
-        </div>
-
-        <div class="grid grid-cols-12 gap-10">
-          <div class="col-span-12 xl:col-span-8">
-            <div class="p-12 rounded-[4rem] bg-white shadow-2xl border-slate-100 border h-full">
-               <div class="flex items-center gap-4 mb-8">
-                 <span class="w-12 h-1 bg-blue-600 rounded-full"></span>
-                 <span class="text-[12px] font-black uppercase tracking-[0.4em] text-blue-500">Strategic Consensus / 核心决策依据</span>
-               </div>
-               <div class="text-2xl font-bold leading-[1.8] whitespace-pre-wrap text-slate-800">
-                 📌 核心结论: 针对亚马逊美国站挂烫机市场的竞争分析显示，目前市场在“极致便携”与“专业性能”之间存在断层。竞品普遍存在低端喷水风险（Hilife）、重量过大不便携（Conair）或质感廉价（Beautural）的问题。项目核心机会点在于通过MCU温控技术和极致轻量化设计，切入$49.99-$59.99的高端商旅利基市场。
-🚀 关键动作:
-● 研发端优化结构设计，将目标重量压低至0.6kg以下以超越市场主流产品。
-● 采用金属质感手感漆或高端喷涂工艺，从视觉和触觉上建立产品溢价感。
-● 强化MCU智能温控系统的技术实现，确保“绝对不喷水”作为核心安全卖点。
-● 针对商旅场景制定营销策略，对标Dyson等品牌的审美逻辑进行产品包装。
-● 在产品详情页精准对比竞品弱点，强调“0秒预热”与“干蒸汽”带来的效率提升。
-               </div>
-            </div>
-          </div>
-          <div class="col-span-12 xl:col-span-4">
-             <div class="p-12 rounded-[4rem] bg-slate-100/50 border-slate-200 border h-full flex flex-col">
-                <div class="text-[10px] font-black uppercase tracking-[0.4em] opacity-30 mb-8">Methodology / 逻辑推导</div>
-                <div class="flex-1 overflow-y-auto max-h-[400px] pr-4 custom-scrollbar">
-                  <div class="text-[13px] leading-loose opacity-60 italic whitespace-pre-wrap font-medium">
-                    竞争情报官。
-
-基于此前确定的“高端便携商旅”利基市场战略，我为您选取了亚马逊美国站目前最具代表性的三个竞品进行深度对标。
-
-这三个竞品分别代表了：“低端销冠（价格锚点）”、“老牌性能（功能锚点）”和“中端便携（形态竞品）”。您的产品需要在参数和体验上精准打击它们的弱点。
-
-以下是 Top 3 竞品深度对比表：
-
-1. 竞品一：Hilife (型号 HL7) —— 必须避开的低端红海霸主
-
-市场地位：
-类目BSR常年第一，销量巨大，定义了大众对挂烫机的最低预期。
-
-核心参数：
-架构：直热壶式 (Boiler Type) —— 像烧水壶一样煮水
-功率：700W
-水箱容量：240ml
-预热时间：约 120秒
-重量：约 1.7 lbs (约0.77kg)
-是否折叠：否
-定价：$25.99 - $29.99
-
-优势 (Pros)：
-1. 价格极其低廉，拥有巨大的存量评价护城河（10万+评论）。
-2. 结构极其简单，几乎没有电子故障（因为没有电子元件）。
-3. 水箱容量大，单次续航久（约15分钟）。
-
-劣势 (Cons) —— 您的攻击点：
-1. 严重喷水风险：因为是煮水原理，水沸腾后极易喷出开水，无法控制蒸汽量。
-2. 使用受限：严禁倾斜超过45度，无法平烫，只能挂烫。
-3. 预热极慢：需要等待2分钟水烧开，不适合早晨“卡点”场景。
-4. 廉价感强：典型的义乌公模塑料感。
-
-2. 竞品二：Conair (型号 Turbo ExtremeSteam) —— 性能强悍但笨重的传统巨头
-
-市场地位：
-美国家喻户晓的个人护理品牌，代表了“家用高性能”的标准。
-
-核心参数：
-架构：泵压式 (Pump Driven)
-功率：1875W (极高功率)
-水箱容量：215ml
-预热时间：约 40秒
-重量：约 3.2 lbs (约1.45kg) —— 非常重
-是否折叠：否，且体积巨大
-定价：$55.00 - $69.99
-
-优势 (Pros)：
-1. 蒸汽强劲：高功率带来极强的穿透力，能处理厚大衣。
-2. 品牌背书：美国本土品牌，线下渠道铺货广，信任度高。
-3. 配件丰富：通常附带刷头、折痕夹等多种配件。
-
-劣势 (Cons) —— 您的攻击点：
-1. 极度笨重：单手操作超过2分钟手臂会极度酸痛，对女性用户极不友好。
-2. 毫无便携性：体积大如电钻，根本无法放入登机箱，完全不适合商旅。
-3. 水箱设计：注水孔通常较小，操作不便。
-
-3. 竞品三：Beautural (型号 Foldable Handheld) —— 最接近的直接竞争对手
-
-市场地位：
-亚马逊线上的中端畅销品牌，主打性价比和便携概念。
-
-核心参数：
-架构：泵压式 (Pump Driven)
-功率：1000W
-水箱容量：150ml (可拆卸)
-预热时间：约 30秒
-重量：约 1.9 lbs (约0.86kg)
-是否折叠：是
-定价：$32.99 - $39.99
-
-优势 (Pros)：
-1. 形态优势：可折叠手柄，解决了部分收纳问题。
-2. 不挑角度：采用泵压技术，可以倾斜使用不漏水。
-3. 性价比高：在$35价位段提供了较为完整的功能。
-
-劣势 (Cons) —— 您的攻击点：
-1. 质感平庸：由于成本限制，外壳塑料感强，缺乏礼品属性和商务高级感。
-2. 蒸汽不稳定：用户反馈中有“断断续续”或“预热后滴水”的问题（缺乏MCU精准温控）。
-3. 寿命问题：折叠关节处和水泵是高频故障点，VOC显示耐用性一般。
-
-4. 总结与差异化机会 (Gap Analysis)
-
-通过对比可以看出，目前市场上存在一个明显的真空地带：
-
-Hilife 太低端，不能平烫且易喷水。
-Conair 太笨重，带不出门。
-Beautural 虽可折叠，但质感廉价且缺乏核心防喷水技术。
-
-您的产品切入点 (Product-Market Fit)：
-
-1. 打击 Hilife：用“泵压即热 + 0秒预热”打击它的“慢”和“喷水”。
-2. 打击 Conair：用“手机大小 + 极致轻量化”打击它的“笨重”。
-3. 打击 Beautural：用“金属质感手感漆 + MCU智能温控 + 干蒸汽技术”打击它的“塑料感”和“性能不稳定”。
-
-战略定价建议：
-您的产品若能做到极致体积（小于Beautural）且质感高级（类似Dyson的深空灰/紫红色），定价 $49.99 - $59.99 是合理的。您卖的不是性价比，而是“高性能的随身优雅”。
-
-AI 核心提炼
-核心结论: 市场上缺乏一款兼顾“极致便携”与“专业级干蒸汽”的高端产品。Hilife不仅低端且存在安全隐患，Conair过于笨重不适合商旅，Beautural虽有便携形态但缺乏技术壁垒与质感。
-关键动作:
-研发端死磕“体积/重量比”，目标重量控制在0.6kg以内（优于Hilife和Beautural）。
-外观工艺必须超越Beautural的普通ABS塑料，采用喷涂工艺提升溢价感。
-技术上强调MCU温控带来的“绝对不喷水”，这是区别于所有竞品的核心安全卖点。
-                  </div>
-                </div>
-             </div>
-          </div>
-        </div>
-      </section>
-      
-    </div>
-
-    <footer class="p-16 border-t border-slate-100 text-center opacity-30">
-       <div class="text-[10px] font-black uppercase tracking-[1em]">Strategic Consensus System / End of Report</div>
-    </footer>
   </main>
-
 </body>
 </html>
-    
