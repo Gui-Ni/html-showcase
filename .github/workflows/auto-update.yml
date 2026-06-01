@@ -3,9 +3,7 @@ name: Auto-update index.html
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - '.github/**'
-      - 'README.md'
+  workflow_dispatch:
 
 jobs:
   update:
