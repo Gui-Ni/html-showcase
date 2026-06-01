@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>分析报告展示站</title>
+  <title>鍒嗘瀽鎶ュ憡灞曠ず绔?/title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -608,17 +608,16 @@
   <!-- Header -->
   <div class="header">
     <div class="header-logo">
-      <div class="logo-icon">📊</div>
-      分析报告展示站
-    </div>
+      <div class="logo-icon">馃搳</div>
+      鍒嗘瀽鎶ュ憡灞曠ず绔?    </div>
 
     <div class="header-stats">
       <div class="stat-chip">
         <div class="dot"></div>
-        <span id="totalCount">0 份报告</span>
+        <span id="totalCount">0 浠芥姤鍛?/span>
       </div>
       <div class="stat-chip">
-        <span id="folderCount">0 个项目</span>
+        <span id="folderCount">0 涓」鐩?/span>
       </div>
     </div>
 
@@ -629,10 +628,10 @@
       </a>
 
       <!-- Theme Toggle -->
-      <button class="theme-toggle" id="themeToggle" title="切换深色/浅色模式">
+      <button class="theme-toggle" id="themeToggle" title="鍒囨崲娣辫壊/娴呰壊妯″紡">
         <div class="theme-toggle-thumb">
-          <span class="sun">☀️</span>
-          <span class="moon">🌙</span>
+          <span class="sun">鈽€锔?/span>
+          <span class="moon">馃寵</span>
         </div>
       </button>
     </div>
@@ -642,11 +641,11 @@
   <div class="main">
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="sidebar-header">项目分类</div>
+      <div class="sidebar-header">椤圭洰鍒嗙被</div>
       <div class="sidebar-scroll">
         <div class="nav-item active" data-folder="">
-          <span class="icon">🏠</span>
-          <span class="name">全部报告</span>
+          <span class="icon">馃彔</span>
+          <span class="name">鍏ㄩ儴鎶ュ憡</span>
           <span class="count" id="nav-total-count">0</span>
         </div>
         <div id="folderNav"></div>
@@ -658,10 +657,10 @@
       <div class="content-scroll" id="fileListView">
         <div class="section-header">
           <div class="section-title" id="sectionTitle">
-            <span class="folder-emoji">🏠</span>
-            全部报告
+            <span class="folder-emoji">馃彔</span>
+            鍏ㄩ儴鎶ュ憡
           </div>
-          <div class="section-count" id="sectionCount">0 份</div>
+          <div class="section-count" id="sectionCount">0 浠?/div>
           <div class="section-divider"></div>
         </div>
         <div class="file-grid" id="fileGrid"></div>
@@ -671,18 +670,18 @@
       <div class="preview-pane" id="previewPane">
         <div class="preview-toolbar">
           <button class="preview-back" id="backBtn">
-            ← 返回
+            鈫?杩斿洖
           </button>
-          <div class="preview-title" id="previewTitle">预览中...</div>
+          <div class="preview-title" id="previewTitle">棰勮涓?..</div>
           <div class="preview-actions">
-            <button class="btn-icon" id="openNewTab" title="新窗口打开">↗</button>
-            <button class="btn-icon danger" id="closePreview" title="关闭">✕</button>
+            <button class="btn-icon" id="openNewTab" title="鏂扮獥鍙ｆ墦寮€">鈫?/button>
+            <button class="btn-icon danger" id="closePreview" title="鍏抽棴">鉁?/button>
           </div>
         </div>
         <div class="preview-frame-wrap">
           <div class="preview-loading" id="previewLoading">
             <div class="spinner-ring"></div>
-            加载中...
+            鍔犺浇涓?..
           </div>
           <iframe class="preview-frame" id="previewFrame"></iframe>
         </div>
@@ -694,23 +693,25 @@
 <script>
   // ==================== Data ====================
   const FILES = [
-    { name: '竞品分析报告', path: '3合1多功能慢炖锅套餐/竞品分析报告.html', folder: '3合1多功能慢炖锅套餐', tag: 'analysis' },
-    { name: '定价模拟', path: '3合1多功能慢炖锅套餐/定价模拟.html', folder: '3合1多功能慢炖锅套餐', tag: 'pricing' },
-    { name: '烤盘溢价空间分析报告', path: '3合1多功能慢炖锅套餐/烤盘溢价空间分析报告.html', folder: '3合1多功能慢炖锅套餐', tag: 'report' },
-    { name: 'HEPA滤网定价策略分析', path: '除螨仪/HEPA滤网定价策略分析.html', folder: '除螨仪', tag: 'analysis' },
+    { name: '绔炲搧鍒嗘瀽鎶ュ憡', path: '3鍚?澶氬姛鑳芥參鐐栭攨濂楅/绔炲搧鍒嗘瀽鎶ュ憡.html', folder: '3鍚?澶氬姛鑳芥參鐐栭攨濂楅', tag: 'analysis' },
+    { name: '瀹氫环妯℃嫙', path: '3鍚?澶氬姛鑳芥參鐐栭攨濂楅/瀹氫环妯℃嫙.html', folder: '3鍚?澶氬姛鑳芥參鐐栭攨濂楅', tag: 'pricing' },
+    { name: '鐑ょ洏婧环绌洪棿鍒嗘瀽鎶ュ憡', path: '3鍚?澶氬姛鑳芥參鐐栭攨濂楅/鐑ょ洏婧环绌洪棿鍒嗘瀽鎶ュ憡.html', folder: '3鍚?澶氬姛鑳芥參鐐栭攨濂楅', tag: 'report' },
+    { name: 'HEPA婊ょ綉瀹氫环绛栫暐鍒嗘瀽', path: '闄よ灗浠?HEPA婊ょ綉瀹氫环绛栫暐鍒嗘瀽.html', folder: '闄よ灗浠?, tag: 'analysis' },
+    { name: '鍗庝负闊畾寰媉鏁ｇ儹灏佽鏉愭枡鎶曡祫鍒嗘瀽', path: '鎶曡祫鐮旂┒/鍗庝负闊畾寰媉鏁ｇ儹灏佽鏉愭枡鎶曡祫鍒嗘瀽.html', folder: '鎶曡祫鐮旂┒', tag: 'report' },
   ];
 
   const FOLDER_ICONS = {
-    '3合1多功能慢炖锅套餐': '🍲',
-    '除螨仪': '🧹',
-    'default': '📁',
+    '3鍚?澶氬姛鑳芥參鐐栭攨濂楅': '馃嵅',
+    '闄よ灗浠?: '馃Ч',
+    '鎶曡祫鐮旂┒': '馃搱',
+    'default': '馃搧',
   };
 
   const TAG_CONFIG = {
-    analysis: { label: '分析',   cls: 'tag-type-analysis' },
-    pricing:  { label: '💰 定价', cls: 'tag-type-pricing'  },
-    report:   { label: '报告',   cls: 'tag-type-report'    },
-    default:  { label: '文件',   cls: 'tag-type-default'   },
+    analysis: { label: '鍒嗘瀽',   cls: 'tag-type-analysis' },
+    pricing:  { label: '馃挵 瀹氫环', cls: 'tag-type-pricing'  },
+    report:   { label: '鎶ュ憡',   cls: 'tag-type-report'    },
+    default:  { label: '鏂囦欢',   cls: 'tag-type-default'   },
   };
 
   // ==================== State ====================
@@ -743,8 +744,8 @@
     const total = FILES.length;
 
     document.getElementById('nav-total-count').textContent = total;
-    document.getElementById('totalCount').textContent = `${total} 份报告`;
-    document.getElementById('folderCount').textContent = `${Object.keys(counts).length} 个项目`;
+    document.getElementById('totalCount').textContent = `${total} 浠芥姤鍛奰;
+    document.getElementById('folderCount').textContent = `${Object.keys(counts).length} 涓」鐩甡;
 
     const folders = Object.keys(counts).sort();
     let navHtml = '';
@@ -775,20 +776,20 @@
       : FILES;
 
     const icon = currentFolder
-      ? (FOLDER_ICONS[currentFolder] || '📁')
-      : '🏠';
-    const name = currentFolder || '全部报告';
+      ? (FOLDER_ICONS[currentFolder] || '馃搧')
+      : '馃彔';
+    const name = currentFolder || '鍏ㄩ儴鎶ュ憡';
 
     document.getElementById('sectionTitle').innerHTML =
       `<span class="folder-emoji">${icon}</span> ${name}`;
-    document.getElementById('sectionCount').textContent = `${filtered.length} 份`;
+    document.getElementById('sectionCount').textContent = `${filtered.length} 浠絗;
 
     if (!filtered.length) {
       document.getElementById('fileGrid').innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">📭</div>
-          <div class="empty-title">该分类下暂无报告</div>
-          <div class="empty-desc">把 HTML 文件上传到对应项目文件夹，刷新页面即可显示</div>
+          <div class="empty-icon">馃摥</div>
+          <div class="empty-title">璇ュ垎绫讳笅鏆傛棤鎶ュ憡</div>
+          <div class="empty-desc">鎶?HTML 鏂囦欢涓婁紶鍒板搴旈」鐩枃浠跺す锛屽埛鏂伴〉闈㈠嵆鍙樉绀?/div>
         </div>`;
       return;
     }
@@ -803,7 +804,7 @@
             <div class="file-card-name">${f.name}</div>
             <div class="file-card-path">${f.path}</div>
           </div>
-          <div class="file-card-arrow">→</div>
+          <div class="file-card-arrow">鈫?/div>
         </div>
         <div class="file-card-tags">
           <span class="tag ${cfg.cls}">${cfg.label}</span>
