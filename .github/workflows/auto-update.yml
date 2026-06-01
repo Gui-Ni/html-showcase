@@ -59,7 +59,8 @@ jobs:
           );
           const filesArray = `const FILES = [\n${lines.join(',\n')}\n  ];`;
           let html = fs.readFileSync('index.html', 'utf8');
-          html = html.replace(/const FILES = \[\s\S]*?\];/, filesArray);
+          // FIX: use [\s\S]*? (character class) not \s\S]*? (literal bracket)
+          html = html.replace(/const FILES = [\s\S]*?\];/, filesArray);
           fs.writeFileSync('index.html', html, 'utf8');
           console.log(`Updated index.html with ${files.length} files`);
           const tagStats = {};
