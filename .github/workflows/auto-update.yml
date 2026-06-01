@@ -23,6 +23,8 @@ jobs:
           const path = require('path');
 
           const SKIP_DIRS = ['.github', 'node_modules', '_assets'];
+          const SKIP_FILES = ['index.html']; // never include the showcase itself
+          const SKIP_ROOT_FILES = true;       // skip .html files in repo root (no folder context)
           const SUPPORTED_EXTENSIONS = ['.html'];
 
           // Auto-assign tag by file/folder name keywords
@@ -43,7 +45,9 @@ jobs:
                   files = files.concat(walk(full));
                 }
               } else if (entry.isFile() && SUPPORTED_EXTENSIONS.includes(path.extname(entry.name))) {
+                if (SKIP_FILES.includes(entry.name)) continue;
                 const rel = full.replace(/^\.\//, '').replace(/\\/g, '/');
+                if (SKIP_ROOT_FILES && !rel.includes('/')) continue; // skip root-level .html
                 const folder = path.dirname(rel);
                 const name = path.basename(entry.name, '.html');
                 const tag = detectTag(name, folder);
@@ -59,7 +63,6 @@ jobs:
           );
           const filesArray = `const FILES = [\n${lines.join(',\n')}\n  ];`;
           let html = fs.readFileSync('index.html', 'utf8');
-          // FIX: use [\s\S]*? (character class) not \s\S]*? (literal bracket)
           html = html.replace(/const FILES = [\s\S]*?\];/, filesArray);
           fs.writeFileSync('index.html', html, 'utf8');
           console.log(`Updated index.html with ${files.length} files`);
