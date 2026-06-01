@@ -3,18 +3,21 @@ name: Auto-update index.html
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+    paths-ignore:
+      - '.github/**'
+      - 'README.md'
 
 jobs:
-  update-index:
+  update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          persist-credentials: false
 
       - name: Generate FILES array and update index.html
         run: |
@@ -49,21 +52,18 @@ jobs:
             `    { name: '${f.name}', path: '${f.path}', folder: '${f.folder}', tag: '${f.tag}' }`
           );
           const filesArray = `const FILES = [\n${lines.join(',\n')}\n  ];`;
-
           let html = fs.readFileSync('index.html', 'utf8');
-          html = html.replace(/const FILES = \[[\s\S]*?\];/, filesArray);
+          html = html.replace(/const FILES = \[\s\S]*?\];/, filesArray);
           fs.writeFileSync('index.html', html, 'utf8');
           console.log(`Updated index.html with ${files.length} files`);
-
-          // Debug: print all detected folders
           const folders = [...new Set(files.map(f => f.folder))];
           console.log('Detected folders:', folders.join(', '));
           const check = fs.readFileSync('index.html', 'utf8');
           folders.forEach(folder => {
             if (check.includes(folder)) {
-              console.log(`✅ ${folder} found in index.html`);
+              console.log('✅ ' + folder + ' found in index.html');
             } else {
-              console.log(`❌ ${folder} MISSING from index.html — walk() bug!`);
+              console.log('❌ ' + folder + ' MISSING from index.html — walk() bug!');
             }
           });
           EOF
@@ -79,3 +79,8 @@ jobs:
             git commit -m "chore: auto-update file list"
             git push
           fi
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
