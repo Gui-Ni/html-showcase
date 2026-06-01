@@ -54,6 +54,18 @@ jobs:
           html = html.replace(/const FILES = \[[\s\S]*?\];/, filesArray);
           fs.writeFileSync('index.html', html, 'utf8');
           console.log(`Updated index.html with ${files.length} files`);
+
+          // Debug: print all detected folders
+          const folders = [...new Set(files.map(f => f.folder))];
+          console.log('Detected folders:', folders.join(', '));
+          const check = fs.readFileSync('index.html', 'utf8');
+          folders.forEach(folder => {
+            if (check.includes(folder)) {
+              console.log(`✅ ${folder} found in index.html`);
+            } else {
+              console.log(`❌ ${folder} MISSING from index.html — walk() bug!`);
+            }
+          });
           EOF
 
       - name: Commit and push if changed
