@@ -3,6 +3,9 @@ name: Auto-update index.html
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.github/**'
+      - 'trigger_temp.txt'
   workflow_dispatch:
 
 jobs:
@@ -10,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
-      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -27,9 +28,8 @@ jobs:
           // Auto-assign tag by file/folder name keywords
           function detectTag(name, folder) {
             const text = (name + ' ' + folder).toLowerCase();
-            if (/定价|价格|价格策略|溢价|毛利|cost|price/.test(text)) return 'pricing';
-            if (/竞品|分析报告|市场|research|分析$|趋势|行业|竞争/.test(text)) return 'analysis';
-            if (/投资|财报|股票|估值|ipo|invest|stock/.test(text)) return 'analysis';
+            if (/定价|价格|价格策略|溢价|毛利|cost|price/i.test(text)) return 'pricing';
+            if (/竞品|分析报告|市场|research|趋势|行业|竞争|invest|stock|财报|股票|估值|ipo/i.test(text)) return 'analysis';
             return 'report';
           }
 
@@ -83,13 +83,8 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if git diff --staged --quiet; then
-            echo "No changes — nothing to commit"
+            echo "No changes — index.html already up to date"
           else
             git commit -m "chore: auto-update file list with smart tag detection"
             git push
           fi
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
