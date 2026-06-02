@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>不需要慢炖的慢炖锅 — 核心逻辑拆解</title>
+<title>不需要慢炖的慢炖锅 — 核心逻辑拆解（带原理深挖）</title>
 <style>
   :root {
     --bg: #faf9f7;
@@ -186,11 +186,6 @@
     border-radius: 16px;
     padding: 28px 24px;
     border-left: 4px solid var(--primary);
-  }
-
-  .want-card.t忍耐 {
-    background: var(--primary-light);
-    border-left-color: var(--primary);
   }
 
   .want-card .emoji {
@@ -397,6 +392,350 @@
     color: var(--text-muted);
   }
 
+  /* ========== Deep-dive blocks ========== */
+  .deep-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    padding: 8px 14px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+  }
+  .deep-toggle:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .deep-toggle .arrow { transition: transform 0.3s; }
+  .deep-toggle.open .arrow { transform: rotate(180deg); }
+
+  .deep-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), margin 0.3s;
+    margin-top: 0;
+  }
+  .deep-panel.open {
+    max-height: 3000px;
+    margin-top: 16px;
+  }
+
+  .deep-inner {
+    background: linear-gradient(135deg, #faf9f7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1.5px dashed var(--border);
+  }
+
+  .deep-inner h5 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .deep-inner p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .deep-inner .formula {
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 12px;
+    color: var(--secondary);
+    border-left: 3px solid var(--accent);
+    margin: 10px 0;
+  }
+
+  /* Animation: 紫砂双气孔 */
+  .pore-anim {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(180deg, #f7e8d4 0%, #d4a574 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .pore-anim .pclay {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+  }
+  .pore-anim .pclosed {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    box-shadow: inset 0 0 2px rgba(255,255,255,0.6);
+  }
+  .pore-anim .popen {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid #1a1a1a;
+    animation: steam 3s ease-in-out infinite;
+  }
+  .pore-anim .steam {
+    position: absolute;
+    font-size: 8px;
+    color: rgba(255,255,255,0.7);
+    animation: rise 2.5s ease-out infinite;
+  }
+  @keyframes steam {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-8px); }
+  }
+  @keyframes rise {
+    0% { opacity: 0; transform: translateY(0); }
+    30% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateY(-30px); }
+  }
+
+  .pore-legend {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--text);
+    margin-top: 8px;
+  }
+  .pore-legend .item { display: flex; align-items: center; gap: 6px; }
+  .pore-legend .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .pore-legend .dot.closed { background: #1a1a1a; }
+  .pore-legend .dot.open { background: transparent; border: 1.5px solid #1a1a1a; }
+
+  /* Animation: 远红外共振 */
+  .wave-anim {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    background: #0f172a;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .wave-anim .wave {
+    position: absolute;
+    bottom: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+    border-radius: 1px;
+    animation: travel 2.5s linear infinite;
+  }
+  @keyframes travel {
+    0% { left: -10%; width: 10%; }
+    50% { left: 40%; width: 20%; opacity: 1; }
+    100% { left: 100%; width: 10%; opacity: 0.3; }
+  }
+  .wave-anim .molecule {
+    position: absolute;
+    bottom: 20px;
+    width: 28px;
+    height: 28px;
+    animation: vibrate 0.6s ease-in-out infinite;
+  }
+  .wave-anim .h2o { left: 25%; }
+  .wave-anim .protein { left: 65%; }
+  @keyframes vibrate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+  }
+  .wave-anim .label {
+    position: absolute;
+    top: 8px;
+    font-size: 10px;
+    color: #94a3b8;
+    font-family: monospace;
+  }
+  .wave-anim .label.l1 { left: 10px; }
+  .wave-anim .label.l2 { right: 10px; }
+
+  /* Animation: 塔吉冷凝循环 */
+  .tagine-anim {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .tagine-anim .pot {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 30px;
+    background: var(--primary);
+    border-radius: 0 0 50px 50px / 0 0 30px 30px;
+  }
+  .tagine-anim .lid {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+    border-bottom: 50px solid var(--primary);
+  }
+  .tagine-anim .steam-up {
+    position: absolute;
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    animation: goUp 2s linear infinite;
+  }
+  .tagine-anim .drop {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #3b82f6;
+    border-radius: 50%;
+    animation: drop 3s linear infinite;
+  }
+  @keyframes goUp {
+    0% { bottom: 40px; opacity: 0; }
+    20% { opacity: 0.6; }
+    100% { bottom: 140px; opacity: 0; }
+  }
+  @keyframes drop {
+    0% { top: 40px; left: 50%; opacity: 0; }
+    35% { top: 70px; left: 35%; opacity: 0.8; }
+    70% { top: 130px; left: 35%; opacity: 0.8; }
+    100% { top: 140px; left: 35%; opacity: 0; }
+  }
+  .tagine-anim .flame {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    animation: flicker 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes flicker {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  /* Animation: 体积加热对比 */
+  .heat-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .heat-box {
+    position: relative;
+    height: 140px;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 12px;
+  }
+  .heat-box.traditional { background: #fef2f2; border: 1.5px solid #fecaca; }
+  .heat-box.fir { background: #fefce8; border: 1.5px solid #fde047; }
+  .heat-box .heat-label {
+    position: absolute;
+    top: 8px; left: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+  .heat-box .food-block {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    height: 60px;
+    background: #fed7aa;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .heat-box.traditional .food-block { background: linear-gradient(180deg, #fb923c 0%, #fed7aa 70%, #fef3c7 100%); }
+  .heat-box.fir .food-block { background: linear-gradient(180deg, #fbbf24 0%, #fcd34d 50%, #fde68a 100%); }
+  .heat-arrow {
+    position: absolute;
+    color: #dc2626;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .heat-box.traditional .heat-arrow {
+    bottom: 5px; left: 50%;
+    transform: translateX(-50%);
+    animation: heat-rise 1.5s ease-in-out infinite alternate;
+  }
+  .heat-box.fir .heat-arrow {
+    bottom: 5px; right: 8px;
+    animation: heat-pulse 0.8s ease-in-out infinite;
+  }
+  @keyframes heat-rise {
+    0% { bottom: 5px; }
+    100% { bottom: 30px; opacity: 0.5; }
+  }
+  @keyframes heat-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  .heat-box .heat-note {
+    position: absolute;
+    bottom: 4px;
+    left: 8px;
+    right: 8px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* Source citation */
+  .source-cite {
+    background: #f8fafc;
+    border-left: 3px solid var(--secondary);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--text);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  .source-cite a {
+    color: var(--primary);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .source-cite a:hover { text-decoration: underline; }
+  .source-cite .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .source-cite .badge.green { background: #d1fae5; color: #065f46; }
+  .source-cite .badge.yellow { background: #fef3c7; color: #92400e; }
+  .source-cite .badge.red { background: #fee2e2; color: #991b1b; }
+
   /* Conclusion */
   .conclusion {
     background: linear-gradient(135deg, var(--primary) 0%, #8b3a1a 100%);
@@ -551,10 +890,46 @@
     color: var(--secondary);
   }
 
+  /* Source section */
+  .source-section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .source-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .source-section p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .source-list {
+    list-style: none;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .source-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .source-list li:last-child { border-bottom: none; }
+  .source-list a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .source-list a:hover { text-decoration: underline; }
+
   @media (max-width: 640px) {
     .want-need-grid,
     .tech-grid,
-    .conclusion ul {
+    .conclusion ul,
+    .heat-compare {
       grid-template-columns: 1fr;
     }
     .hero h1 { font-size: 28px; }
@@ -698,6 +1073,91 @@
             <div class="vs-box"><span class="vs-tag good">紫砂陶瓷</span><span>锁温透气，风味渗透</span></div>
           </div>
         </div>
+
+        <!-- 原理深挖 toggle -->
+        <div class="deep-toggle" onclick="toggleDeep('pot')">
+          <span>🔬 原理深挖 · 紫砂双气孔 / 塔吉冷凝循环</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="deep-panel" id="deep-pot">
+          <div class="deep-inner">
+
+            <h5>① 紫砂"双重气孔"微观结构（Dual-Pore Structure）</h5>
+            <p>紫砂矿土在 1100-1250℃ 烧结时，<strong>不会完全玻化</strong>（不像普通瓷器密实），会形成两种气孔的共生结构：</p>
+            <ul style="list-style: none; padding-left: 0; font-size: 12px; line-height: 1.7;">
+              <li>• <strong>闭口气孔</strong>（团聚体内部）：孔径 ~1.3μm → 充当<strong>热的不良导体</strong>，起锁温保温作用</li>
+              <li>• <strong>开口气孔</strong>（团聚体之间）：孔径数微米 → 允许<strong>气态水蒸气缓慢进出</strong>，但液态水因表面张力无法穿过</li>
+            </ul>
+
+            <div class="pore-anim">
+              <div class="pclay" style="width:80px; height:80px; top:20px; left:10px;"></div>
+              <div class="pclay" style="width:60px; height:60px; top:30px; left:90px;"></div>
+              <div class="pclay" style="width:100px; height:100px; top:10px; left:160px;"></div>
+              <div class="pclosed" style="top:50px; left:40px;"></div>
+              <div class="pclosed" style="top:80px; left:60px;"></div>
+              <div class="pclosed" style="top:65px; left:130px;"></div>
+              <div class="pclosed" style="top:45px; left:200px;"></div>
+              <div class="popen" style="top:90px; left:100px;"></div>
+              <div class="popen" style="top:55px; left:170px;"></div>
+              <div class="popen" style="top:75px; left:230px;"></div>
+              <span class="steam" style="left:108px;">💧</span>
+              <span class="steam" style="left:178px; animation-delay: 0.8s;">💧</span>
+              <span class="steam" style="left:238px; animation-delay: 1.6s;">💧</span>
+            </div>
+            <div class="pore-legend">
+              <div class="item"><span class="dot closed"></span>闭口气孔（保温）</div>
+              <div class="item"><span class="dot open"></span>开口气孔（透气不透水）</div>
+            </div>
+
+            <div class="formula">⟶ 分子筛效应：气态 H₂O 自由通过 / 液态 H₂O 因表面张力被阻</div>
+
+            <div class="source-cite">
+              <span class="badge green">SEM 实证</span> 紫砂之家 + 搜狐·六一堂《紫砂的双气孔结构》(2023) ·
+              <a href="https://www.sohu.com/a/702119823_121124376" target="_blank">sohu.com/a/702119823_121124376</a>
+            </div>
+
+            <h5 style="margin-top:24px;">② 塔吉锅微冷凝循环（Micro-circulation）</h5>
+            <p>塔吉锅特有的<strong>高帽锥形盖</strong>在烹饪中起"无水冷凝器"作用：</p>
+            <ul style="list-style: none; padding-left: 0; font-size: 12px; line-height: 1.7;">
+              <li>1. 锥盖上部远离热源，温度显著低于锅底</li>
+              <li>2. 食材水分受热蒸发 → 升腾到锥盖顶部 → 迅速冷凝</li>
+              <li>3. 水滴沿陡峭锥壁滑落 → 重新回到锅底</li>
+              <li>4. <strong>气-液自循环</strong>，无需额外加水，保留挥发性风味物质</li>
+            </ul>
+
+            <div class="tagine-anim">
+              <span class="flame">🔥</span>
+              <div class="pot"></div>
+              <div class="lid"></div>
+              <span class="steam-up" style="left:48%;">~</span>
+              <span class="steam-up" style="left:50%; animation-delay: 0.5s;">~</span>
+              <span class="steam-up" style="left:52%; animation-delay: 1s;">~</span>
+              <div class="drop" style="left:35%;"></div>
+              <div class="drop" style="left:60%; animation-delay: 1.2s;"></div>
+            </div>
+
+            <div class="source-cite">
+              <span class="badge yellow">结构原理</span> 塔吉锅几何结构与流体力学 · 北非烹饪传统设计 ·
+              <a href="https://baike.baidu.com/item/塔吉锅" target="_blank">百度百科·塔吉锅</a>
+            </div>
+
+            <h5 style="margin-top:24px;">③ 陶瓷低导热系数（Low Thermal Conductivity）</h5>
+            <p>陶瓷/紫砂的导热系数 <strong>0.8-1.2 W/(m·K)</strong>，远低于金属（铁 ~80，不锈钢 ~16）。这意味着：</p>
+            <ul style="list-style: none; padding-left: 0; font-size: 12px; line-height: 1.7;">
+              <li>• 加热速度温和 → 食材表层肌肉蛋白<strong>缓慢变性</strong>（不剧烈收缩）</li>
+              <li>• "风味通道"保持舒张 → 调味料/肉汁<strong>能持续渗透进深层纤维</strong></li>
+              <li>• 陶瓷是热的不良导体 → 离火后<strong>余温持续加热</strong>（节能 + 焖煮效果）</li>
+            </ul>
+
+            <div class="formula">⟶ 紫砂 0.8-1.2 W/(m·K)  ≪  铁 80 W/(m·K)  ≈  100× 导热差</div>
+
+            <div class="source-cite">
+              <span class="badge green">材料学教材</span>《材料科学基础》· 陶瓷导热系数标准值
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
       <div class="tech-card stove">
@@ -720,6 +1180,85 @@
             <div class="vs-box"><span class="vs-tag good">远红外</span><span>从内到外，渗透均匀</span></div>
           </div>
         </div>
+
+        <!-- 原理深挖 toggle -->
+        <div class="deep-toggle" onclick="toggleDeep('stove')">
+          <span>🔬 原理深挖 · 远红外共振 / 体积加热</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="deep-panel" id="deep-stove">
+          <div class="deep-inner">
+
+            <h5>① 分子转动-振动能级与共振吸收（Resonance Absorption）</h5>
+            <p>根据红外光谱学原理，<strong>极性分子</strong>（水、蛋白质、有机物）的振动/转动能级对应 <strong>2-25μm 红外波段</strong>。水分子 O-H 键的强吸收带：</p>
+            <ul style="list-style: none; padding-left: 0; font-size: 12px; line-height: 1.7;">
+              <li>• <strong>3μm 附近</strong>：O-H 拉伸振动强吸收</li>
+              <li>• <strong>5-15μm 远红外波段</strong>：O-H 弯曲振动，与本产品辐射波段重叠</li>
+            </ul>
+
+            <div class="wave-anim">
+              <div class="label l1">λ = 6-14μm (远红外)</div>
+              <div class="label l2">H₂O 分子振动</div>
+              <div class="wave" style="animation-delay: 0s;"></div>
+              <div class="wave" style="animation-delay: 0.6s;"></div>
+              <div class="wave" style="animation-delay: 1.2s;"></div>
+              <svg class="molecule h2o" viewBox="0 0 30 30">
+                <circle cx="15" cy="15" r="6" fill="#3b82f6"/>
+                <circle cx="6" cy="20" r="3" fill="#ef4444"/>
+                <circle cx="24" cy="20" r="3" fill="#ef4444"/>
+                <line x1="15" y1="15" x2="6" y2="20" stroke="white" stroke-width="1"/>
+                <line x1="15" y1="15" x2="24" y2="20" stroke="white" stroke-width="1"/>
+              </svg>
+              <svg class="molecule protein" viewBox="0 0 30 30">
+                <circle cx="15" cy="15" r="5" fill="#fbbf24"/>
+                <circle cx="8" cy="10" r="2.5" fill="#f59e0b"/>
+                <circle cx="22" cy="10" r="2.5" fill="#f59e0b"/>
+                <circle cx="8" cy="20" r="2.5" fill="#f59e0b"/>
+                <circle cx="22" cy="20" r="2.5" fill="#f59e0b"/>
+              </svg>
+            </div>
+
+            <div class="formula">共振吸收：E(光子) → E(分子振动) → 分子间摩擦 → 热能</div>
+
+            <div class="source-cite">
+              <span class="badge green">红外光谱学</span>《远红外线加热原理和应用》 ·
+              <a href="http://www.360doc.cn/article/29435191_696652598.html" target="_blank">360doc.cn</a>
+            </div>
+
+            <h5 style="margin-top:24px;">② 体积加热（Volumetric Heating）vs 传统表面传导</h5>
+            <p>远红外电磁波具有一定的<strong>穿透深度</strong>（含水食材中通常为亚毫米级），意味着热量在一定深度内<strong>内外同时激发</strong>，而不是从表面"排队往里钻"。</p>
+
+            <div class="heat-compare">
+              <div class="heat-box traditional">
+                <div class="heat-label">传统传导加热</div>
+                <div class="food-block">食材块</div>
+                <div class="heat-arrow">↑</div>
+                <div class="heat-note">外焦里生（梯度传热）</div>
+              </div>
+              <div class="heat-box fir">
+                <div class="heat-label">远红外体积加热</div>
+                <div class="food-block">食材块</div>
+                <div class="heat-arrow">⚡</div>
+                <div class="heat-note">内外同步（共振吸收）</div>
+              </div>
+            </div>
+
+            <div class="source-cite">
+              <span class="badge green">工业实测</span> "红外辐射加热的物品内部温度比表面高 5-10℃" · 360doc 工业文献 ·
+              <a href="http://www.360doc.cn/article/29435191_696652598.html" target="_blank">360doc.cn</a>
+            </div>
+
+            <h5 style="margin-top:24px;">③ 避免表面硬化（Prevention of Case Hardening）</h5>
+            <p>传统高温热风/传导加热 → 食材表面水分瞬间蒸发 → 形成<strong>致密碳化壳（Case Hardening）</strong> → 关闭物理毛细孔 → 阻止内部水分蒸发 + 阻碍深层风味物质溶出。</p>
+            <p>远红外加热内外温差小 → 表面<strong>不焦化闭合</strong> → 风味通道保持舒张 → 氨基酸/核苷酸等鲜味物质持续溶出。</p>
+
+            <div class="source-cite">
+              <span class="badge green">食品工程</span>《食品物理学》(Food Physics) · 食品干燥工艺中 Case Hardening 现象的标准描述
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -774,11 +1313,80 @@
     </div>
   </div>
 
+  <!-- 技术原理来源 section -->
+  <div class="source-section">
+    <h3>📚 技术原理来源（按可信度分级）</h3>
+    <p>本节技术原理经以下来源交叉验证。绿标 = 学术 / 行业实证；黄标 = 行业经验 / 商业资料；红标 = 推论 / 待补充。</p>
+
+    <ul class="source-list">
+      <li>
+        <span class="layer-badge core" style="font-size:10px;">🟢 SEM 实证</span>
+        紫砂双气孔结构（链状开放 + 团粒内闭合）— 搜狐·六一堂 (2023)
+        · <a href="https://www.sohu.com/a/702119823_121124376" target="_blank">sohu.com/a/702119823_121124376</a>
+      </li>
+      <li>
+        <span class="layer-badge core" style="font-size:10px;">🟢 SEM 实证</span>
+        紫砂烧成温度 1150-1250℃ — 搜狐·六一堂
+        · <a href="https://www.sohu.com/a/702119823_121124376" target="_blank">sohu.com/a/702119823_121124376</a>
+      </li>
+      <li>
+        <span class="layer-badge core" style="font-size:10px;">🟢 工业实测</span>
+        红外辐射加热物品内部温度比表面高 5-10℃ — 360doc 工业文献
+        · <a href="http://www.360doc.cn/article/29435191_696652598.html" target="_blank">360doc.cn</a>
+      </li>
+      <li>
+        <span class="layer-badge core" style="font-size:10px;">🟢 红外光谱学</span>
+        远红外 2-25μm 是极性分子振动波段 — 搜狗百科·远红外线
+        · <a href="http://baike.sogou.com/v57228.htm" target="_blank">baike.sogou.com</a>
+      </li>
+      <li>
+        <span class="layer-badge core" style="font-size:10px;">🟢 材料学标准值</span>
+        陶瓷导热系数 0.8-1.2 W/(m·K) vs 铁 80 W/(m·K) — 《材料科学基础》教材
+      </li>
+      <li>
+        <span class="layer-badge deep" style="font-size:10px;">🟡 行业经验</span>
+        "透气不透水"是宜兴紫砂行业标准说法 — 多个紫砂行业资料印证
+      </li>
+      <li>
+        <span class="layer-badge deep" style="font-size:10px;">🟡 行业经验</span>
+        远红外 6-14μm 是"生命光波"频段 — 多源独立提及（来源链不清晰）
+      </li>
+      <li>
+        <span class="layer-badge deep" style="font-size:10px;">🟡 行业经验</span>
+        塔吉锅锥形盖起"无水冷凝器"作用 — 百度百科·塔吉锅
+        · <a href="https://baike.baidu.com/item/塔吉锅" target="_blank">baike.baidu.com</a>
+      </li>
+      <li>
+        <span class="layer-badge surface" style="font-size:10px;">🔴 推论</span>
+        "高气孔率 → 蒸汽循环 → 食材纤维风味渗透" — 本报告类比推论
+        (原文为茶汁吸附场景，烹饪食材场景无直接论文)
+      </li>
+      <li>
+        <span class="layer-badge surface" style="font-size:10px;">🔴 推论</span>
+        "远红外从内到外穿透食材"用于烹饪 — 工业干燥场景有论文，烹饪场景为推论
+      </li>
+    </ul>
+  </div>
+
   <!-- Tagline -->
   <div class="tagline">
     <p>"我们不是在做一个<em>更快的慢炖锅</em>，<br>我们是在做一口<em>随时能炖出慢炖味的锅</em>。"</p>
   </div>
 
 </div>
+
+<script>
+function toggleDeep(id) {
+  const panel = document.getElementById('deep-' + id);
+  const toggle = panel.previousElementSibling;
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    toggle.classList.remove('open');
+  } else {
+    panel.classList.add('open');
+    toggle.classList.add('open');
+  }
+}
+</script>
 </body>
 </html>
