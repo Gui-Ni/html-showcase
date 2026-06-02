@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品心理定价算价表 - 通用模板</title>
+<style>
+  :root {
+    --primary: #c85a2a;
+    --primary-light: #f0e4d8;
+    --secondary: #2d4a3e;
+    --secondary-light: #dbeae3;
+    --accent: #e8a838;
+    --accent-light: #fef3c7;
+    --text: #1a1a1a;
+    --text-muted: #64748b;
+    --border: #e2ddd8;
+    --bg: #faf9f7;
+    --card: #ffffff;
+    --green: #10b981;
+    --green-light: #d1fae5;
+    --red: #ef4444;
+    --red-light: #fee2e2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 24px 16px;
+    font-size: 14px;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, #8b3a1a 100%);
+    color: #fff;
+    padding: 32px 28px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+  .header h1 { font-size: 26px; margin-bottom: 8px; }
+  .header p { opacity: 0.9; font-size: 14px; }
+  .header .formula-hint {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: 'SF Mono', Menlo, monospace;
+    line-height: 1.6;
+  }
+
+  /* Sections */
+  .section {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .section-hint {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+
+  /* Forms */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-row label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .form-row input, .form-row select {
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    background: #fff;
+    transition: border 0.2s;
+  }
+  .form-row input:focus, .form-row select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  /* Functions table */
+  .func-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .func-table th, .func-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .func-table th {
+    background: var(--bg);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .func-table td input, .func-table td select {
+    width: 100%;
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .func-table td input:hover, .func-table td select:hover {
+    background: #fff;
+    border-color: var(--border);
+  }
+  .func-table td input:focus, .func-table td select:focus {
+    background: #fff;
+    border-color: var(--primary);
+    outline: none;
+  }
+  .func-table tr:hover td { background: rgba(232,168,56,0.04); }
+
+  .kano-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .kano-basic { background: #e2e8f0; color: #475569; }
+  .kano-perf { background: #fef3c7; color: #92400e; }
+  .kano-excit { background: #d1fae5; color: #065f46; }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .btn {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #a8481f; }
+  .btn-secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover { background: var(--primary-light); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--primary);
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  /* Results */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .result-card {
+    padding: 18px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .result-card.min { background: var(--red-light); }
+  .result-card.rec { background: var(--accent-light); border: 2px solid var(--accent); }
+  .result-card.max { background: var(--green-light); }
+  .result-card .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .result-card.min .label { color: #991b1b; }
+  .result-card.rec .label { color: #92400e; }
+  .result-card.max .label { color: #065f46; }
+  .result-card .value {
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .result-card.min .value { color: #991b1b; }
+  .result-card.rec .value { color: #92400e; }
+  .result-card.max .value { color: #065f46; }
+  .result-card .note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Breakdown */
+  .breakdown {
+    margin-top: 20px;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .breakdown h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .breakdown-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px 100px;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 12px;
+    align-items: center;
+  }
+  .breakdown-row.head {
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+  .breakdown-row .bar {
+    height: 6px;
+    background: var(--accent);
+    border-radius: 3px;
+  }
+  .breakdown-row .name { font-weight: 600; }
+  .breakdown-row .price { font-weight: 700; color: var(--primary); }
+
+  .total-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px 100px;
+    gap: 10px;
+    padding: 12px 0 4px;
+    font-size: 13px;
+    font-weight: 700;
+    border-top: 2px solid var(--text);
+    margin-top: 6px;
+  }
+  .total-row .price { color: var(--primary); font-size: 16px; }
+
+  /* Empty state */
+  .empty {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .empty .icon { font-size: 40px; margin-bottom: 8px; opacity: 0.3; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 11px;
+    padding: 20px 0;
+  }
+  .footer a { color: var(--primary); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .form-grid, .result-grid { grid-template-columns: 1fr; }
+    .breakdown-row, .total-row { grid-template-columns: 1fr 60px 60px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>💰 产品心理定价算价表（通用版）</h1>
+    <p>基于"价值定价法 + Kano 模型"通用模板 — 填入产品信息和功能，自动算出用户心理价位</p>
+    <div class="formula-hint">
+      目标价 = BOM成本 + 竞品基线 + Σ(功能溢价)<br>
+      功能溢价 = 基础价 × 成本占比 × 痛点系数 × 替代难度系数
+    </div>
+  </div>
+
+  <!-- Step 1: 产品基本信息 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="step-num">1</div>
+      <span>产品基本信息</span>
+    </div>
+    <div class="section-hint">填产品名 + 预期 BOM 成本 + 竞品基线价</div>
+    <div class="form-grid">
+      <div class="form-row">
+        <label>产品名称</label>
+        <input type="text" id="prodName" placeholder="例：3合1多功能慢炖锅套装" value="3合1多功能慢炖锅套装">
+      </div>
+      <div class="form-row">
+        <label>品类</label>
+        <select id="prodCategory">
+          <option>厨房电器</option>
+          <option>家居清洁</option>
+          <option>个护健康</option>
+          <option>户外照明</option>
+          <option>餐厨用具</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>BOM 成本（CNY）</label>
+        <input type="number" id="bomCost" value="80" step="0.01">
+      </div>
+      <div class="form-row">
+        <label>包装+运输+平台费（CNY）</label>
+        <input type="number" id="extraCost" value="40" step="0.01">
+      </div>
+      <div class="form-row">
+        <label>同品类竞品均价（CNY）</label>
+        <input type="number" id="compPrice" value="299" step="0.01">
+      </div>
+      <div class="form-row">
+        <label>预期市场定位</label>
+        <select id="positioning">
+          <option value="1.0">中端（与竞品同档）</option>
+          <option value="1.2">中高端（高于竞品 20%）</option>
+          <option value="1.5">高端（高于竞品 50%）</option>
+          <option value="0.85">性价比（低于竞品 15%）</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: 功能列表 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="step-num">2</div>
+      <span>产品功能列表（按 Kano 模型分类）</span>
+    </div>
+    <div class="section-hint">
+      每行填 1 个功能。Kano 分类决定定价权重：<br>
+      <span class="kano-tag kano-basic">基本型</span> 必备不加价 · 
+      <span class="kano-tag kano-perf">期望型</span> 做了用户愿多付钱 · 
+      <span class="kano-tag kano-excit">兴奋型</span> 惊喜/天花板
+    </div>
+
+    <table class="func-table">
+      <thead>
+        <tr>
+          <th style="width:35%">功能描述</th>
+          <th style="width:14%">Kano 分类</th>
+          <th style="width:12%">BOM 占比 %</th>
+          <th style="width:12%">用户痛点 1-5</th>
+          <th style="width:12%">替代难度 1-5</th>
+          <th style="width:15%">说明</th>
+        </tr>
+      </thead>
+      <tbody id="funcTableBody">
+        <!-- 动态填充 -->
+      </tbody>
+    </table>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="addRow()">+ 添加功能</button>
+      <button class="btn btn-ghost" onclick="loadExample()">📋 加载塔吉锅示例</button>
+      <button class="btn btn-ghost" onclick="clearRows()">🗑 清空</button>
+    </div>
+  </div>
+
+  <!-- Step 3: 算价 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="step-num">3</div>
+      <span>计算目标价</span>
+    </div>
+    <div class="section-hint">点击按钮自动算价，输出"最低价 / 建议价 / 最高价"</div>
+    <button class="btn btn-primary" onclick="calculate()">⚡ 计算用户心理价位</button>
+
+    <div id="resultArea" style="margin-top: 20px;">
+      <div class="empty">
+        <div class="icon">🧮</div>
+        <div>先填入功能，然后点上面按钮</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: 解释 + 校准建议 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="step-num">4</div>
+      <span>使用建议 / 校准方法</span>
+    </div>
+    <ul style="font-size: 13px; line-height: 1.8; color: var(--text); padding-left: 20px;">
+      <li><strong>最低价 = 保本微利线</strong>：低于这个价不要卖（BOM × 2 倍是行业默认毛利率安全线）</li>
+      <li><strong>建议价 = 用户心理价位</strong>：基于功能差异化算出来的"用户愿付价格"</li>
+      <li><strong>最高价 = 价格测试上限</strong>：拿去做 Gabor Granger 测试，看用户接受度</li>
+      <li><strong>校准方法</strong>：拿建议价去做 PSM / Gabor Granger 用户测试（10-30 个用户即可），微调系数</li>
+      <li><strong>痛点 / 替代难度</strong> 这两个数需要你 PM 直觉判断 — 凭你对这个品类的用户认知填，没有"标准答案"</li>
+      <li><strong>兴奋型功能</strong> 即使痛点低，也建议保留（决定品牌天花板）</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    通用定价模型 v1.0 · 基于价值定价法 + Kano 模型 + 边际贡献算法 · 实际定价需配合用户测试校准
+  </div>
+
+</div>
+
+<script>
+const FUNCTIONS_KEY = 'pricing_model_functions_v1';
+
+// 默认空行
+const DEFAULT_ROW = (idx) => ({
+  id: idx,
+  desc: '',
+  kano: 'perf',
+  bomPct: 5,
+  pain: 3,
+  diff: 3,
+  note: ''
+});
+
+// 塔吉锅示例
+const EXAMPLE = [
+  { desc: '3000W 大功率快速加热', kano: 'perf', bomPct: 8, pain: 5, diff: 2, note: '基础期望型' },
+  { desc: '富硒紫砂全陶瓷锅体', kano: 'excit', bomPct: 22, pain: 4, diff: 5, note: '兴奋型 - 行业稀缺' },
+  { desc: '塔吉锅锥形盖冷凝循环', kano: 'excit', bomPct: 5, pain: 3, diff: 4, note: '北非风味差异化' },
+  { desc: '远红外电陶炉加热', kano: 'excit', bomPct: 25, pain: 3, diff: 5, note: '核心卖点' },
+  { desc: '智能联动 App 控制', kano: 'excit', bomPct: 6, pain: 2, diff: 3, note: '可选 - 加分项' },
+  { desc: '不粘内胆 / 易清洁', kano: 'perf', bomPct: 4, pain: 4, diff: 1, note: '行业标配' },
+  { desc: '多重安全保护（防干烧等）', kano: 'basic', bomPct: 3, pain: 5, diff: 1, note: '基本型 - 必备' },
+  { desc: '配件齐全（食谱/量杯等）', kano: 'perf', bomPct: 2, pain: 2, diff: 1, note: '期望型' },
+];
+
+let rows = [];
+
+function saveState() {
+  localStorage.setItem(FUNCTIONS_KEY, JSON.stringify(rows));
+}
+
+function loadState() {
+  const saved = localStorage.getItem(FUNCTIONS_KEY);
+  if (saved) {
+    rows = JSON.parse(saved);
+  } else {
+    rows = [DEFAULT_ROW(0)];
+  }
+  render();
+}
+
+function loadExample() {
+  rows = EXAMPLE.map((r, i) => ({ ...r, id: i }));
+  saveState();
+  render();
+}
+
+function clearRows() {
+  if (confirm('确定清空所有功能？')) {
+    rows = [DEFAULT_ROW(0)];
+    saveState();
+    render();
+  }
+}
+
+function addRow() {
+  rows.push(DEFAULT_ROW(rows.length));
+  saveState();
+  render();
+}
+
+function deleteRow(id) {
+  rows = rows.filter(r => r.id !== id);
+  if (rows.length === 0) rows = [DEFAULT_ROW(0)];
+  saveState();
+  render();
+}
+
+function render() {
+  const tbody = document.getElementById('funcTableBody');
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td><input type="text" data-id="${r.id}" data-field="desc" value="${r.desc || ''}" placeholder="例：3000W 大功率"></td>
+      <td>
+        <select data-id="${r.id}" data-field="kano">
+          <option value="basic" ${r.kano === 'basic' ? 'selected' : ''}>基本型</option>
+          <option value="perf" ${r.kano === 'perf' ? 'selected' : ''}>期望型</option>
+          <option value="excit" ${r.kano === 'excit' ? 'selected' : ''}>兴奋型</option>
+        </select>
+      </td>
+      <td><input type="number" data-id="${r.id}" data-field="bomPct" value="${r.bomPct}" min="0" max="100" step="0.1"></td>
+      <td><input type="number" data-id="${r.id}" data-field="pain" value="${r.pain}" min="1" max="5" step="1"></td>
+      <td><input type="number" data-id="${r.id}" data-field="diff" value="${r.diff}" min="1" max="5" step="1"></td>
+      <td>
+        <input type="text" data-id="${r.id}" data-field="note" value="${r.note || ''}" placeholder="可选">
+        <button class="btn btn-ghost" onclick="deleteRow(${r.id})" style="color:#ef4444;float:right;">×</button>
+      </td>
+    </tr>
+  `).join('');
+
+  // 绑定 change 事件
+  tbody.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('change', (e) => {
+      const id = parseInt(e.target.dataset.id);
+      const field = e.target.dataset.field;
+      const row = rows.find(r => r.id === id);
+      if (row) {
+        const val = e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
+        row[field] = val;
+        saveState();
+      }
+    });
+  });
+}
+
+function calculate() {
+  // 读取产品信息
+  const prodName = document.getElementById('prodName').value || '未命名产品';
+  const bomCost = parseFloat(document.getElementById('bomCost').value) || 0;
+  const extraCost = parseFloat(document.getElementById('extraCost').value) || 0;
+  const compPrice = parseFloat(document.getElementById('compPrice').value) || 0;
+  const positioning = parseFloat(document.getElementById('positioning').value) || 1;
+
+  const totalCost = bomCost + extraCost;
+  const safeMin = totalCost * 2;  // 最低保本价
+  const compBase = compPrice * positioning;  // 竞品基线
+
+  // Kano 权重系数
+  const KANO_WEIGHT = { basic: 0, perf: 1.0, excit: 1.5 };
+
+  // 计算每个功能溢价
+  const breakdowns = rows
+    .filter(r => r.desc && r.desc.trim())
+    .map(r => {
+      // 基础价 = max(安全价, 竞品基线 × 0.8)
+      const basePrice = Math.max(safeMin * 1.5, compBase * 0.85);
+      const costContribution = (r.bomPct / 100) * totalCost;
+      const painFactor = r.pain / 5;
+      const diffFactor = r.diff / 5;
+      const kanoWeight = KANO_WEIGHT[r.kano];
+      const premium = basePrice * (r.bomPct / 100) * painFactor * diffFactor * kanoWeight;
+      return {
+        name: r.desc,
+        kano: r.kano,
+        costContribution,
+        premium,
+        total: costContribution + premium,
+        note: r.note
+      };
+    });
+
+  const totalPremium = breakdowns.reduce((s, b) => s + b.premium, 0);
+  const totalCostContrib = breakdowns.reduce((s, b) => s + b.costContribution, 0);
+  const suggestedPrice = Math.max(safeMin * 2, compBase, totalCost + totalPremium + 50);
+  const maxPrice = suggestedPrice * 1.3;
+
+  // 渲染结果
+  const resultHTML = `
+    <div class="result-grid">
+      <div class="result-card min">
+        <div class="label">最低价 (保本线)</div>
+        <div class="value">¥ ${safeMin.toFixed(0)}</div>
+        <div class="note">BOM × 2 倍安全线</div>
+      </div>
+      <div class="result-card rec">
+        <div class="label">★ 建议价 (用户心理价)</div>
+        <div class="value">¥ ${suggestedPrice.toFixed(0)}</div>
+        <div class="note">功能差异化定价</div>
+      </div>
+      <div class="result-card max">
+        <div class="label">最高价 (测试上限)</div>
+        <div class="value">¥ ${maxPrice.toFixed(0)}</div>
+        <div class="note">建议价 × 1.3</div>
+      </div>
+    </div>
+
+    <div class="breakdown">
+      <h4>📊 功能溢价分解</h4>
+      <div class="breakdown-row head">
+        <div>功能</div>
+        <div>成本占比</div>
+        <div>Kano</div>
+        <div>贡献价</div>
+      </div>
+      ${breakdowns.map(b => `
+        <div class="breakdown-row">
+          <div>
+            <div class="name">${b.name}</div>
+            <div style="font-size:10px; color:var(--text-muted);">${b.note || ''}</div>
+          </div>
+          <div>¥ ${b.costContribution.toFixed(0)}</div>
+          <div><span class="kano-tag kano-${b.kano}">${b.kano === 'basic' ? '基本' : b.kano === 'perf' ? '期望' : '兴奋'}</span></div>
+          <div class="price">¥ ${b.premium.toFixed(0)}</div>
+        </div>
+      `).join('')}
+      <div class="total-row">
+        <div>合计</div>
+        <div>¥ ${totalCostContrib.toFixed(0)}</div>
+        <div></div>
+        <div class="price">¥ ${totalPremium.toFixed(0)}</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; padding:14px; background:#f0fdf4; border-left:3px solid var(--green); border-radius:6px; font-size:12px; color:var(--text);">
+      <strong style="color:var(--green);">💡 解读：</strong><br>
+      • 你的产品 "${prodName}" 理论建议价为 <strong>¥ ${suggestedPrice.toFixed(0)}</strong><br>
+      • 同品类竞品均价 ¥ ${compPrice}，按 ${positioning === 1 ? '中端' : positioning > 1 ? '中高端/高端' : '性价比'} 定位<br>
+      • 兴奋型功能带来 ¥ ${breakdowns.filter(b => b.kano === 'excit').reduce((s, b) => s + b.premium, 0).toFixed(0)} 的溢价（${(breakdowns.filter(b => b.kano === 'excit').reduce((s, b) => s + b.premium, 0) / totalPremium * 100).toFixed(0)}% 的总溢价）<br>
+      • <strong>校准建议</strong>：拿建议价附近 3-5 个价格点做 Gabor Granger 问卷（10-30 个用户），找到"最高接受价"
+    </div>
+  `;
+
+  document.getElementById('resultArea').innerHTML = resultHTML;
+}
+
+// 初始化
+loadState();
+</script>
+</body>
+</html>
