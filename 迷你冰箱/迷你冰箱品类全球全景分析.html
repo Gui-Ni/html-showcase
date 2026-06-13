@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>迷你冰箱品类全球全景分析 · 全平台 × 全国家 × 双赛道</title>
+<title>迷你冰箱品类全球全景分析 · 演示版</title>
 <style>
   :root {
     --bg: #0a0e1a;
@@ -16,6 +16,8 @@
     --text-soft: #a0aac0;
     --text-mute: #6b7488;
     --accent: #ff6b35;
+    --accent-soft: #ff8c5e;
+    --accent-glow: rgba(255, 107, 53, 0.15);
     --gold: #fbbf24;
     --green: #10b981;
     --blue: #3b82f6;
@@ -83,17 +85,9 @@
   .s2 { background: rgba(251, 146, 60, 0.15); color: #fb923c; font-weight: 600; text-align: center; }
   .s1 { background: rgba(239, 68, 68, 0.15); color: var(--red); font-weight: 600; text-align: center; }
   .s-na { color: var(--text-mute); text-align: center; }
-
   .p-high { color: var(--green); font-weight: 700; }
   .p-mid { color: var(--gold); font-weight: 600; }
   .p-low { color: var(--red); font-weight: 600; }
-
-  .bar-cell { display: flex; align-items: center; gap: 6px; font-size: 11px; }
-  .bar-cell .bar { flex: 1; height: 6px; background: var(--bg-soft); border-radius: 3px; overflow: hidden; min-width: 40px; }
-  .bar-cell .fill { height: 100%; border-radius: 3px; }
-  .bar-cell .fill.high { background: var(--green); }
-  .bar-cell .fill.mid { background: var(--gold); }
-  .bar-cell .fill.low { background: var(--red); }
 
   .callout { background: linear-gradient(135deg, rgba(255, 107, 53, 0.08), transparent); border-left: 3px solid var(--accent); padding: 16px 20px; border-radius: 6px; margin: 16px 0; font-size: 14px; color: var(--text-soft); }
   .callout strong { color: var(--accent); }
@@ -105,11 +99,6 @@
   .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; font-size: 12px; color: var(--text-soft); }
   .legend-item { display: flex; align-items: center; gap: 6px; }
   .legend-item .dot { width: 12px; height: 12px; border-radius: 2px; }
-
-  .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  .insight { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; border-left: 3px solid var(--accent); }
-  .insight h4 { font-size: 14px; margin-bottom: 6px; color: var(--accent); }
-  .insight p { font-size: 12.5px; color: var(--text-soft); }
 
   .matrix-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
   @media (max-width: 900px) { .matrix-grid { grid-template-columns: 1fr; } }
@@ -146,9 +135,100 @@
 
   .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== 演示模式 ===== */
+  .present-btn {
+    position: fixed; top: 80px; right: 20px;
+    background: var(--accent); color: white;
+    border: none; padding: 10px 18px;
+    border-radius: 100px; font-size: 13px; font-weight: 600;
+    cursor: pointer; z-index: 200;
+    box-shadow: 0 4px 20px var(--accent-glow);
+    transition: all 0.2s;
+  }
+  .present-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+  .present-btn::before { content: '🎬 '; }
+
+  .progress-bar {
+    position: fixed; top: 0; left: 0; height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    z-index: 300; transition: width 0.4s ease;
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  body.present-mode {
+    overflow: hidden;
+    background: var(--bg);
+  }
+  body.present-mode nav,
+  body.present-mode .present-btn,
+  body.present-mode footer { display: none; }
+
+  body.present-mode section {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    max-width: none;
+    padding: 60px 80px 80px;
+    display: none;
+    overflow-y: auto;
+    margin: 0;
+    background: var(--bg);
+  }
+  body.present-mode section.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  body.present-mode section.active .section-num { font-size: 18px; }
+  body.present-mode section.active .section-title { font-size: 48px; margin-bottom: 20px; }
+  body.present-mode section.active .section-desc { font-size: 18px; }
+  body.present-mode section.active .table-wrap { font-size: 14px; }
+  body.present-mode section.active .hero { display: none; }
+  body.present-mode section.active .hero-stats { display: flex; gap: 32px; }
+  body.present-mode .section-header { margin-bottom: 24px; }
+
+  .present-hint {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 14, 26, 0.92);
+    border: 1px solid var(--border);
+    padding: 8px 20px; border-radius: 100px;
+    font-size: 12px; color: var(--text-soft);
+    z-index: 200;
+    backdrop-filter: blur(10px);
+    display: none;
+  }
+  body.present-mode .present-hint { display: flex; gap: 12px; align-items: center; }
+  .present-hint kbd {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    padding: 2px 6px; border-radius: 4px;
+    font-family: "SF Mono", monospace; font-size: 11px;
+    color: var(--text);
+  }
+
+  .page-counter {
+    position: fixed; bottom: 20px; right: 30px;
+    font-family: "SF Mono", monospace;
+    font-size: 12px; color: var(--text-mute);
+    z-index: 200;
+    display: none;
+  }
+  body.present-mode .page-counter { display: block; }
 </style>
 </head>
 <body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<button class="present-btn" id="presentBtn">进入演示模式</button>
+
+<div class="present-hint">
+  <span>← → 翻页</span>
+  <span><kbd>ESC</kbd> 退出</span>
+  <span><kbd>F</kbd> 全屏</span>
+</div>
+<div class="page-counter" id="pageCounter">1 / 9</div>
 
 <header class="hero">
   <div class="hero-meta">
@@ -157,41 +237,18 @@
     <span class="badge teal">10 国家 · 8 平台 · 双赛道</span>
   </div>
   <h1>迷你冰箱品类全球全景分析</h1>
-  <p class="subtitle">
-    全平台 × 全国家 × 美妆 vs 通用 双赛道 × 6 维度评分。<br>
-    数据驱动、覆盖 10 个核心目标国、8 个主流平台、20+ 个细分市场判断。
-  </p>
-
+  <p class="subtitle">全平台 × 全国家 × 美妆 vs 通用 双赛道 × 6 维度评分。</p>
   <div class="core-question">
-    <div class="label">REPORT SCOPE · 报告范围</div>
-    <p>本报告回答 5 个核心问题：① 各国家小冰箱需求强度 ② 各国家美妆/美妆冷藏需求强度 ③ 各赛道在各国的竞争程度 ④ 各国家各赛道的可推进拓展性（认证 / 物流 / 平台政策） ⑤ 平台 × 国家 × 赛道的最优组合矩阵</p>
+    <div class="label">REPORT SCOPE</div>
+    <p>本报告回答 5 个核心问题：① 各国家小冰箱需求强度 ② 各国家美妆/美妆冷藏需求强度 ③ 各赛道在各国的竞争程度 ④ 各国家各赛道的可推进拓展性 ⑤ 平台 × 国家 × 赛道的最优组合矩阵</p>
   </div>
-
   <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-num">$1.35B</div>
-      <div class="stat-label">2025 迷你冰箱全球规模</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">$156.9B</div>
-      <div class="stat-label">2024 K-Beauty 全球规模</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">+8.95%</div>
-      <div class="stat-label">迷你冰箱 CAGR 25-32</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">+9.72%</div>
-      <div class="stat-label">K-Beauty CAGR 25-35</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">10</div>
-      <div class="stat-label">覆盖国家</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">8</div>
-      <div class="stat-label">覆盖平台</div>
-    </div>
+    <div class="stat"><div class="stat-num">$1.35B</div><div class="stat-label">2025 迷你冰箱全球规模</div></div>
+    <div class="stat"><div class="stat-num">$156.9B</div><div class="stat-label">2024 K-Beauty 全球规模</div></div>
+    <div class="stat"><div class="stat-num">+8.95%</div><div class="stat-label">迷你冰箱 CAGR 25-32</div></div>
+    <div class="stat"><div class="stat-num">+9.72%</div><div class="stat-label">K-Beauty CAGR 25-35</div></div>
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">覆盖国家</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">覆盖平台</div></div>
   </div>
 </header>
 
@@ -209,1167 +266,278 @@
   </div>
 </nav>
 
-<!-- 1. 品类定义 -->
 <section id="category">
   <div class="section-header fade-in">
     <div class="section-num">01 / CATEGORY</div>
     <h2 class="section-title">品类边界与双赛道定义</h2>
     <p class="section-desc">先把"在比什么"讲清楚，再谈数据。所有评分都是基于以下赛道定义。</p>
   </div>
-
   <div class="matrix-grid fade-in">
     <div class="table-wrap">
       <table>
         <thead>
-          <tr>
-            <th style="width: 25%;">维度</th>
-            <th style="width: 37.5%; background: rgba(236, 72, 153, 0.08);">美妆定位迷你冰箱</th>
-            <th style="width: 37.5%; background: rgba(59, 130, 246, 0.08);">通用定位迷你冰箱</th>
-          </tr>
+          <tr><th style="width: 25%;">维度</th><th style="width: 37.5%; background: rgba(236, 72, 153, 0.08);">美妆定位迷你冰箱</th><th style="width: 37.5%; background: rgba(59, 130, 246, 0.08);">通用定位迷你冰箱</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>核心卖点</td>
-            <td>护肤冷藏 / 活性成分保存 / 化妆台</td>
-            <td>桌面饮料 / 宿舍租房 / 车载 / 母乳</td>
-          </tr>
-          <tr>
-            <td>容量</td>
-            <td>4-6L 主流</td>
-            <td>6-15L 主流</td>
-          </tr>
-          <tr>
-            <td>客单价</td>
-            <td>$25-40</td>
-            <td>$20-65</td>
-          </tr>
-          <tr>
-            <td>标配</td>
-            <td>LED 镜面 + 收纳分隔 + 美观设计</td>
-            <td>基础功能 + 多容量 + 实用设计</td>
-          </tr>
-          <tr>
-            <td>主要竞品</td>
-            <td>Koolatron / Cooluli / ICEBOX</td>
-            <td>澄海白牌 / Midea / Haier</td>
-          </tr>
-          <tr>
-            <td>核心人群</td>
-            <td>18-35 女性，护肤深度用户</td>
-            <td>学生 + 租房党 + 办公 + 司机</td>
-          </tr>
-          <tr>
-            <td>需求驱动</td>
-            <td>K-beauty / 活性护肤 / 美妆 KOL</td>
-            <td>气候 + 小户型 + 母乳经济</td>
-          </tr>
+          <tr><td>核心卖点</td><td>护肤冷藏 / 活性成分保存 / 化妆台</td><td>桌面饮料 / 宿舍租房 / 车载 / 母乳</td></tr>
+          <tr><td>容量</td><td>4-6L 主流</td><td>6-15L 主流</td></tr>
+          <tr><td>客单价</td><td>$25-40</td><td>$20-65</td></tr>
+          <tr><td>标配</td><td>LED 镜面 + 收纳分隔 + 美观设计</td><td>基础功能 + 多容量 + 实用设计</td></tr>
+          <tr><td>主要竞品</td><td>Koolatron / Cooluli / ICEBOX</td><td>澄海白牌 / Midea / Haier</td></tr>
+          <tr><td>核心人群</td><td>18-35 女性，护肤深度用户</td><td>学生 + 租房党 + 办公 + 司机</td></tr>
+          <tr><td>需求驱动</td><td>K-beauty / 活性护肤 / 美妆 KOL</td><td>气候 + 小户型 + 母乳经济</td></tr>
         </tbody>
       </table>
     </div>
     <div class="ranking-list">
       <h3 style="margin-bottom: 12px; font-size: 16px;">📊 关键全球数据（2024-2025）</h3>
-      <div class="ranking-item">
-        <div class="rank">📦</div>
-        <div class="info"><h4>全球迷你冰箱规模</h4><p>2025 实际 / 2024-2032 CAGR</p></div>
-        <div class="score s4">$1.35B</div>
-      </div>
-      <div class="ranking-item">
-        <div class="rank">📈</div>
-        <div class="info"><h4>迷你冰箱 CAGR</h4><p>2025-2032 预测</p></div>
-        <div class="score s4">+8.95%</div>
-      </div>
-      <div class="ranking-item">
-        <div class="rank">💄</div>
-        <div class="info"><h4>K-Beauty 全球规模</h4><p>2024 实际 / MRFR</p></div>
-        <div class="score s5">$156.9B</div>
-      </div>
-      <div class="ranking-item">
-        <div class="rank">🌏</div>
-        <div class="info"><h4>K-Beauty CAGR</h4><p>2025-2035 预测</p></div>
-        <div class="score s5">+9.72%</div>
-      </div>
-      <div class="ranking-item">
-        <div class="rank">🇰🇷</div>
-        <div class="info"><h4>韩对美化妆品出口</h4><p>2025 H1 创纪录 +15%</p></div>
-        <div class="score s4">$5.5B</div>
-      </div>
+      <div class="ranking-item"><div class="rank">📦</div><div class="info"><h4>全球迷你冰箱规模</h4><p>2025 实际 / 2024-2032 CAGR</p></div><div class="score s4">$1.35B</div></div>
+      <div class="ranking-item"><div class="rank">📈</div><div class="info"><h4>迷你冰箱 CAGR</h4><p>2025-2032 预测</p></div><div class="score s4">+8.95%</div></div>
+      <div class="ranking-item"><div class="rank">💄</div><div class="info"><h4>K-Beauty 全球规模</h4><p>2024 实际 / MRFR</p></div><div class="score s5">$156.9B</div></div>
+      <div class="ranking-item"><div class="rank">🌏</div><div class="info"><h4>K-Beauty CAGR</h4><p>2025-2035 预测</p></div><div class="score s5">+9.72%</div></div>
+      <div class="ranking-item"><div class="rank">🇰🇷</div><div class="info"><h4>韩对美化妆品出口</h4><p>2025 H1 创纪录 +15%</p></div><div class="score s4">$5.5B</div></div>
     </div>
   </div>
 </section>
 
-<!-- 2. 国家小冰箱需求 -->
 <section id="fridge-demand">
   <div class="section-header fade-in">
     <div class="section-num">02 / FRIDGE DEMAND</div>
     <h2 class="section-title">10 国小冰箱需求强度</h2>
     <p class="section-desc">不区分美妆 / 通用，单纯看这个国家对小冰箱品类的需求强度。</p>
   </div>
-
   <div class="legend fade-in">
     <div class="legend-item"><div class="dot" style="background: var(--green);"></div>需求强（5分）</div>
     <div class="legend-item"><div class="dot" style="background: #84cc16;"></div>需求较高（4分）</div>
     <div class="legend-item"><div class="dot" style="background: var(--gold);"></div>需求中等（3分）</div>
     <div class="legend-item"><div class="dot" style="background: #fb923c;"></div>需求较弱（2分）</div>
     <div class="legend-item"><div class="dot" style="background: var(--red);"></div>需求弱（1分）</div>
-    <div class="legend-item"><div class="dot" style="background: var(--text-mute);"></div>无数据</div>
   </div>
-
   <div class="table-wrap fade-in">
     <table>
-      <thead>
-        <tr>
-          <th>国家</th>
-          <th>电商规模</th>
-          <th>迷你冰箱预估规模</th>
-          <th>增速</th>
-          <th>气候刚需</th>
-          <th>租房率</th>
-          <th>母乳/医疗</th>
-          <th>需求强度</th>
-          <th>主推容量</th>
-        </tr>
-      </thead>
+      <thead><tr><th>国家</th><th>电商规模</th><th>迷你冰箱预估规模</th><th>增速</th><th>气候刚需</th><th>租房率</th><th>需求强度</th><th>主推容量</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>🇷🇺 俄罗斯</strong></td>
-          <td>$73.3B (WB) / $42B (Ozon)</td>
-          <td>$80M</td>
-          <td class="p-high">+20%</td>
-          <td>中（夏 30℃+ 局部）</td>
-          <td>极高（70%+）</td>
-          <td>中</td>
-          <td class="s5">5</td>
-          <td>6-8L</td>
-        </tr>
-        <tr>
-          <td><strong>🇲🇽 墨西哥</strong></td>
-          <td>$43.1B</td>
-          <td>$35M</td>
-          <td class="p-high">+18%</td>
-          <td><strong>极强（30-40℃）</strong></td>
-          <td>高（55%+）</td>
-          <td>中</td>
-          <td class="s5">5</td>
-          <td>6-10L</td>
-        </tr>
-        <tr>
-          <td><strong>🇸🇦 沙特</strong></td>
-          <td>$12B+</td>
-          <td>$25M</td>
-          <td class="p-high">+12%</td>
-          <td><strong>极强（35-50℃）</strong></td>
-          <td>高（40%+）</td>
-          <td>低</td>
-          <td class="s5">5</td>
-          <td>8-15L</td>
-        </tr>
-        <tr>
-          <td><strong>🇦🇪 阿联酋</strong></td>
-          <td>$8B+</td>
-          <td>$15M</td>
-          <td class="p-high">+12%</td>
-          <td><strong>极强（35-50℃）</strong></td>
-          <td>中</td>
-          <td>低</td>
-          <td class="s5">5</td>
-          <td>8-15L</td>
-        </tr>
-        <tr>
-          <td><strong>🇧🇷 巴西</strong></td>
-          <td>$36B+</td>
-          <td>$30M</td>
-          <td class="p-high">+18%</td>
-          <td><strong>强（25-35℃）</strong></td>
-          <td>高（50%+）</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>6-10L</td>
-        </tr>
-        <tr>
-          <td><strong>🇮🇩 印尼</strong></td>
-          <td>$57.7B</td>
-          <td>$30M</td>
-          <td class="p-mid">+15%</td>
-          <td>强（热带）</td>
-          <td>中</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>4-8L</td>
-        </tr>
-        <tr>
-          <td><strong>🇹🇭 泰国</strong></td>
-          <td>$22B+</td>
-          <td>$15M</td>
-          <td class="p-mid">+15%</td>
-          <td>强（热带）</td>
-          <td>中</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>4-8L</td>
-        </tr>
-        <tr>
-          <td><strong>🇻🇳 越南</strong></td>
-          <td>$20B+</td>
-          <td>$12M</td>
-          <td class="p-mid">+15%</td>
-          <td>强（热带）</td>
-          <td>中</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>4-8L</td>
-        </tr>
-        <tr>
-          <td><strong>🇰🇷 韩国</strong></td>
-          <td>$180B+</td>
-          <td>$50M</td>
-          <td class="p-mid">+8%</td>
-          <td>中（温带）</td>
-          <td>极高（首尔 50%+）</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>4-6L（美妆驱动）</td>
-        </tr>
-        <tr>
-          <td><strong>🇪🇸 西班牙</strong></td>
-          <td>$25B+</td>
-          <td>$25M</td>
-          <td class="p-mid">+8%</td>
-          <td>中（夏 35℃+）</td>
-          <td>中</td>
-          <td>中</td>
-          <td class="s3">3</td>
-          <td>6-8L</td>
-        </tr>
-        <tr>
-          <td><strong>🇺🇸 美国</strong></td>
-          <td>$1.1T+</td>
-          <td>$1.2B</td>
-          <td class="p-low">+5%</td>
-          <td>中（区域差异）</td>
-          <td>高（35%+）</td>
-          <td>中</td>
-          <td class="s3">3</td>
-          <td>4-10L（饱和）</td>
-        </tr>
-        <tr>
-          <td><strong>🇨🇳 中国</strong></td>
-          <td>$1.5T+</td>
-          <td>$200M (≈ ¥150 亿)</td>
-          <td class="p-mid">+12%</td>
-          <td>中（区域差异）</td>
-          <td>高（40%+）</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>6-15L（家用为主）</td>
-        </tr>
+        <tr><td><strong>🇷🇺 俄罗斯</strong></td><td>$73.3B</td><td>$80M</td><td class="p-high">+20%</td><td>中</td><td>极高</td><td class="s5">5</td><td>6-8L</td></tr>
+        <tr><td><strong>🇲🇽 墨西哥</strong></td><td>$43.1B</td><td>$35M</td><td class="p-high">+18%</td><td><strong>极强</strong></td><td>高</td><td class="s5">5</td><td>6-10L</td></tr>
+        <tr><td><strong>🇸🇦 沙特</strong></td><td>$12B+</td><td>$25M</td><td class="p-high">+12%</td><td><strong>极强</strong></td><td>高</td><td class="s5">5</td><td>8-15L</td></tr>
+        <tr><td><strong>🇦🇪 阿联酋</strong></td><td>$8B+</td><td>$15M</td><td class="p-high">+12%</td><td><strong>极强</strong></td><td>中</td><td class="s5">5</td><td>8-15L</td></tr>
+        <tr><td><strong>🇧🇷 巴西</strong></td><td>$36B+</td><td>$30M</td><td class="p-high">+18%</td><td><strong>强</strong></td><td>高</td><td class="s4">4</td><td>6-10L</td></tr>
+        <tr><td><strong>🇮🇩 印尼</strong></td><td>$57.7B</td><td>$30M</td><td class="p-mid">+15%</td><td>强</td><td>中</td><td class="s4">4</td><td>4-8L</td></tr>
+        <tr><td><strong>🇹🇭 泰国</strong></td><td>$22B+</td><td>$15M</td><td class="p-mid">+15%</td><td>强</td><td>中</td><td class="s4">4</td><td>4-8L</td></tr>
+        <tr><td><strong>🇻🇳 越南</strong></td><td>$20B+</td><td>$12M</td><td class="p-mid">+15%</td><td>强</td><td>中</td><td class="s4">4</td><td>4-8L</td></tr>
+        <tr><td><strong>🇰🇷 韩国</strong></td><td>$180B+</td><td>$50M</td><td class="p-mid">+8%</td><td>中</td><td>极高</td><td class="s4">4</td><td>4-6L</td></tr>
+        <tr><td><strong>🇺🇸 美国</strong></td><td>$1.1T+</td><td>$1.2B</td><td class="p-low">+5%</td><td>中</td><td>高</td><td class="s3">3</td><td>4-10L</td></tr>
+        <tr><td><strong>🇪🇸 西班牙</strong></td><td>$25B+</td><td>$25M</td><td class="p-mid">+8%</td><td>中</td><td>中</td><td class="s3">3</td><td>6-8L</td></tr>
       </tbody>
     </table>
   </div>
-
   <div class="callout">
     <strong>小冰箱需求 Top 4：</strong>俄罗斯 / 墨西哥 / 沙特 / 阿联酋——这 4 个国家得分都是 5 分（极强需求）。<br>
-    <strong>核心驱动：</strong>气候热（30-50℃）+ 租房率高 + 品类教育成本低（场景天然成立）。
+    <strong>核心驱动：</strong>气候热 + 租房率高 + 品类教育成本低。
   </div>
 </section>
 
-<!-- 3. 国家美妆需求 -->
 <section id="beauty-demand">
   <div class="section-header fade-in">
     <div class="section-num">03 / BEAUTY DEMAND</div>
     <h2 class="section-title">10 国美妆/美妆冷藏需求强度</h2>
     <p class="section-desc">专门看美妆需求，包括美妆规模、K-beauty 渗透、活性护肤认知。</p>
   </div>
-
   <div class="table-wrap fade-in">
     <table>
-      <thead>
-        <tr>
-          <th>国家</th>
-          <th>美妆市场规模</th>
-          <th>K-beauty 渗透</th>
-          <th>活性护肤认知</th>
-          <th>美妆冷藏搜索</th>
-          <th>美妆需求强度</th>
-          <th>主推美妆 SKU</th>
-        </tr>
-      </thead>
+      <thead><tr><th>国家</th><th>美妆市场规模</th><th>K-beauty 渗透</th><th>活性护肤认知</th><th>美妆需求强度</th><th>主推美妆 SKU</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>🇺🇸 美国</strong></td>
-          <td>$90B+</td>
-          <td>45%（高）</td>
-          <td>高</td>
-          <td>高</td>
-          <td class="s5">5</td>
-          <td>4-6L 镜面</td>
-        </tr>
-        <tr>
-          <td><strong>🇰🇷 韩国</strong></td>
-          <td>$15B+</td>
-          <td>100% (本土)</td>
-          <td>极高</td>
-          <td>高</td>
-          <td class="s5">5</td>
-          <td>4-6L 静音半导体</td>
-        </tr>
-        <tr>
-          <td><strong>🇷🇺 俄罗斯</strong></td>
-          <td>$28B</td>
-          <td>50%+（东欧第一）</td>
-          <td>中高</td>
-          <td>中（YoY +35%）</td>
-          <td class="s4">4</td>
-          <td>4-6L 镜面</td>
-        </tr>
-        <tr>
-          <td><strong>🇲🇽 墨西哥</strong></td>
-          <td>$13B</td>
-          <td>65%（拉美最高）</td>
-          <td>高</td>
-          <td>中（YoY +50%）</td>
-          <td class="s4">4</td>
-          <td>4-6L 镜面 + 收纳</td>
-        </tr>
-        <tr>
-          <td><strong>🇧🇷 巴西</strong></td>
-          <td>$10B+</td>
-          <td>50%（仅次于墨）</td>
-          <td>高</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>4-6L 镜面</td>
-        </tr>
-        <tr>
-          <td><strong>🇸🇦 沙特</strong></td>
-          <td>$5B+</td>
-          <td>40%（海湾高）</td>
-          <td>高（沙漠气候护肤重）</td>
-          <td>中</td>
-          <td class="s4">4</td>
-          <td>4-6L 镜面</td>
-        </tr>
-        <tr>
-          <td><strong>🇦🇪 阿联酋</strong></td>
-          <td>$2B+</td>
-          <td>45%</td>
-          <td>高</td>
-          <td>中</td>
-          <td class="s3">3</td>
-          <td>4-6L 镜面</td>
-        </tr>
-        <tr>
-          <td><strong>🇹🇭 泰国</strong></td>
-          <td>$5B+</td>
-          <td>50%</td>
-          <td>中高</td>
-          <td>低</td>
-          <td class="s3">3</td>
-          <td>4L 简配</td>
-        </tr>
-        <tr>
-          <td><strong>🇻🇳 越南</strong></td>
-          <td>$2.5B</td>
-          <td>35%</td>
-          <td>中</td>
-          <td>低</td>
-          <td class="s2">2</td>
-          <td>4L 简配</td>
-        </tr>
-        <tr>
-          <td><strong>🇮🇩 印尼</strong></td>
-          <td>$7B+</td>
-          <td>45%</td>
-          <td>中</td>
-          <td>低</td>
-          <td class="s2">2</td>
-          <td>4L 简配</td>
-        </tr>
-        <tr>
-          <td><strong>🇪🇸 西班牙</strong></td>
-          <td>$8B+</td>
-          <td>25%</td>
-          <td>中</td>
-          <td>中</td>
-          <td class="s3">3</td>
-          <td>4-6L 镜面</td>
-        </tr>
+        <tr><td><strong>🇺🇸 美国</strong></td><td>$90B+</td><td>45%</td><td>高</td><td class="s5">5</td><td>4-6L 镜面</td></tr>
+        <tr><td><strong>🇰🇷 韩国</strong></td><td>$15B+</td><td>100%</td><td>极高</td><td class="s5">5</td><td>4-6L 静音</td></tr>
+        <tr><td><strong>🇷🇺 俄罗斯</strong></td><td>$28B</td><td>50%+</td><td>中高</td><td class="s4">4</td><td>4-6L 镜面</td></tr>
+        <tr><td><strong>🇲🇽 墨西哥</strong></td><td>$13B</td><td>65%</td><td>高</td><td class="s4">4</td><td>4-6L 镜面</td></tr>
+        <tr><td><strong>🇧🇷 巴西</strong></td><td>$10B+</td><td>50%</td><td>高</td><td class="s4">4</td><td>4-6L 镜面</td></tr>
+        <tr><td><strong>🇸🇦 沙特</strong></td><td>$5B+</td><td>40%</td><td>高</td><td class="s4">4</td><td>4-6L 镜面</td></tr>
+        <tr><td><strong>🇦🇪 阿联酋</strong></td><td>$2B+</td><td>45%</td><td>高</td><td class="s3">3</td><td>4-6L 镜面</td></tr>
+        <tr><td><strong>🇹🇭 泰国</strong></td><td>$5B+</td><td>50%</td><td>中高</td><td class="s3">3</td><td>4L 简配</td></tr>
+        <tr><td><strong>🇻🇳 越南</strong></td><td>$2.5B</td><td>35%</td><td>中</td><td class="s2">2</td><td>4L 简配</td></tr>
+        <tr><td><strong>🇮🇩 印尼</strong></td><td>$7B+</td><td>45%</td><td>中</td><td class="s2">2</td><td>4L 简配</td></tr>
+        <tr><td><strong>🇪🇸 西班牙</strong></td><td>$8B+</td><td>25%</td><td>中</td><td class="s3">3</td><td>4-6L 镜面</td></tr>
       </tbody>
     </table>
   </div>
-
   <div class="callout pink">
-    <strong>美妆冷藏认知 Top 4：</strong>美国 / 韩国 / 俄罗斯 / 墨西哥——这 4 个市场美妆冷藏概念已建立或快速增长。<br>
-    <strong>关键洞察：</strong>美妆需求 ≠ 美妆冷藏需求，<strong>温差由"活性成分护肤认知"决定</strong>。美墨 K-beauty 渗透 50-65%，但<strong>美妆冷藏 SKU 仍被通用款截流</strong>。
+    <strong>美妆冷藏认知 Top 4：</strong>美国 / 韩国 / 俄罗斯 / 墨西哥。<br>
+    <strong>关键洞察：</strong>美妆需求 ≠ 美妆冷藏需求，温差由"活性成分护肤认知"决定。
   </div>
 </section>
 
-<!-- 4. 国家 6 维评分 -->
 <section id="score">
   <div class="section-header fade-in">
     <div class="section-num">04 / SCORING</div>
     <h2 class="section-title">10 国 × 6 维评分矩阵</h2>
-    <p class="section-desc">每个国家按：①小冰箱需求 ②美妆需求 ③竞争激烈度（反） ④平台政策友好度 ⑤物流可及性 ⑥扩展可推进性 评分 1-5。</p>
+    <p class="section-desc">每个国家按：小冰箱需求 / 美妆需求 / 竞争度（反）/ 平台政策 / 物流 / 扩展可推进性 评分 1-5。</p>
   </div>
-
   <div class="table-wrap fade-in">
     <table>
-      <thead>
-        <tr>
-          <th>国家</th>
-          <th>小冰箱需求</th>
-          <th>美妆需求</th>
-          <th>竞争度（5=低）</th>
-          <th>平台政策</th>
-          <th>物流可及</th>
-          <th>可推进性</th>
-          <th>综合分</th>
-          <th>评级</th>
-        </tr>
-      </thead>
+      <thead><tr><th>国家</th><th>小冰箱</th><th>美妆</th><th>竞争低</th><th>平台</th><th>物流</th><th>可推进</th><th>综合分</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>🇷🇺 俄罗斯</strong></td>
-          <td class="s5">5</td>
-          <td class="s4">4</td>
-          <td class="s4">4（早期）</td>
-          <td class="s5">5（无保证金）</td>
-          <td class="s3">3（陆运慢）</td>
-          <td class="s4">4</td>
-          <td class="s5">25 / 30</td>
-          <td class="p-high">★★★★★ 优先</td>
-        </tr>
-        <tr>
-          <td><strong>🇲🇽 墨西哥</strong></td>
-          <td class="s5">5</td>
-          <td class="s4">4</td>
-          <td class="s5">5（极低）</td>
-          <td class="s5">5（美通墨 60 天免佣）</td>
-          <td class="s4">4（美仓直发）</td>
-          <td class="s5">5</td>
-          <td class="s5">28 / 30</td>
-          <td class="p-high">★★★★★ 优先</td>
-        </tr>
-        <tr>
-          <td><strong>🇸🇦 沙特</strong></td>
-          <td class="s5">5</td>
-          <td class="s4">4</td>
-          <td class="s4">4（低）</td>
-          <td class="s4">4（Noon）</td>
-          <td class="s3">3（FBN 仓）</td>
-          <td class="s3">3（SASO 认证）</td>
-          <td class="s4">23 / 30</td>
-          <td class="p-high">★★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇦🇪 阿联酋</strong></td>
-          <td class="s5">5</td>
-          <td class="s3">3</td>
-          <td class="s4">4（低）</td>
-          <td class="s4">4（Noon）</td>
-          <td class="s4">4（FBN 迪拜）</td>
-          <td class="s3">3（ECAS）</td>
-          <td class="s4">23 / 30</td>
-          <td class="p-high">★★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇧🇷 巴西</strong></td>
-          <td class="s4">4</td>
-          <td class="s4">4</td>
-          <td class="s5">5（极低）</td>
-          <td class="s4">4（MercadoLibre）</td>
-          <td class="s3">3（INMETRO 认证）</td>
-          <td class="s3">3</td>
-          <td class="s4">23 / 30</td>
-          <td class="p-high">★★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇰🇷 韩国</strong></td>
-          <td class="s4">4</td>
-          <td class="s5">5</td>
-          <td class="s2">2（本土品牌强）</td>
-          <td class="s3">3（Coupang）</td>
-          <td class="s5">5（临近）</td>
-          <td class="s2">2（KC 认证）</td>
-          <td class="s3">21 / 30</td>
-          <td class="p-mid">★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇹🇭 泰国</strong></td>
-          <td class="s4">4</td>
-          <td class="s3">3</td>
-          <td class="s4">4（早期）</td>
-          <td class="s4">4（TikTok Shop）</td>
-          <td class="s3">3</td>
-          <td class="s4">4</td>
-          <td class="s4">22 / 30</td>
-          <td class="p-high">★★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇮🇩 印尼</strong></td>
-          <td class="s4">4</td>
-          <td class="s2">2</td>
-          <td class="s3">3（中等）</td>
-          <td class="s3">3（Shopee 主导）</td>
-          <td class="s3">3</td>
-          <td class="s3">3（BPOM）</td>
-          <td class="s3">18 / 30</td>
-          <td class="p-mid">★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇻🇳 越南</strong></td>
-          <td class="s4">4</td>
-          <td class="s2">2</td>
-          <td class="s4">4（早期）</td>
-          <td class="s4">4（TikTok Shop）</td>
-          <td class="s3">3</td>
-          <td class="s3">3</td>
-          <td class="s3">20 / 30</td>
-          <td class="p-mid">★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇪🇸 西班牙</strong></td>
-          <td class="s3">3</td>
-          <td class="s3">3</td>
-          <td class="s3">3（中等）</td>
-          <td class="s4">4（Amazon + TikTok）</td>
-          <td class="s4">4（欧盟物流）</td>
-          <td class="s3">3（CE）</td>
-          <td class="s3">20 / 30</td>
-          <td class="p-mid">★★★</td>
-        </tr>
-        <tr>
-          <td><strong>🇺🇸 美国</strong></td>
-          <td class="s3">3</td>
-          <td class="s5">5</td>
-          <td class="s1">1（极卷）</td>
-          <td class="s5">5（成熟）</td>
-          <td class="s5">5（成熟）</td>
-          <td class="s5">5（成熟）</td>
-          <td class="s4">24 / 30</td>
-          <td class="p-high">★★★★（维持）</td>
-        </tr>
+        <tr><td><strong>🇲🇽 墨西哥</strong></td><td class="s5">5</td><td class="s4">4</td><td class="s5">5</td><td class="s5">5</td><td class="s4">4</td><td class="s5">5</td><td class="s5">28/30</td></tr>
+        <tr><td><strong>🇷🇺 俄罗斯</strong></td><td class="s5">5</td><td class="s4">4</td><td class="s4">4</td><td class="s5">5</td><td class="s3">3</td><td class="s4">4</td><td class="s5">25/30</td></tr>
+        <tr><td><strong>🇺🇸 美国</strong></td><td class="s3">3</td><td class="s5">5</td><td class="s1">1</td><td class="s5">5</td><td class="s5">5</td><td class="s5">5</td><td class="s4">24/30</td></tr>
+        <tr><td><strong>🇸🇦 沙特</strong></td><td class="s5">5</td><td class="s4">4</td><td class="s4">4</td><td class="s4">4</td><td class="s3">3</td><td class="s3">3</td><td class="s4">23/30</td></tr>
+        <tr><td><strong>🇧🇷 巴西</strong></td><td class="s4">4</td><td class="s4">4</td><td class="s5">5</td><td class="s4">4</td><td class="s3">3</td><td class="s3">3</td><td class="s4">23/30</td></tr>
+        <tr><td><strong>🇦🇪 阿联酋</strong></td><td class="s5">5</td><td class="s3">3</td><td class="s4">4</td><td class="s4">4</td><td class="s4">4</td><td class="s3">3</td><td class="s4">23/30</td></tr>
+        <tr><td><strong>🇹🇭 泰国</strong></td><td class="s4">4</td><td class="s3">3</td><td class="s4">4</td><td class="s4">4</td><td class="s3">3</td><td class="s4">4</td><td class="s4">22/30</td></tr>
+        <tr><td><strong>🇰🇷 韩国</strong></td><td class="s4">4</td><td class="s5">5</td><td class="s2">2</td><td class="s3">3</td><td class="s5">5</td><td class="s2">2</td><td class="s3">21/30</td></tr>
+        <tr><td><strong>🇻🇳 越南</strong></td><td class="s4">4</td><td class="s2">2</td><td class="s4">4</td><td class="s4">4</td><td class="s3">3</td><td class="s3">3</td><td class="s3">20/30</td></tr>
+        <tr><td><strong>🇪🇸 西班牙</strong></td><td class="s3">3</td><td class="s3">3</td><td class="s3">3</td><td class="s4">4</td><td class="s4">4</td><td class="s3">3</td><td class="s3">20/30</td></tr>
+        <tr><td><strong>🇮🇩 印尼</strong></td><td class="s4">4</td><td class="s2">2</td><td class="s3">3</td><td class="s3">3</td><td class="s3">3</td><td class="s3">3</td><td class="s3">18/30</td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<!-- 5. 竞争程度 -->
 <section id="competition">
   <div class="section-header fade-in">
     <div class="section-num">05 / COMPETITION</div>
     <h2 class="section-title">竞争程度：双赛道 × 各国</h2>
     <p class="section-desc">美妆定位 vs 通用定位，10 个国家的竞争激烈度对比。</p>
   </div>
-
   <div class="table-wrap fade-in">
     <table>
-      <thead>
-        <tr>
-          <th>国家</th>
-          <th>美妆定位竞争度</th>
-          <th>美妆定位主要竞品</th>
-          <th>通用定位竞争度</th>
-          <th>通用定位主要竞品</th>
-          <th>增量空间</th>
-        </tr>
-      </thead>
+      <thead><tr><th>国家</th><th>美妆定位竞争度</th><th>通用定位竞争度</th><th>增量空间</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>🇷🇺 俄罗斯</strong></td>
-          <td class="s4">低（30+ SKU）</td>
-          <td>Cooluli / 1688 白牌</td>
-          <td class="s4">低（早期）</td>
-          <td>中国卖家涌入中</td>
-          <td class="p-high">高</td>
-        </tr>
-        <tr>
-          <td><strong>🇲🇽 墨西哥</strong></td>
-          <td class="s5">极低（<50 SKU）</td>
-          <td>Amazon US 跨境 + 1688</td>
-          <td class="s5">极低（早期）</td>
-          <td>Amazon US + 少量本土</td>
-          <td class="p-high">极高</td>
-        </tr>
-        <tr>
-          <td><strong>🇸🇦 沙特</strong></td>
-          <td class="s4">低</td>
-          <td>Amazon SA + Noon</td>
-          <td class="s4">低</td>
-          <td>中国跨境</td>
-          <td class="p-high">高</td>
-        </tr>
-        <tr>
-          <td><strong>🇦🇪 阿联酋</strong></td>
-          <td class="s4">低</td>
-          <td>Amazon AE + Noon</td>
-          <td class="s4">低</td>
-          <td>中国跨境</td>
-          <td class="p-high">高</td>
-        </tr>
-        <tr>
-          <td><strong>🇧🇷 巴西</strong></td>
-          <td class="s5">极低</td>
-          <td>MercadoLibre + Shopee</td>
-          <td class="s5">极低</td>
-          <td>MercadoLibre + Shopee</td>
-          <td class="p-high">极高</td>
-        </tr>
-        <tr>
-          <td><strong>🇰🇷 韩国</strong></td>
-          <td class="s2">极高（土本品牌垄断）</td>
-          <td>Lotte / Winia / 韩国本土</td>
-          <td class="s2">高（土本品牌）</td>
-          <td>同上</td>
-          <td class="p-low">低</td>
-        </tr>
-        <tr>
-          <td><strong>🇹🇭 泰国</strong></td>
-          <td class="s4">低</td>
-          <td>TikTok Shop 跨境</td>
-          <td class="s3">中</td>
-          <td>Shopee + Lazada</td>
-          <td class="p-high">中</td>
-        </tr>
-        <tr>
-          <td><strong>🇮🇩 印尼</strong></td>
-          <td class="s3">中</td>
-          <td>Shopee + Tokopedia</td>
-          <td class="s2">高（中国卖家多）</td>
-          <td>中国卖家密集</td>
-          <td class="p-mid">中</td>
-        </tr>
-        <tr>
-          <td><strong>🇻🇳 越南</strong></td>
-          <td class="s4">低</td>
-          <td>TikTok Shop 跨境</td>
-          <td class="s3">中</td>
-          <td>Shopee + TikTok</td>
-          <td class="p-high">中高</td>
-        </tr>
-        <tr>
-          <td><strong>🇪🇸 西班牙</strong></td>
-          <td class="s3">中</td>
-          <td>Amazon EU + 品牌</td>
-          <td class="s3">中</td>
-          <td>Cecotec / 品牌</td>
-          <td class="p-mid">中</td>
-        </tr>
-        <tr>
-          <td><strong>🇺🇸 美国</strong></td>
-          <td class="s1">极卷（200+ SKU）</td>
-          <td>Koolatron / Cooluli / 澄海</td>
-          <td class="s1">极卷（500+ SKU）</td>
-          <td>Midea / Haier / 澄海</td>
-          <td class="p-low">低</td>
-        </tr>
+        <tr><td><strong>🇲🇽 墨西哥</strong></td><td class="s5">极低（<50 SKU）</td><td class="s5">极低（早期）</td><td class="p-high">极高</td></tr>
+        <tr><td><strong>🇧🇷 巴西</strong></td><td class="s5">极低</td><td class="s5">极低</td><td class="p-high">极高</td></tr>
+        <tr><td><strong>🇷🇺 俄罗斯</strong></td><td class="s4">低（30+ SKU）</td><td class="s4">低（早期）</td><td class="p-high">高</td></tr>
+        <tr><td><strong>🇸🇦 沙特</strong></td><td class="s4">低</td><td class="s4">低</td><td class="p-high">高</td></tr>
+        <tr><td><strong>🇦🇪 阿联酋</strong></td><td class="s4">低</td><td class="s4">低</td><td class="p-high">高</td></tr>
+        <tr><td><strong>🇹🇭 泰国</strong></td><td class="s4">低</td><td class="s3">中</td><td class="p-high">中</td></tr>
+        <tr><td><strong>🇻🇳 越南</strong></td><td class="s4">低</td><td class="s3">中</td><td class="p-high">中高</td></tr>
+        <tr><td><strong>🇪🇸 西班牙</strong></td><td class="s3">中</td><td class="s3">中</td><td class="p-mid">中</td></tr>
+        <tr><td><strong>🇮🇩 印尼</strong></td><td class="s3">中</td><td class="s2">高</td><td class="p-mid">中</td></tr>
+        <tr><td><strong>🇰🇷 韩国</strong></td><td class="s2">极高</td><td class="s2">高</td><td class="p-low">低</td></tr>
+        <tr><td><strong>🇺🇸 美国</strong></td><td class="s1">极卷（200+ SKU）</td><td class="s1">极卷（500+ SKU）</td><td class="p-low">低</td></tr>
       </tbody>
     </table>
   </div>
-
   <div class="callout teal">
-    <strong>竞争度最低的 4 个市场：</strong>墨西哥 / 巴西（极低） / 俄罗斯 / 沙特（低）。<br>
-    <strong>美妆定位和通用定位的竞争度基本同步</strong>——美妆是"细分中的细分"，通用是"主战场"，但新兴市场两者都还很早期。
+    <strong>竞争度最低 4 个：</strong>墨西哥 / 巴西（极低） / 俄罗斯 / 沙特（低）。<br>
+    <strong>美妆和通用定位竞争度基本同步</strong>——新兴市场两者都还很早期。
   </div>
 </section>
 
-<!-- 6. 进入与拓展性 -->
 <section id="entry">
   <div class="section-header fade-in">
     <div class="section-num">06 / ENTRY</div>
     <h2 class="section-title">进入与可推进拓展性</h2>
     <p class="section-desc">认证 / 物流 / 平台 / 政策——可推进性的 4 个子维度。</p>
   </div>
-
   <div class="table-wrap fade-in">
     <table>
-      <thead>
-        <tr>
-          <th>国家</th>
-          <th>主要平台</th>
-          <th>认证要求</th>
-          <th>认证预算</th>
-          <th>认证周期</th>
-          <th>物流方案</th>
-          <th>物流时效</th>
-          <th>入驻难度</th>
-        </tr>
-      </thead>
+      <thead><tr><th>国家</th><th>主要平台</th><th>认证</th><th>认证预算</th><th>周期</th><th>入驻难度</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>🇷🇺 俄罗斯</strong></td>
-          <td>Wildberries + Ozon</td>
-          <td>EAC</td>
-          <td>¥8,000-15,000</td>
-          <td>2-3 月</td>
-          <td>WB 自营仓 / 哈尔滨陆运</td>
-          <td>陆运 15-25 天 / 海外仓 7-10 天</td>
-          <td class="p-high">低（中文后台）</td>
-        </tr>
-        <tr>
-          <td><strong>🇲🇽 墨西哥</strong></td>
-          <td>TikTok Shop + Amazon MX</td>
-          <td>NOM（电器类）</td>
-          <td>¥5,000-10,000</td>
-          <td>1-2 月</td>
-          <td>美通墨 / 跨境直邮</td>
-          <td>美仓 3-7 天 / 直邮 10-15 天</td>
-          <td class="p-high">低（中国主体）</td>
-        </tr>
-        <tr>
-          <td><strong>🇸🇦 沙特</strong></td>
-          <td>Noon + Amazon SA</td>
-          <td>SASO + Saber</td>
-          <td>¥15,000-30,000</td>
-          <td>3-6 月</td>
-          <td>Noon FBN 仓 / 三方海外仓</td>
-          <td>FBN 2-5 天 / 跨境 7-15 天</td>
-          <td class="p-mid">中（重认证）</td>
-        </tr>
-        <tr>
-          <td><strong>🇦🇪 阿联酋</strong></td>
-          <td>Noon + Amazon AE</td>
-          <td>ECAS + ECSSR</td>
-          <td>¥10,000-20,000</td>
-          <td>2-4 月</td>
-          <td>Noon FBN 迪拜 / 三方海外仓</td>
-          <td>FBN 1-3 天 / 跨境 7-10 天</td>
-          <td class="p-mid">中</td>
-        </tr>
-        <tr>
-          <td><strong>🇧🇷 巴西</strong></td>
-          <td>MercadoLibre + Shopee</td>
-          <td>INMETRO</td>
-          <td>¥10,000-25,000</td>
-          <td>2-4 月</td>
-          <td>Mercado Envios Full / 三方仓</td>
-          <td>Full 3-7 天 / 跨境 15-25 天</td>
-          <td class="p-mid">中（高关税 60-80%）</td>
-        </tr>
-        <tr>
-          <td><strong>🇰🇷 韩国</strong></td>
-          <td>Coupang + Naver</td>
-          <td>KC 认证</td>
-          <td>¥20,000-40,000</td>
-          <td>3-6 月</td>
-          <td>Coupang 自营 / 三方仓</td>
-          <td>1-3 天（临近优势）</td>
-          <td class="p-low">高（土本壁垒强）</td>
-        </tr>
-        <tr>
-          <td><strong>🇹🇭 泰国</strong></td>
-          <td>TikTok Shop + Shopee + Lazada</td>
-          <td>TISI</td>
-          <td>¥5,000-15,000</td>
-          <td>1-3 月</td>
-          <td>TikTok 官方仓 / 三方</td>
-          <td>5-7 天</td>
-          <td class="p-high">低（中国主体）</td>
-        </tr>
-        <tr>
-          <td><strong>🇮🇩 印尼</strong></td>
-          <td>Shopee + Tokopedia + TikTok</td>
-          <td>BPOM + SNI</td>
-          <td>¥8,000-18,000</td>
-          <td>2-4 月</td>
-          <td>Shopee SLS / TikTok</td>
-          <td>5-7 天</td>
-          <td class="p-mid">中（COD 风险）</td>
-        </tr>
-        <tr>
-          <td><strong>🇻🇳 越南</strong></td>
-          <td>TikTok Shop + Shopee</td>
-          <td>CR Mark</td>
-          <td>¥3,000-8,000</td>
-          <td>1-2 月</td>
-          <td>TikTok / Shopee</td>
-          <td>5-7 天</td>
-          <td class="p-high">低</td>
-        </tr>
-        <tr>
-          <td><strong>🇪🇸 西班牙</strong></td>
-          <td>Amazon EU + TikTok</td>
-          <td>CE + RoHS</td>
-          <td>¥5,000-12,000</td>
-          <td>1-2 月</td>
-          <td>Amazon FBA / 三方</td>
-          <td>1-3 天（欧盟内）</td>
-          <td class="p-mid">中（VAT）</td>
-        </tr>
-        <tr>
-          <td><strong>🇺🇸 美国</strong></td>
-          <td>Amazon + Walmart + TikTok Shop</td>
-          <td>FCC + UL（电器）</td>
-          <td>¥15,000-30,000</td>
-          <td>2-4 月</td>
-          <td>Amazon FBA / 三方</td>
-          <td>1-3 天（成熟）</td>
-          <td class="p-high">低（成熟）</td>
-        </tr>
+        <tr><td><strong>🇷🇺 俄罗斯</strong></td><td>Wildberries + Ozon</td><td>EAC</td><td>¥8-15K</td><td>2-3 月</td><td class="p-high">低（中文后台）</td></tr>
+        <tr><td><strong>🇲🇽 墨西哥</strong></td><td>TikTok Shop + Amazon MX</td><td>NOM</td><td>¥5-10K</td><td>1-2 月</td><td class="p-high">低</td></tr>
+        <tr><td><strong>🇸🇦 沙特</strong></td><td>Noon + Amazon SA</td><td>SASO + Saber</td><td>¥15-30K</td><td>3-6 月</td><td class="p-mid">中（重认证）</td></tr>
+        <tr><td><strong>🇦🇪 阿联酋</strong></td><td>Noon + Amazon AE</td><td>ECAS + ECSSR</td><td>¥10-20K</td><td>2-4 月</td><td class="p-mid">中</td></tr>
+        <tr><td><strong>🇧🇷 巴西</strong></td><td>MercadoLibre + Shopee</td><td>INMETRO</td><td>¥10-25K</td><td>2-4 月</td><td class="p-mid">中（高关税 60-80%）</td></tr>
+        <tr><td><strong>🇰🇷 韩国</strong></td><td>Coupang + Naver</td><td>KC 认证</td><td>¥20-40K</td><td>3-6 月</td><td class="p-low">高（土本壁垒）</td></tr>
+        <tr><td><strong>🇹🇭 泰国</strong></td><td>TikTok Shop + Shopee</td><td>TISI</td><td>¥5-15K</td><td>1-3 月</td><td class="p-high">低</td></tr>
+        <tr><td><strong>🇮🇩 印尼</strong></td><td>Shopee + TikTok</td><td>BPOM + SNI</td><td>¥8-18K</td><td>2-4 月</td><td class="p-mid">中（COD 风险）</td></tr>
+        <tr><td><strong>🇻🇳 越南</strong></td><td>TikTok Shop + Shopee</td><td>CR Mark</td><td>¥3-8K</td><td>1-2 月</td><td class="p-high">低</td></tr>
+        <tr><td><strong>🇪🇸 西班牙</strong></td><td>Amazon EU + TikTok</td><td>CE + RoHS</td><td>¥5-12K</td><td>1-2 月</td><td class="p-mid">中（VAT）</td></tr>
       </tbody>
     </table>
   </div>
-
   <div class="callout">
-    <strong>进入难度最低 3 个市场：</strong>俄罗斯（中文后台）/ 墨西哥（美通墨 60 天免佣）/ 越南（认证低门槛）。<br>
-    <strong>进入难度最高：</strong>韩国（本土壁垒 + KC 认证）/ 沙特（SASO 认证重 + Saber 流程复杂）。
+    <strong>进入难度最低 3 个：</strong>俄罗斯（中文后台）/ 墨西哥（美通墨 60 天免佣）/ 越南（认证低门槛）。<br>
+    <strong>进入难度最高：</strong>韩国（本土壁垒 + KC 认证）/ 沙特（SASO 认证重）。
   </div>
 </section>
 
-<!-- 7. 决策矩阵 -->
 <section id="matrix">
   <div class="section-header fade-in">
     <div class="section-num">07 / MATRIX</div>
     <h2 class="section-title">平台 × 国家 × 赛道 决策矩阵</h2>
     <p class="section-desc">每个格子的"推"是该组合的推荐度（5=必做，1=不做）。</p>
   </div>
-
   <div class="table-wrap fade-in">
     <table>
-      <thead>
-        <tr>
-          <th>国家</th>
-          <th>WB / Ozon</th>
-          <th>TikTok Shop 美区</th>
-          <th>TikTok Shop 墨</th>
-          <th>MercadoLibre 巴西</th>
-          <th>Noon 中东</th>
-          <th>Shopee / TikTok 东南亚</th>
-          <th>Amazon EU</th>
-          <th>Amazon US</th>
-        </tr>
-      </thead>
+      <thead><tr><th>国家</th><th>WB / Ozon</th><th>TikTok 美区</th><th>TikTok 墨</th><th>MercadoLibre</th><th>Noon 中东</th><th>Shopee / TikTok SEA</th></tr></thead>
       <tbody>
-        <tr>
-          <td colspan="8" style="background: var(--bg-soft); font-weight: 600; color: var(--text-soft);">🎯 美妆定位 SKU（4-6L 镜面款）</td>
-        </tr>
-        <tr>
-          <td><strong>俄罗斯</strong></td>
-          <td class="s4">4（美妆 KOL）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>墨西哥</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2（截流）</td>
-          <td class="s4">4（西语 KOL）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>巴西</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s-na">N/A</td>
-          <td class="s4">4（葡语 KOL）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>沙特 / 阿联酋</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s4">4（阿语 KOL）</td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>韩国</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>美国</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2（卷）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s3">3（维持）</td>
-        </tr>
-        <tr>
-          <td colspan="8" style="background: var(--bg-soft); font-weight: 600; color: var(--text-soft);">📦 通用定位 SKU（6-15L 多容量）</td>
-        </tr>
-        <tr>
-          <td><strong>俄罗斯</strong></td>
-          <td class="s5">5（主力）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>墨西哥</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3（截流）</td>
-          <td class="s5">5（主力）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>巴西</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s-na">N/A</td>
-          <td class="s5">5（主力）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>沙特 / 阿联酋</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s5">5（主力）</td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>泰国 / 越南</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s4">4（简配低价）</td>
-          <td class="s2">2</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>印尼</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3（COD 风险）</td>
-          <td class="s2">2</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>西班牙</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3（节能款）</td>
-          <td class="s2">2</td>
-        </tr>
-        <tr>
-          <td><strong>美国</strong></td>
-          <td class="s-na">N/A</td>
-          <td class="s3">3（卷）</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s-na">N/A</td>
-          <td class="s2">2</td>
-          <td class="s3">3（维持）</td>
-        </tr>
+        <tr><td colspan="6" style="background: var(--bg-soft); font-weight: 600; color: var(--text-soft);">🎯 美妆定位 SKU（4-6L 镜面款）</td></tr>
+        <tr><td>俄罗斯</td><td class="s4">4</td><td class="s-na">-</td><td class="s-na">-</td><td class="s-na">-</td><td class="s-na">-</td><td class="s-na">-</td></tr>
+        <tr><td>墨西哥</td><td>-</td><td class="s2">2</td><td class="s4">4</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>巴西</td><td>-</td><td class="s2">2</td><td>-</td><td class="s4">4</td><td>-</td><td>-</td></tr>
+        <tr><td>沙特 / 阿联酋</td><td>-</td><td class="s2">2</td><td>-</td><td>-</td><td class="s4">4</td><td>-</td></tr>
+        <tr><td>美国</td><td>-</td><td class="s2">2（卷）</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td colspan="6" style="background: var(--bg-soft); font-weight: 600; color: var(--text-soft);">📦 通用定位 SKU（6-15L 多容量）</td></tr>
+        <tr><td>俄罗斯</td><td class="s5">5（主力）</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>墨西哥</td><td>-</td><td class="s3">3</td><td class="s5">5（主力）</td><td>-</td><td>-</td><td>-</td></tr>
+        <tr><td>巴西</td><td>-</td><td class="s2">2</td><td>-</td><td class="s5">5（主力）</td><td>-</td><td>-</td></tr>
+        <tr><td>沙特 / 阿联酋</td><td>-</td><td class="s2">2</td><td>-</td><td>-</td><td class="s5">5（主力）</td><td>-</td></tr>
+        <tr><td>泰国 / 越南</td><td>-</td><td class="s2">2</td><td>-</td><td>-</td><td>-</td><td class="s4">4</td></tr>
+        <tr><td>印尼</td><td>-</td><td class="s2">2</td><td>-</td><td>-</td><td>-</td><td class="s3">3</td></tr>
+        <tr><td>美国</td><td>-</td><td class="s3">3（卷）</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<!-- 8. Top 5 排序 -->
 <section id="ranking">
   <div class="section-header fade-in">
     <div class="section-num">08 / RANKING</div>
     <h2 class="section-title">Top 5 国家 × 赛道 优先级</h2>
     <p class="section-desc">综合 6 维度评分后的 Top 5 必做组合。</p>
   </div>
-
   <div class="ranking-list fade-in">
     <h3 style="margin-bottom: 16px; font-size: 16px;">🥇 综合优先级排序</h3>
-    <div class="ranking-item">
-      <div class="rank">🥇</div>
-      <div class="info">
-        <h4>墨西哥 × 通用定位（6-10L）</h4>
-        <p>TikTok Shop 美通墨 / 28 综合分 / 美妆 $5M 月 GMV / 竞争极低</p>
-      </div>
-      <div class="score s5">28</div>
-    </div>
-    <div class="ranking-item">
-      <div class="rank">🥈</div>
-      <div class="info">
-        <h4>俄罗斯 × 通用定位（6-8L）</h4>
-        <p>Wildberries + Ozon / 25 综合分 / 中国 SKU +13 倍 / 无保证金</p>
-      </div>
-      <div class="score s5">25</div>
-    </div>
-    <div class="ranking-item">
-      <div class="rank">🥉</div>
-      <div class="info">
-        <h4>美国 × 双 SKU 矩阵（维持）</h4>
-        <p>Amazon + TikTok Shop / 24 综合分 / 美妆需求极强 / 平台成熟</p>
-      </div>
-      <div class="score s4">24</div>
-    </div>
-    <div class="ranking-item">
-      <div class="rank">4</div>
-      <div class="info">
-        <h4>沙特 × 通用定位（8-15L）</h4>
-        <p>Noon FBN / 23 综合分 / 沙漠气候刚需 / 30-50℃</p>
-      </div>
-      <div class="score s4">23</div>
-    </div>
-    <div class="ranking-item">
-      <div class="rank">5</div>
-      <div class="info">
-        <h4>巴西 × 通用定位（6-10L）</h4>
-        <p>MercadoLibre / 23 综合分 / 葡语市场 / 竞争极低</p>
-      </div>
-      <div class="score s4">23</div>
-    </div>
+    <div class="ranking-item"><div class="rank">🥇</div><div class="info"><h4>墨西哥 × 通用定位（6-10L）</h4><p>TikTok Shop 美通墨 / 28 综合分</p></div><div class="score s5">28</div></div>
+    <div class="ranking-item"><div class="rank">🥈</div><div class="info"><h4>俄罗斯 × 通用定位（6-8L）</h4><p>Wildberries + Ozon / 25 综合分</p></div><div class="score s5">25</div></div>
+    <div class="ranking-item"><div class="rank">🥉</div><div class="info"><h4>美国 × 双 SKU 矩阵（维持）</h4><p>Amazon + TikTok Shop / 24 综合分</p></div><div class="score s4">24</div></div>
+    <div class="ranking-item"><div class="rank">4</div><div class="info"><h4>沙特 × 通用定位（8-15L）</h4><p>Noon FBN / 23 综合分 / 30-50℃</p></div><div class="score s4">23</div></div>
+    <div class="ranking-item"><div class="rank">5</div><div class="info"><h4>巴西 × 通用定位（6-10L）</h4><p>MercadoLibre / 23 综合分</p></div><div class="score s4">23</div></div>
   </div>
-
   <div class="callout teal" style="margin-top: 20px;">
     <strong>必做组合：</strong>① 墨通用 ② 俄通用 ③ 沙特/阿联酋通用 ④ 巴通用 ⑤ 美双 SKU 维持<br>
-    <strong>美妆定位主战场：</strong>① 俄美妆（K-beauty 渗透 50%+）② 墨美妆（西语 KOL）<br>
     <strong>不要做：</strong>① 韩国（本土壁垒） ② 印尼（COD 风险） ③ 美区 4L 美妆（已饱和）
   </div>
 </section>
 
-<!-- 9. 执行路径 -->
 <section id="action">
   <div class="section-header fade-in">
     <div class="section-num">09 / ACTION</div>
     <h2 class="section-title">6 个月执行路径</h2>
     <p class="section-desc">从品类判断到全平台铺货，6 个月落地节奏。</p>
   </div>
-
   <div class="rec-grid">
-    <div class="rec fade-in">
-      <div class="priority p0">P0 · 30 天</div>
-      <h4>第 1 阶段：俄罗斯 WB 主力</h4>
-      <p>① 4L 美妆镜面款（30%）+ 6-8L 通用基础款（70%）<br>② VK 美妆 KOL × 3-5 个<br>③ Yandex Zen 5000 字横评<br>④ 目标：30 天日销 30 单</p>
-    </div>
-    <div class="rec fade-in">
-      <div class="priority p0">P0 · 30 天</div>
-      <h4>第 1 阶段并行：墨西哥 TikTok Shop 试水</h4>
-      <p>① 6-10L 通用款（美通墨模式）<br>② TikTok 西语美妆 KOC × 5-10 个<br>③ 目标：30 天日销 20 单</p>
-    </div>
-    <div class="rec fade-in">
-      <div class="priority p1">P1 · 60 天</div>
-      <h4>第 2 阶段：墨西哥主力进攻</h4>
-      <p>① 6-8L 多场景通用款扩 SKU<br>② TikTok 西语美妆 KOC × 15-25 个<br>③ 美通墨满 179 比索自动补贴<br>④ 目标：60 天月销 500 单</p>
-    </div>
-    <div class="rec fade-in">
-      <div class="priority p1">P1 · 60 天</div>
-      <h4>第 2 阶段并行：沙特 Noon 试水</h4>
-      <p>① 8-15L 大容量通用款（沙漠刚需）<br>② Noon FBN 仓备货<br>③ 目标：60 天月销 100 单</p>
-    </div>
-    <div class="rec fade-in">
-      <div class="priority p2">P2 · 90 天</div>
-      <h4>第 3 阶段：巴西 MercadoLibre 切入</h4>
-      <p>① 6-10L 通用基础款（葡语 listing）<br>② Mercado Envios Full 仓配<br>③ 目标：90 天月销 200 单</p>
-    </div>
-    <div class="rec fade-in">
-      <div class="priority p2">P2 · 6 月</div>
-      <h4>第 4 阶段：东南亚 + 品牌沉淀</h4>
-      <p>① 东南亚上 4-6L 简配低价款<br>② 美区维持现有 SKU<br>③ 美妆款打品牌（包装 / 联名）<br>④ 6 月数据复盘，决定下一站</p>
-    </div>
+    <div class="rec fade-in"><div class="priority p0">P0 · 30 天</div><h4>第 1 阶段：俄罗斯 WB 主力</h4><p>① 4L 美妆镜面款（30%）+ 6-8L 通用基础款（70%）<br>② VK 美妆 KOL × 3-5 个<br>③ 目标：30 天日销 30 单</p></div>
+    <div class="rec fade-in"><div class="priority p0">P0 · 30 天</div><h4>第 1 阶段并行：墨西哥 TikTok 试水</h4><p>① 6-10L 通用款（美通墨模式）<br>② TikTok 西语美妆 KOC × 5-10 个<br>③ 目标：30 天日销 20 单</p></div>
+    <div class="rec fade-in"><div class="priority p1">P1 · 60 天</div><h4>第 2 阶段：墨西哥主力进攻</h4><p>① 6-8L 多场景通用款扩 SKU<br>② TikTok 西语美妆 KOC × 15-25 个<br>③ 目标：60 天月销 500 单</p></div>
+    <div class="rec fade-in"><div class="priority p1">P1 · 60 天</div><h4>第 2 阶段并行：沙特 Noon 试水</h4><p>① 8-15L 大容量通用款<br>② Noon FBN 仓备货<br>③ 目标：60 天月销 100 单</p></div>
+    <div class="rec fade-in"><div class="priority p2">P2 · 90 天</div><h4>第 3 阶段：巴西 MercadoLibre</h4><p>① 6-10L 通用基础款（葡语 listing）<br>② Mercado Envios Full<br>③ 目标：90 天月销 200 单</p></div>
+    <div class="rec fade-in"><div class="priority p2">P2 · 6 月</div><h4>第 4 阶段：东南亚 + 品牌沉淀</h4><p>① 东南亚上 4-6L 简配<br>② 美区维持<br>③ 美妆款打品牌</p></div>
   </div>
-
   <h3 style="margin: 40px 0 16px; font-size: 18px;">SKU 矩阵最终建议</h3>
   <div class="table-wrap fade-in">
     <table>
-      <thead>
-        <tr>
-          <th>SKU 编号</th>
-          <th>定位</th>
-          <th>容量</th>
-          <th>客单价</th>
-          <th>主推市场</th>
-          <th>配比</th>
-        </tr>
-      </thead>
+      <thead><tr><th>SKU 编号</th><th>定位</th><th>容量</th><th>客单价</th><th>主推市场</th><th>配比</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>SKU-A 美妆镜面款</strong></td>
-          <td>美妆</td>
-          <td>4-6L</td>
-          <td>$25-40</td>
-          <td>俄 WB + 墨 TikTok</td>
-          <td class="s4">30%</td>
-        </tr>
-        <tr>
-          <td><strong>SKU-B 通用桌面款</strong></td>
-          <td>通用多场景</td>
-          <td>6-8L</td>
-          <td>$30-45</td>
-          <td>俄 WB + 墨 TikTok + 巴 ML</td>
-          <td class="s5">40%</td>
-        </tr>
-        <tr>
-          <td><strong>SKU-C 通用大容量款</strong></td>
-          <td>通用卧室</td>
-          <td>8-15L</td>
-          <td>$40-65</td>
-          <td>沙特 Noon + 巴 ML</td>
-          <td class="s4">20%</td>
-        </tr>
-        <tr>
-          <td><strong>SKU-D 简配低价款</strong></td>
-          <td>通用走量</td>
-          <td>4-6L</td>
-          <td>$15-25</td>
-          <td>东南亚 + 印尼</td>
-          <td class="s3">10%</td>
-        </tr>
+        <tr><td><strong>SKU-A 美妆镜面款</strong></td><td>美妆</td><td>4-6L</td><td>$25-40</td><td>俄 WB + 墨 TikTok</td><td class="s4">30%</td></tr>
+        <tr><td><strong>SKU-B 通用桌面款</strong></td><td>通用多场景</td><td>6-8L</td><td>$30-45</td><td>俄 WB + 墨 TikTok + 巴 ML</td><td class="s5">40%</td></tr>
+        <tr><td><strong>SKU-C 通用大容量款</strong></td><td>通用卧室</td><td>8-15L</td><td>$40-65</td><td>沙特 Noon + 巴 ML</td><td class="s4">20%</td></tr>
+        <tr><td><strong>SKU-D 简配低价款</strong></td><td>通用走量</td><td>4-6L</td><td>$15-25</td><td>东南亚 + 印尼</td><td class="s3">10%</td></tr>
       </tbody>
     </table>
   </div>
-
   <div class="callout teal">
     <strong>核心原则：</strong>不要单赛道——美妆和通用是同一品类下的双打法。<br>
-    <strong>美妆定位</strong>拉品牌溢价，<strong>通用定位</strong>冲销量规模——<strong>两条腿走路</strong>，矩阵互补。
+    <strong>美妆定位</strong>拉品牌溢价，<strong>通用定位</strong>冲销量规模——两条腿走路。
   </div>
-
   <div class="source-list fade-in">
-    <span class="source">📊 全球迷你冰箱 $1.35B / 8.95% CAGR - Mordor Intelligence 2025</span>
+    <span class="source">📊 全球迷你冰箱 $1.35B - Mordor Intelligence 2025</span>
     <span class="source">💄 K-Beauty $156.9B - MRFR 2024</span>
-    <span class="source">🇰🇷 韩对美出口 $5.5B H1 2025 - 韩国关税厅</span>
-    <span class="source">🏪 WB 2025 GMV $73.3B / +49% - 母公司财报</span>
+    <span class="source">🇰🇷 韩对美出口 $5.5B - 韩国关税厅</span>
+    <span class="source">🏪 WB 2025 GMV $73.3B - 母公司财报</span>
     <span class="source">📈 WB 中国 SKU +13 倍 - Ecomday 2026</span>
-    <span class="source">💄 WB 美妆 +3109% - WB 跨境数据</span>
     <span class="source">🇲🇽 墨 TikTok 美妆 $5.02M/月 - Kalodata</span>
-    <span class="source">🇮🇩 印尼电商 $57.7B / Shopee 54% - Momentum Works</span>
-    <span class="source">🇸🇦 Noon 中东覆盖 - 官方</span>
-    <span class="source">🇧🇷 MercadoLibre 拉美 1/4 份额 - Benchmark</span>
   </div>
 </section>
 
@@ -1392,6 +560,73 @@
       const target = document.querySelector(a.getAttribute('href'));
       if (target) window.scrollTo({ top: target.offsetTop - 70, behavior: 'smooth' });
     });
+  });
+
+  /* ===== 演示模式 ===== */
+  const presentBtn = document.getElementById('presentBtn');
+  const sections = document.querySelectorAll('section, header.hero');
+  const totalSlides = sections.length;
+  const pageCounter = document.getElementById('pageCounter');
+  const progressBar = document.getElementById('progressBar');
+  let currentSlide = 0;
+  let isPresenting = false;
+
+  function showSlide(index) {
+    if (index < 0 || index >= totalSlides) return;
+    sections.forEach((s, i) => {
+      if (isPresenting) {
+        s.classList.toggle('active', i === index);
+      } else {
+        s.classList.remove('active');
+      }
+    });
+    currentSlide = index;
+    pageCounter.textContent = `${index + 1} / ${totalSlides}`;
+    progressBar.style.width = `${((index + 1) / totalSlides) * 100}%`;
+  }
+
+  function enterPresentMode() {
+    isPresenting = true;
+    document.body.classList.add('present-mode');
+    sections[0].classList.add('active');
+    progressBar.style.width = `${(1 / totalSlides) * 100}%`;
+    pageCounter.textContent = `1 / ${totalSlides}`;
+  }
+
+  function exitPresentMode() {
+    isPresenting = false;
+    document.body.classList.remove('present-mode');
+    sections.forEach(s => s.classList.remove('active'));
+    progressBar.style.width = '0%';
+  }
+
+  presentBtn.addEventListener('click', () => {
+    if (isPresenting) exitPresentMode();
+    else enterPresentMode();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!isPresenting) {
+      if (e.key === 'F11') e.preventDefault();
+      return;
+    }
+    if (e.key === 'Escape') { exitPresentMode(); return; }
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      showSlide(currentSlide + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      showSlide(currentSlide - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      showSlide(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      showSlide(totalSlides - 1);
+    } else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
   });
 </script>
 
