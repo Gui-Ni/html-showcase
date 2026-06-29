@@ -41,7 +41,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ============== DECK STAGE ============== */
+/* =============== DECK STAGE =============== */
 #stage {
   position: fixed;
   top: 0; left: 0;
