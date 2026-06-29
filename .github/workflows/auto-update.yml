@@ -15,6 +15,9 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Generate FILES array and update index.html
         run: |
@@ -23,11 +26,10 @@ jobs:
           const path = require('path');
 
           const SKIP_DIRS = ['.github', 'node_modules', '_assets'];
-          const SKIP_FILES = ['index.html']; // never include the showcase itself
-          const SKIP_ROOT_FILES = true;       // skip .html files in repo root (no folder context)
+          const SKIP_FILES = ['index.html'];
+          const SKIP_ROOT_FILES = true;
           const SUPPORTED_EXTENSIONS = ['.html'];
 
-          // Auto-assign tag by file/folder name keywords
           function detectTag(name, folder) {
             const text = (name + ' ' + folder).toLowerCase();
             if (/定价|价格|价格策略|溢价|毛利|cost|price/i.test(text)) return 'pricing';
@@ -47,7 +49,7 @@ jobs:
               } else if (entry.isFile() && SUPPORTED_EXTENSIONS.includes(path.extname(entry.name))) {
                 if (SKIP_FILES.includes(entry.name)) continue;
                 const rel = full.replace(/^\.\//, '').replace(/\\/g, '/');
-                if (SKIP_ROOT_FILES && !rel.includes('/')) continue; // skip root-level .html
+                if (SKIP_ROOT_FILES && !rel.includes('/')) continue;
                 const folder = path.dirname(rel);
                 const name = path.basename(entry.name, '.html');
                 const tag = detectTag(name, folder);
@@ -90,5 +92,6 @@ jobs:
             echo "No changes — index.html already up to date"
           else
             git commit -m "chore: auto-update file list with smart tag detection"
-            git push
+            git push origin HEAD:main
+            echo "PUSHED ✓"
           fi
